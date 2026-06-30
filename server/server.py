@@ -398,29 +398,22 @@ DASHBOARD_HTML = r'''<!DOCTYPE html>
 *{margin:0;padding:0;box-sizing:border-box}
 body{background:#1a0a12;color:#f0d0d8;font-family:'Segoe UI',sans-serif;padding:10px;min-height:100vh}
 h1{font-size:1.2rem;color:#ff69b4;text-align:center;margin-bottom:8px;text-shadow:0 0 8px #ff69b466}
-.g2{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px}
-.gc{background:#2a0a1a;border-radius:10px;padding:12px;border:1px solid #ff69b433;min-height:120px;display:flex;flex-direction:column;justify-content:center;align-items:center}
+.gw{position:relative;margin-bottom:8px}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+#qrOver{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);z-index:10;background:#2a0a12e6;border-radius:12px;padding:10px;border:1px solid #ff69b466;text-align:center;backdrop-filter:blur(4px);transition:opacity .3s}
+#qrOver img{width:100px;height:100px;background:#fff;border-radius:6px;display:block}
+#qrOver .l{font-size:.5rem;color:#b06080;margin-top:2px}
+#qrTog{position:absolute;top:4px;right:4px;background:none;border:none;color:#ff69b4;font-size:.9rem;cursor:pointer;z-index:12;line-height:1;padding:2px 6px;border-radius:4px}
+#qrTog:hover{background:#ff69b433}
+#qrBtn{display:none;position:fixed;bottom:12px;right:12px;z-index:20;background:#ff69b4;color:#1a0a12;border:none;border-radius:8px;padding:8px 12px;font-size:.7rem;font-weight:600;cursor:pointer}
+#qrBtn:hover{background:#ff1493}
+.gc{background:#2a0a1a;border-radius:10px;padding:16px;border:1px solid #ff69b433;min-height:360px;display:flex;flex-direction:column;justify-content:center;align-items:center}
 .gc h2{font-size:.8rem;color:#ff69b4;text-transform:uppercase;letter-spacing:1px;margin-bottom:4px}
 .gc .st{font-size:1.5rem;color:#ff69b4;font-weight:700}
 .gc .nc{font-size:.9rem;color:#b06080}
 .gc .btns{font-size:.7rem;color:#f0d0d8;margin-top:4px;text-align:center}
 .gc .ax{font-size:.65rem;color:#b06080;margin-top:2px}
-.g2b{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.qrs{background:#2a0a1a;border-radius:10px;padding:12px;border:1px solid #ff69b433;text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center}
-.qrs img{width:120px;height:120px;background:#fff;border-radius:8px;display:block;margin-bottom:4px}
-.qrs .l{font-size:.6rem;color:#b06080}
-.det{background:#2a0a1a;border-radius:10px;padding:10px;border:1px solid #ff69b433}
-.det h2{font-size:.7rem;color:#ff69b4;text-transform:uppercase;letter-spacing:1px;margin-bottom:4px}
-.dg{display:grid;grid-template-columns:repeat(3,28px);gap:2px;justify-content:center;margin-bottom:4px}
-.dc{width:28px;height:28px;border-radius:4px;background:#1a0a12;display:flex;align-items:center;justify-content:center;font-size:.5rem;color:#555}
-.dc.on{background:#ff69b4;color:#111}
-.cv{display:block;margin:0 auto;background:#1a0a12;border-radius:50%;width:70px;height:70px}
-.tb{height:6px;background:#1a0a12;border-radius:3px;overflow:hidden;margin-top:2px}
-.tf{height:100%;background:linear-gradient(90deg,#ff69b4,#ff1493);border-radius:3px}
-.tl{display:flex;justify-content:space-between;font-size:.5rem;color:#b06080;margin-top:1px}
-.bg{display:flex;flex-wrap:wrap;gap:2px;justify-content:center}
-.bb{padding:2px 6px;border-radius:3px;font-size:.5rem;font-weight:600;background:#1a0a12;color:#555}
-.bb.on{background:#ff69b4;color:#111}
+
 .sg{display:grid;grid-template-columns:1fr 1fr;gap:2px}
 .sl{font-size:.5rem;color:#b06080}
 .sv{font-size:.6rem;font-weight:600;color:#f0d0d8}
@@ -429,51 +422,19 @@ h1{font-size:1.2rem;color:#ff69b4;text-align:center;margin-bottom:8px;text-shado
 </head>
 <body>
 <h1>🌸 Gamepad Bridge</h1>
-<div class="g2" id="gpGrid"></div>
-<div class="g2b">
-  <div class="qrs"><img src="{qr_data_uri}" alt="QR"><div class="l" id="ql">{qr_text}</div></div>
-  <div class="det">
-    <h2 id="selGp">GP1</h2>
-    <canvas class="cv" id="lc" width="70" height="70"></canvas>
-    <div class="sg"><div><div class="sl">LA</div><div class="sv" id="la">0</div></div><div><div class="sl">LM</div><div class="sv" id="lm">0</div></div></div>
-    <canvas class="cv" id="rc" width="70" height="70"></canvas>
-    <div class="sg"><div><div class="sl">RA</div><div class="sv" id="ra">0</div></div><div><div class="sl">RM</div><div class="sv" id="rm">0</div></div></div>
-    <div style="display:flex;gap:4px;margin-top:4px">
-      <div style="flex:1"><div class="tl"><span>LT</span><span id="ltv">0</span></div><div class="tb"><div class="tf" id="ltf" style="width:0%"></div></div></div>
-      <div style="flex:1"><div class="tl"><span>RT</span><span id="rtv">0</span></div><div class="tb"><div class="tf" id="rtf" style="width:0%"></div></div></div>
-    </div>
-    <div class="dg">
-      <div></div><div class="dc" data-d="up">UP</div><div></div>
-      <div class="dc" data-d="left">L</div><div class="dc" data-d="neutral">·</div><div class="dc" data-d="right">R</div>
-      <div></div><div class="dc" data-d="down">DN</div><div></div>
-    </div>
-    <div class="bg" id="bc"></div>
-    <div style="display:flex;gap:4px;margin-top:4px">
-      <button class="bb on" onclick="ss(0)" style="flex:1;cursor:pointer">GP1</button>
-      <button class="bb" onclick="ss(1)" style="flex:1;cursor:pointer">GP2</button>
-      <button class="bb" onclick="ss(2)" style="flex:1;cursor:pointer">GP3</button>
-      <button class="bb" onclick="ss(3)" style="flex:1;cursor:pointer">GP4</button>
-    </div>
-    <div class="sg" style="margin-top:4px"><div><div class="sl">Latency</div><div class="sv" id="lat">--</div></div><div><div class="sl">Active</div><div class="sv" id="ac">0/4</div></div></div>
+<div class="gw">
+  <div class="g2" id="gpGrid"></div>
+  <div id="qrOver">
+    <button id="qrTog">✕</button>
+    <img src="{qr_data_uri}" alt="QR">
+    <div class="l" id="ql">{qr_text}</div>
+    <div class="sg" style="margin-top:4px"><div><div class="sl">Lat</div><div class="sv" id="lat">--</div></div><div><div class="sl">Act</div><div class="sv" id="ac">0/4</div></div></div>
   </div>
 </div>
+<button id="qrBtn">📱 QR</button>
 <script>
-const B=['A','B','X','Y','LB','RB','SELECT','START','XBOX','L3','R3'];
-const bc=document.getElementById('bc');
-B.forEach(n=>{const e=document.createElement('div');e.className='bb';e.textContent=n;e.id='b'+n;bc.appendChild(e)});
 const gpGrid=document.getElementById('gpGrid');
 for(let i=0;i<4;i++){const c=document.createElement('div');c.className='gc';c.id='gc'+i;c.innerHTML='<h2>GP'+(i+1)+'</h2><div class="nc" id="nc'+i+'">not connected</div><div style="display:none" id="gp'+i+'"><div class="st">● connected</div><div class="btns" id="bt'+i+'"></div><div class="ax" id="ax'+i+'"></div><div style="display:flex;gap:4px;margin-top:4px;width:100%"><div style="flex:1;background:#1a0a12;border-radius:4px;padding:2px;text-align:center"><div style="font-size:.45rem;color:#b06080">L</div><div style="font-size:.55rem;color:#f0d0d8" id="l'+i+'">0,0</div></div><div style="flex:1;background:#1a0a12;border-radius:4px;padding:2px;text-align:center"><div style="font-size:.45rem;color:#b06080">R</div><div style="font-size:.55rem;color:#f0d0d8" id="r'+i+'">0,0</div></div></div><div style="display:flex;gap:4px;margin-top:2px;width:100%"><div style="flex:1;font-size:.5rem;color:#ff69b4" id="tg'+i+'">LT:0 RT:0</div><div style="font-size:.5rem;color:#ff69b4" id="dp'+i+'">·</div></div></div></div>';gpGrid.appendChild(c)}
-function ds(c,x,y,m,a){
-  const cx=c.getContext('2d'),ox=35,oy=35,r=26;
-  cx.clearRect(0,0,70,70);
-  cx.beginPath();cx.arc(ox,oy,r,0,Math.PI*2);cx.strokeStyle='#1a0a12';cx.lineWidth=2;cx.stroke();
-  cx.beginPath();cx.moveTo(ox-18,oy);cx.lineTo(ox+18,oy);cx.moveTo(ox,oy-18);cx.lineTo(ox,oy+18);cx.strokeStyle='#2a0a1a';cx.lineWidth=1;cx.stroke();
-  if(m>0.01){const rad=a*Math.PI/180,dx=Math.cos(rad)*m*r,dy=-Math.sin(rad)*m*r;
-    cx.beginPath();cx.arc(ox+dx,oy+dy,4,0,Math.PI*2);cx.fillStyle='#ff69b4';cx.fill();
-    cx.beginPath();cx.moveTo(ox,oy);cx.lineTo(ox+dx,oy+dy);cx.strokeStyle='#ff69b4';cx.lineWidth=1.5;cx.stroke()}
-  cx.beginPath();cx.arc(ox,oy,3,0,Math.PI*2);cx.fillStyle='#ff1493';cx.fill()}
-let cs=0;
-function ss(s){cs=s;document.getElementById('selGp').textContent='GP'+(s+1);document.querySelectorAll('.det .bb').forEach((b,i)=>b.classList.toggle('on',i==s))}
 function active(g){return g.buttons?.length||g.left_mag>0.01||g.right_mag>0.01}
 function ui(d){
   const g=d.gamepads||[d];
@@ -491,15 +452,6 @@ function ui(d){
       document.getElementById('dp'+i).textContent=s.dpad||'·';
     }
   }
-  const s=g[cs]||g[0]||{};
-  ['left','right'].forEach((sd,i)=>{
-    const p=i?'r':'l';
-    ds(document.getElementById(p+'c'),s[p+'x']||0,s[p+'y']||0,s[sd+'_mag']||0,s[sd+'_angle']||0);
-    document.getElementById(p+'a').textContent=(s[sd+'_angle']||0).toFixed(1);
-    document.getElementById(p+'m').textContent=(s[sd+'_mag']||0).toFixed(3)});
-  ['lt','rt'].forEach(t=>{document.getElementById(t+'v').textContent=s[t]||0;document.getElementById(t+'f').style.width=Math.min(100,(s[t]||0)/2.55)+'%'});
-  document.querySelectorAll('.dc').forEach(e=>e.classList.toggle('on',e.dataset.d===s.dpad));
-  B.forEach(n=>document.getElementById('b'+n).classList.toggle('on',s.buttons?.includes(n)));
   document.getElementById('ac').textContent=g.filter(x=>active(x)).length+'/4'}
 function poll(){
   var x=new XMLHttpRequest();
@@ -508,6 +460,9 @@ function poll(){
   x.send();
 }
 setInterval(poll,50);
+const qo=document.getElementById('qrOver'),qb=document.getElementById('qrBtn'),qt=document.getElementById('qrTog');
+qt.onclick=function(){qo.style.display='none';qb.style.display='block'};
+qb.onclick=function(){qo.style.display='block';qb.style.display='none'};
 </script>
 </body>
 </html>'''
