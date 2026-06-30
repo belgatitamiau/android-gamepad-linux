@@ -1,0 +1,6 @@
+[
+    {
+        "merged": "com.gamepadbridge.app-mergeDebugResources-21:/layout/activity_main.xml",
+        "source": "com.gamepadbridge.app-main-24:/layout/activity_main.xml"
+    }
+]

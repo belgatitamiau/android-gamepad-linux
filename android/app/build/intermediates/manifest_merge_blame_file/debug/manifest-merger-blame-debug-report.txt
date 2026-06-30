@@ -1,0 +1,180 @@
+1<?xml version="1.0" encoding="utf-8"?>
+2<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+3    package="com.gamepadbridge"
+4    android:versionCode="1"
+5    android:versionName="1.0" >
+6
+7    <uses-sdk
+7-->/home/beluchi/android-gamepad-linux/android/app/src/main/AndroidManifest.xml:4:5-74
+8        android:minSdkVersion="24"
+8-->/home/beluchi/android-gamepad-linux/android/app/src/main/AndroidManifest.xml:4:15-41
+9        android:targetSdkVersion="34" />
+9-->/home/beluchi/android-gamepad-linux/android/app/src/main/AndroidManifest.xml:4:42-71
+10
+11    <uses-permission android:name="android.permission.INTERNET" />
+11-->/home/beluchi/android-gamepad-linux/android/app/src/main/AndroidManifest.xml:6:5-67
+11-->/home/beluchi/android-gamepad-linux/android/app/src/main/AndroidManifest.xml:6:22-64
+12    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+12-->/home/beluchi/android-gamepad-linux/android/app/src/main/AndroidManifest.xml:7:5-76
+12-->/home/beluchi/android-gamepad-linux/android/app/src/main/AndroidManifest.xml:7:22-73
+13    <uses-permission android:name="android.permission.CAMERA" />
+13-->/home/beluchi/android-gamepad-linux/android/app/src/main/AndroidManifest.xml:8:5-65
+13-->/home/beluchi/android-gamepad-linux/android/app/src/main/AndroidManifest.xml:8:22-62
+14    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+14-->/home/beluchi/android-gamepad-linux/android/app/src/main/AndroidManifest.xml:9:5-77
+14-->/home/beluchi/android-gamepad-linux/android/app/src/main/AndroidManifest.xml:9:22-74
+15    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_DATA_SYNC" />
+15-->/home/beluchi/android-gamepad-linux/android/app/src/main/AndroidManifest.xml:10:5-87
+15-->/home/beluchi/android-gamepad-linux/android/app/src/main/AndroidManifest.xml:10:22-84
+16    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+16-->/home/beluchi/android-gamepad-linux/android/app/src/main/AndroidManifest.xml:11:5-77
+16-->/home/beluchi/android-gamepad-linux/android/app/src/main/AndroidManifest.xml:11:22-74
+17
+18    <uses-feature
+18-->/home/beluchi/android-gamepad-linux/android/app/src/main/AndroidManifest.xml:13:5-86
+19        android:name="android.hardware.gamepad"
+19-->/home/beluchi/android-gamepad-linux/android/app/src/main/AndroidManifest.xml:13:19-58
+20        android:required="false" />
+20-->/home/beluchi/android-gamepad-linux/android/app/src/main/AndroidManifest.xml:13:59-83
+21    <uses-feature
+21-->/home/beluchi/android-gamepad-linux/android/app/src/main/AndroidManifest.xml:14:5-85
+22        android:name="android.hardware.camera"
+22-->/home/beluchi/android-gamepad-linux/android/app/src/main/AndroidManifest.xml:14:19-57
+23        android:required="false" />
+23-->/home/beluchi/android-gamepad-linux/android/app/src/main/AndroidManifest.xml:14:58-82
+24    <uses-feature
+24-->/home/beluchi/android-gamepad-linux/android/app/src/main/AndroidManifest.xml:15:5-91
+25        android:name="android.hardware.camera.front"
+25-->/home/beluchi/android-gamepad-linux/android/app/src/main/AndroidManifest.xml:15:19-63
+26        android:required="false" />
+26-->/home/beluchi/android-gamepad-linux/android/app/src/main/AndroidManifest.xml:15:64-88
+27    <uses-feature
+27-->/home/beluchi/android-gamepad-linux/android/app/src/main/AndroidManifest.xml:16:5-95
+28        android:name="android.hardware.camera.autofocus"
+28-->/home/beluchi/android-gamepad-linux/android/app/src/main/AndroidManifest.xml:16:19-67
+29        android:required="false" />
+29-->/home/beluchi/android-gamepad-linux/android/app/src/main/AndroidManifest.xml:16:68-92
+30    <uses-feature
+30-->/home/beluchi/android-gamepad-linux/android/app/src/main/AndroidManifest.xml:17:5-91
+31        android:name="android.hardware.camera.flash"
+31-->/home/beluchi/android-gamepad-linux/android/app/src/main/AndroidManifest.xml:17:19-63
+32        android:required="false" />
+32-->/home/beluchi/android-gamepad-linux/android/app/src/main/AndroidManifest.xml:17:64-88
+33    <uses-feature
+33-->/home/beluchi/android-gamepad-linux/android/app/src/main/AndroidManifest.xml:18:5-95
+34        android:name="android.hardware.screen.landscape"
+34-->/home/beluchi/android-gamepad-linux/android/app/src/main/AndroidManifest.xml:18:19-67
+35        android:required="false" />
+35-->/home/beluchi/android-gamepad-linux/android/app/src/main/AndroidManifest.xml:18:68-92
+36
+37    <permission
+37-->[androidx.core:core:1.12.0] /home/beluchi/.gradle/caches/8.11.1/transforms/1e06eb28ee95b4fa76d200f136c18310/transformed/core-1.12.0/AndroidManifest.xml:22:5-24:47
+38        android:name="com.gamepadbridge.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION"
+38-->[androidx.core:core:1.12.0] /home/beluchi/.gradle/caches/8.11.1/transforms/1e06eb28ee95b4fa76d200f136c18310/transformed/core-1.12.0/AndroidManifest.xml:23:9-81
+39        android:protectionLevel="signature" />
+39-->[androidx.core:core:1.12.0] /home/beluchi/.gradle/caches/8.11.1/transforms/1e06eb28ee95b4fa76d200f136c18310/transformed/core-1.12.0/AndroidManifest.xml:24:9-44
+40
+41    <uses-permission android:name="com.gamepadbridge.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION" />
+41-->[androidx.core:core:1.12.0] /home/beluchi/.gradle/caches/8.11.1/transforms/1e06eb28ee95b4fa76d200f136c18310/transformed/core-1.12.0/AndroidManifest.xml:26:5-97
+41-->[androidx.core:core:1.12.0] /home/beluchi/.gradle/caches/8.11.1/transforms/1e06eb28ee95b4fa76d200f136c18310/transformed/core-1.12.0/AndroidManifest.xml:26:22-94
+42
+43    <uses-feature
+43-->[com.journeyapps:zxing-android-embedded:4.3.0] /home/beluchi/.gradle/caches/8.11.1/transforms/a54ea0c52646528b3b634b5e7aa85b6f/transformed/zxing-android-embedded-4.3.0/AndroidManifest.xml:42:5-44:36
+44        android:name="android.hardware.wifi"
+44-->[com.journeyapps:zxing-android-embedded:4.3.0] /home/beluchi/.gradle/caches/8.11.1/transforms/a54ea0c52646528b3b634b5e7aa85b6f/transformed/zxing-android-embedded-4.3.0/AndroidManifest.xml:43:9-45
+45        android:required="false" />
+45-->[com.journeyapps:zxing-android-embedded:4.3.0] /home/beluchi/.gradle/caches/8.11.1/transforms/a54ea0c52646528b3b634b5e7aa85b6f/transformed/zxing-android-embedded-4.3.0/AndroidManifest.xml:44:9-33
+46
+47    <application
+47-->/home/beluchi/android-gamepad-linux/android/app/src/main/AndroidManifest.xml:20:5-48:19
+48        android:allowBackup="true"
+48-->/home/beluchi/android-gamepad-linux/android/app/src/main/AndroidManifest.xml:21:9-35
+49        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
+49-->[androidx.core:core:1.12.0] /home/beluchi/.gradle/caches/8.11.1/transforms/1e06eb28ee95b4fa76d200f136c18310/transformed/core-1.12.0/AndroidManifest.xml:28:18-86
+50        android:debuggable="true"
+50-->/home/beluchi/android-gamepad-linux/android/app/src/main/AndroidManifest.xml:26:9-34
+51        android:extractNativeLibs="false"
+52        android:label="GamepadBridge"
+52-->/home/beluchi/android-gamepad-linux/android/app/src/main/AndroidManifest.xml:22:9-38
+53        android:networkSecurityConfig="@xml/network_security_config"
+53-->/home/beluchi/android-gamepad-linux/android/app/src/main/AndroidManifest.xml:25:9-69
+54        android:supportsRtl="true"
+54-->/home/beluchi/android-gamepad-linux/android/app/src/main/AndroidManifest.xml:23:9-35
+55        android:theme="@style/Theme.GamepadBridge" >
+55-->/home/beluchi/android-gamepad-linux/android/app/src/main/AndroidManifest.xml:24:9-51
+56        <activity
+56-->/home/beluchi/android-gamepad-linux/android/app/src/main/AndroidManifest.xml:28:9-37:20
+57            android:name="com.gamepadbridge.MainActivity"
+57-->/home/beluchi/android-gamepad-linux/android/app/src/main/AndroidManifest.xml:29:13-58
+58            android:configChanges="screenSize|orientation"
+58-->/home/beluchi/android-gamepad-linux/android/app/src/main/AndroidManifest.xml:32:13-59
+59            android:exported="true"
+59-->/home/beluchi/android-gamepad-linux/android/app/src/main/AndroidManifest.xml:30:13-36
+60            android:screenOrientation="reverseLandscape" >
+60-->/home/beluchi/android-gamepad-linux/android/app/src/main/AndroidManifest.xml:31:13-57
+61            <intent-filter>
+61-->/home/beluchi/android-gamepad-linux/android/app/src/main/AndroidManifest.xml:33:13-36:29
+62                <action android:name="android.intent.action.MAIN" />
+62-->/home/beluchi/android-gamepad-linux/android/app/src/main/AndroidManifest.xml:34:17-69
+62-->/home/beluchi/android-gamepad-linux/android/app/src/main/AndroidManifest.xml:34:25-66
+63
+64                <category android:name="android.intent.category.LAUNCHER" />
+64-->/home/beluchi/android-gamepad-linux/android/app/src/main/AndroidManifest.xml:35:17-77
+64-->/home/beluchi/android-gamepad-linux/android/app/src/main/AndroidManifest.xml:35:27-74
+65            </intent-filter>
+66        </activity>
+67        <activity
+67-->/home/beluchi/android-gamepad-linux/android/app/src/main/AndroidManifest.xml:39:9-41:40
+68            android:name="com.gamepadbridge.QRScannerActivity"
+68-->/home/beluchi/android-gamepad-linux/android/app/src/main/AndroidManifest.xml:40:13-63
+69            android:exported="false" />
+69-->/home/beluchi/android-gamepad-linux/android/app/src/main/AndroidManifest.xml:41:13-37
+70
+71        <service
+71-->/home/beluchi/android-gamepad-linux/android/app/src/main/AndroidManifest.xml:43:9-46:56
+72            android:name="com.gamepadbridge.GamepadBridgeService"
+72-->/home/beluchi/android-gamepad-linux/android/app/src/main/AndroidManifest.xml:44:13-66
+73            android:exported="false"
+73-->/home/beluchi/android-gamepad-linux/android/app/src/main/AndroidManifest.xml:45:13-37
+74            android:foregroundServiceType="dataSync" />
+74-->/home/beluchi/android-gamepad-linux/android/app/src/main/AndroidManifest.xml:46:13-53
+75
+76        <provider
+76-->[androidx.emoji2:emoji2:1.2.0] /home/beluchi/.gradle/caches/8.11.1/transforms/99cd32f030fda86dae048fe3ce9e0230/transformed/emoji2-1.2.0/AndroidManifest.xml:24:9-32:20
+77            android:name="androidx.startup.InitializationProvider"
+77-->[androidx.emoji2:emoji2:1.2.0] /home/beluchi/.gradle/caches/8.11.1/transforms/99cd32f030fda86dae048fe3ce9e0230/transformed/emoji2-1.2.0/AndroidManifest.xml:25:13-67
+78            android:authorities="com.gamepadbridge.androidx-startup"
+78-->[androidx.emoji2:emoji2:1.2.0] /home/beluchi/.gradle/caches/8.11.1/transforms/99cd32f030fda86dae048fe3ce9e0230/transformed/emoji2-1.2.0/AndroidManifest.xml:26:13-68
+79            android:exported="false" >
+79-->[androidx.emoji2:emoji2:1.2.0] /home/beluchi/.gradle/caches/8.11.1/transforms/99cd32f030fda86dae048fe3ce9e0230/transformed/emoji2-1.2.0/AndroidManifest.xml:27:13-37
+80            <meta-data
+80-->[androidx.emoji2:emoji2:1.2.0] /home/beluchi/.gradle/caches/8.11.1/transforms/99cd32f030fda86dae048fe3ce9e0230/transformed/emoji2-1.2.0/AndroidManifest.xml:29:13-31:52
+81                android:name="androidx.emoji2.text.EmojiCompatInitializer"
+81-->[androidx.emoji2:emoji2:1.2.0] /home/beluchi/.gradle/caches/8.11.1/transforms/99cd32f030fda86dae048fe3ce9e0230/transformed/emoji2-1.2.0/AndroidManifest.xml:30:17-75
+82                android:value="androidx.startup" />
+82-->[androidx.emoji2:emoji2:1.2.0] /home/beluchi/.gradle/caches/8.11.1/transforms/99cd32f030fda86dae048fe3ce9e0230/transformed/emoji2-1.2.0/AndroidManifest.xml:31:17-49
+83            <meta-data
+83-->[androidx.lifecycle:lifecycle-process:2.4.1] /home/beluchi/.gradle/caches/8.11.1/transforms/f19849bc494d45dfde76dfa22811c349/transformed/lifecycle-process-2.4.1/AndroidManifest.xml:31:13-33:52
+84                android:name="androidx.lifecycle.ProcessLifecycleInitializer"
+84-->[androidx.lifecycle:lifecycle-process:2.4.1] /home/beluchi/.gradle/caches/8.11.1/transforms/f19849bc494d45dfde76dfa22811c349/transformed/lifecycle-process-2.4.1/AndroidManifest.xml:32:17-78
+85                android:value="androidx.startup" />
+85-->[androidx.lifecycle:lifecycle-process:2.4.1] /home/beluchi/.gradle/caches/8.11.1/transforms/f19849bc494d45dfde76dfa22811c349/transformed/lifecycle-process-2.4.1/AndroidManifest.xml:33:17-49
+86        </provider>
+87
+88        <activity
+88-->[com.journeyapps:zxing-android-embedded:4.3.0] /home/beluchi/.gradle/caches/8.11.1/transforms/a54ea0c52646528b3b634b5e7aa85b6f/transformed/zxing-android-embedded-4.3.0/AndroidManifest.xml:47:9-53:63
+89            android:name="com.journeyapps.barcodescanner.CaptureActivity"
+89-->[com.journeyapps:zxing-android-embedded:4.3.0] /home/beluchi/.gradle/caches/8.11.1/transforms/a54ea0c52646528b3b634b5e7aa85b6f/transformed/zxing-android-embedded-4.3.0/AndroidManifest.xml:48:13-74
+90            android:clearTaskOnLaunch="true"
+90-->[com.journeyapps:zxing-android-embedded:4.3.0] /home/beluchi/.gradle/caches/8.11.1/transforms/a54ea0c52646528b3b634b5e7aa85b6f/transformed/zxing-android-embedded-4.3.0/AndroidManifest.xml:49:13-45
+91            android:screenOrientation="sensorLandscape"
+91-->[com.journeyapps:zxing-android-embedded:4.3.0] /home/beluchi/.gradle/caches/8.11.1/transforms/a54ea0c52646528b3b634b5e7aa85b6f/transformed/zxing-android-embedded-4.3.0/AndroidManifest.xml:50:13-56
+92            android:stateNotNeeded="true"
+92-->[com.journeyapps:zxing-android-embedded:4.3.0] /home/beluchi/.gradle/caches/8.11.1/transforms/a54ea0c52646528b3b634b5e7aa85b6f/transformed/zxing-android-embedded-4.3.0/AndroidManifest.xml:51:13-42
+93            android:theme="@style/zxing_CaptureTheme"
+93-->[com.journeyapps:zxing-android-embedded:4.3.0] /home/beluchi/.gradle/caches/8.11.1/transforms/a54ea0c52646528b3b634b5e7aa85b6f/transformed/zxing-android-embedded-4.3.0/AndroidManifest.xml:52:13-54
+94            android:windowSoftInputMode="stateAlwaysHidden" />
+94-->[com.journeyapps:zxing-android-embedded:4.3.0] /home/beluchi/.gradle/caches/8.11.1/transforms/a54ea0c52646528b3b634b5e7aa85b6f/transformed/zxing-android-embedded-4.3.0/AndroidManifest.xml:53:13-60
+95    </application>
+96
+97</manifest>

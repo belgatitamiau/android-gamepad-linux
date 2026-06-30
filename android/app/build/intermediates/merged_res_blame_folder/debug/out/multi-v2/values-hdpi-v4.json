@@ -1,0 +1,20 @@
+{
+    "logs": [
+        {
+            "outputFile": "com.gamepadbridge.app-mergeDebugResources-20:/values-hdpi-v4/values-hdpi-v4.xml",
+            "map": [
+                {
+                    "source": "/home/beluchi/.gradle/caches/8.11.1/transforms/13e8e940bcf48cbfe392a7c8b464a129/transformed/appcompat-1.6.1/res/values-hdpi-v4/values-hdpi-v4.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endLines": "6",
+                        "endColumns": "13",
+                        "endOffsets": "327"
+                    }
+                }
+            ]
+        }
+    ]
+}

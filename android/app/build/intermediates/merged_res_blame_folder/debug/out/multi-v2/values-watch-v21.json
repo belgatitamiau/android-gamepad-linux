@@ -1,0 +1,20 @@
+{
+    "logs": [
+        {
+            "outputFile": "com.gamepadbridge.app-mergeDebugResources-20:/values-watch-v21/values-watch-v21.xml",
+            "map": [
+                {
+                    "source": "/home/beluchi/.gradle/caches/8.11.1/transforms/13e8e940bcf48cbfe392a7c8b464a129/transformed/appcompat-1.6.1/res/values-watch-v21/values-watch-v21.xml",
+                    "from": {
+                        "startLines": "2,6,10",
+                        "startColumns": "4,4,4",
+                        "startOffsets": "55,271,499",
+                        "endLines": "5,9,13",
+                        "endColumns": "12,12,12",
+                        "endOffsets": "266,494,724"
+                    }
+                }
+            ]
+        }
+    ]
+}

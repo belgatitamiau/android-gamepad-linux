@@ -1,0 +1,10 @@
+[
+    {
+        "merged": "com.gamepadbridge.app-merged_res-22:/xml_network_security_config.xml.flat",
+        "source": "com.gamepadbridge.app-main-24:/xml/network_security_config.xml"
+    },
+    {
+        "merged": "com.gamepadbridge.app-merged_res-22:/layout_activity_main.xml.flat",
+        "source": "com.gamepadbridge.app-main-24:/layout/activity_main.xml"
+    }
+]
