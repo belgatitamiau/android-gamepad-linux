@@ -396,103 +396,111 @@ DASHBOARD_HTML = r'''<!DOCTYPE html>
 <title>Gamepad Bridge</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-body{background:#1a1a2e;color:#eee;font-family:'Segoe UI',sans-serif;padding:6px}
-h1{font-size:1rem;color:#00d2ff;text-align:center;margin-bottom:4px}
-.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;max-width:900px;margin:0 auto}
-.card{background:#16213e;border-radius:6px;padding:6px;min-width:0}
-.card h2{font-size:.55rem;color:#888;text-transform:uppercase;letter-spacing:1px;margin-bottom:3px}
-.cv{display:block;margin:0 auto;background:#0f3460;border-radius:50%;width:80px;height:80px}
-.tb{height:8px;background:#0f3460;border-radius:4px;overflow:hidden;margin-top:2px}
-.tf{height:100%;background:linear-gradient(90deg,#00d2ff,#3a7bd5);border-radius:4px}
-.tl{display:flex;justify-content:space-between;font-size:.5rem;color:#888;margin-top:1px}
+body{background:#1a0a12;color:#f0d0d8;font-family:'Segoe UI',sans-serif;padding:10px;min-height:100vh}
+h1{font-size:1.2rem;color:#ff69b4;text-align:center;margin-bottom:8px;text-shadow:0 0 8px #ff69b466}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px}
+.gc{background:#2a0a1a;border-radius:10px;padding:12px;border:1px solid #ff69b433;min-height:120px;display:flex;flex-direction:column;justify-content:center;align-items:center}
+.gc h2{font-size:.8rem;color:#ff69b4;text-transform:uppercase;letter-spacing:1px;margin-bottom:4px}
+.gc .st{font-size:1.5rem;color:#ff69b4;font-weight:700}
+.gc .nc{font-size:.9rem;color:#b06080}
+.gc .btns{font-size:.7rem;color:#f0d0d8;margin-top:4px;text-align:center}
+.gc .ax{font-size:.65rem;color:#b06080;margin-top:2px}
+.g2b{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.qrs{background:#2a0a1a;border-radius:10px;padding:12px;border:1px solid #ff69b433;text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.qrs img{width:120px;height:120px;background:#fff;border-radius:8px;display:block;margin-bottom:4px}
+.qrs .l{font-size:.6rem;color:#b06080}
+.det{background:#2a0a1a;border-radius:10px;padding:10px;border:1px solid #ff69b433}
+.det h2{font-size:.7rem;color:#ff69b4;text-transform:uppercase;letter-spacing:1px;margin-bottom:4px}
+.dg{display:grid;grid-template-columns:repeat(3,28px);gap:2px;justify-content:center;margin-bottom:4px}
+.dc{width:28px;height:28px;border-radius:4px;background:#1a0a12;display:flex;align-items:center;justify-content:center;font-size:.5rem;color:#555}
+.dc.on{background:#ff69b4;color:#111}
+.cv{display:block;margin:0 auto;background:#1a0a12;border-radius:50%;width:70px;height:70px}
+.tb{height:6px;background:#1a0a12;border-radius:3px;overflow:hidden;margin-top:2px}
+.tf{height:100%;background:linear-gradient(90deg,#ff69b4,#ff1493);border-radius:3px}
+.tl{display:flex;justify-content:space-between;font-size:.5rem;color:#b06080;margin-top:1px}
 .bg{display:flex;flex-wrap:wrap;gap:2px;justify-content:center}
-.bb{padding:1px 5px;border-radius:3px;font-size:.5rem;font-weight:600;background:#0f3460;color:#555}
-.bb.on{background:#00d2ff;color:#111}
-.dg{display:grid;grid-template-columns:repeat(3,22px);gap:1px;justify-content:center}
-.dc{width:22px;height:22px;border-radius:3px;background:#0f3460;display:flex;align-items:center;justify-content:center;font-size:.45rem;color:#444}
-.dc.on{background:#00d2ff;color:#111}
+.bb{padding:2px 6px;border-radius:3px;font-size:.5rem;font-weight:600;background:#1a0a12;color:#555}
+.bb.on{background:#ff69b4;color:#111}
 .sg{display:grid;grid-template-columns:1fr 1fr;gap:2px}
-.sl{font-size:.5rem;color:#888}
-.sv{font-size:.65rem;font-weight:600}
-#lat{color:#00d2ff;font-family:monospace;font-size:.7rem}
-.ab{height:2px;background:#0f3460;border-radius:1px;margin-top:2px;overflow:hidden}
-.af{height:100%;background:#e94560;border-radius:1px}
-.sb{padding:1px 4px;border-radius:3px;border:none;background:#0f3460;color:#666;font-size:.5rem;font-weight:600;cursor:pointer;flex:1}
-.sb.on{background:#00d2ff;color:#111}
-.qr{text-align:center}
-.qr img{width:70px;height:70px;background:#fff;border-radius:4px;display:inline-block}
-.qr .l{font-size:.5rem;color:#888;margin-top:1px}
-@media(max-width:600px){.grid{grid-template-columns:1fr 1fr}}
+.sl{font-size:.5rem;color:#b06080}
+.sv{font-size:.6rem;font-weight:600;color:#f0d0d8}
+#lat{color:#ff69b4;font-family:monospace;font-size:.7rem}
 </style>
 </head>
 <body>
-<h1>Gamepad Bridge</h1>
-<div class="grid">
-  <div class="card"><h2>Left Stick</h2>
-    <canvas class="cv" id="lc" width="80" height="80"></canvas>
-    <div class="sg"><div><div class="sl">Angle</div><div class="sv" id="la">0</div></div><div><div class="sl">Mag</div><div class="sv" id="lm">0</div></div></div>
-    <div class="ab"><div class="af" id="laf" style="width:0%"></div></div>
-  </div>
-  <div class="card"><h2>Right Stick</h2>
-    <canvas class="cv" id="rc" width="80" height="80"></canvas>
-    <div class="sg"><div><div class="sl">Angle</div><div class="sv" id="ra">0</div></div><div><div class="sl">Mag</div><div class="sv" id="rm">0</div></div></div>
-    <div class="ab"><div class="af" id="raf" style="width:0%"></div></div>
-  </div>
-  <div class="card"><h2>Triggers</h2>
-    <div style="margin-bottom:2px"><div class="tl"><span>LT</span><span id="ltv">0</span></div><div class="tb"><div class="tf" id="ltf" style="width:0%"></div></div></div>
-    <div><div class="tl"><span>RT</span><span id="rtv">0</span></div><div class="tb"><div class="tf" id="rtf" style="width:0%"></div></div></div>
-  </div>
-  <div class="card"><h2>D-Pad</h2>
+<h1>🌸 Gamepad Bridge</h1>
+<div class="g2" id="gpGrid"></div>
+<div class="g2b">
+  <div class="qrs"><img src="{qr_data_uri}" alt="QR"><div class="l" id="ql">{qr_text}</div></div>
+  <div class="det">
+    <h2 id="selGp">GP1</h2>
+    <canvas class="cv" id="lc" width="70" height="70"></canvas>
+    <div class="sg"><div><div class="sl">LA</div><div class="sv" id="la">0</div></div><div><div class="sl">LM</div><div class="sv" id="lm">0</div></div></div>
+    <canvas class="cv" id="rc" width="70" height="70"></canvas>
+    <div class="sg"><div><div class="sl">RA</div><div class="sv" id="ra">0</div></div><div><div class="sl">RM</div><div class="sv" id="rm">0</div></div></div>
+    <div style="display:flex;gap:4px;margin-top:4px">
+      <div style="flex:1"><div class="tl"><span>LT</span><span id="ltv">0</span></div><div class="tb"><div class="tf" id="ltf" style="width:0%"></div></div></div>
+      <div style="flex:1"><div class="tl"><span>RT</span><span id="rtv">0</span></div><div class="tb"><div class="tf" id="rtf" style="width:0%"></div></div></div>
+    </div>
     <div class="dg">
       <div></div><div class="dc" data-d="up">UP</div><div></div>
       <div class="dc" data-d="left">L</div><div class="dc" data-d="neutral">·</div><div class="dc" data-d="right">R</div>
       <div></div><div class="dc" data-d="down">DN</div><div></div>
     </div>
-  </div>
-  <div class="card"><h2>Buttons</h2>
     <div class="bg" id="bc"></div>
-  </div>
-  <div class="card" style="grid-column:span 2"><div style="display:flex;align-items:center;gap:6px">
-    <div class="qr"><img src="{qr_data_uri}" alt="QR"><div class="l" id="ql">{qr_text}</div></div>
-    <div style="flex:1">
-      <div style="display:flex;gap:2px;margin-bottom:2px">
-        <button class="sb on" onclick="ss(0)">GP1</button>
-        <button class="sb" onclick="ss(1)">GP2</button>
-        <button class="sb" onclick="ss(2)">GP3</button>
-        <button class="sb" onclick="ss(3)">GP4</button>
-      </div>
-      <div class="sg"><div><div class="sl">Latency</div><div class="sv" id="lat">--</div></div><div><div class="sl">Active</div><div class="sv" id="ac">0/4</div></div></div>
+    <div style="display:flex;gap:4px;margin-top:4px">
+      <button class="bb on" onclick="ss(0)" style="flex:1;cursor:pointer">GP1</button>
+      <button class="bb" onclick="ss(1)" style="flex:1;cursor:pointer">GP2</button>
+      <button class="bb" onclick="ss(2)" style="flex:1;cursor:pointer">GP3</button>
+      <button class="bb" onclick="ss(3)" style="flex:1;cursor:pointer">GP4</button>
     </div>
-  </div></div>
+    <div class="sg" style="margin-top:4px"><div><div class="sl">Latency</div><div class="sv" id="lat">--</div></div><div><div class="sl">Active</div><div class="sv" id="ac">0/4</div></div></div>
+  </div>
 </div>
 <script>
 const B=['A','B','X','Y','LB','RB','SELECT','START','XBOX','L3','R3'];
 const bc=document.getElementById('bc');
 B.forEach(n=>{const e=document.createElement('div');e.className='bb';e.textContent=n;e.id='b'+n;bc.appendChild(e)});
+const gpGrid=document.getElementById('gpGrid');
+for(let i=0;i<4;i++){const c=document.createElement('div');c.className='gc';c.id='gc'+i;c.innerHTML='<h2>GP'+(i+1)+'</h2><div class="nc" id="nc'+i+'">not connected</div><div style="display:none" id="gp'+i+'"><div class="st">● connected</div><div class="btns" id="bt'+i+'"></div><div class="ax" id="ax'+i+'"></div><div style="display:flex;gap:4px;margin-top:4px;width:100%"><div style="flex:1;background:#1a0a12;border-radius:4px;padding:2px;text-align:center"><div style="font-size:.45rem;color:#b06080">L</div><div style="font-size:.55rem;color:#f0d0d8" id="l'+i+'">0,0</div></div><div style="flex:1;background:#1a0a12;border-radius:4px;padding:2px;text-align:center"><div style="font-size:.45rem;color:#b06080">R</div><div style="font-size:.55rem;color:#f0d0d8" id="r'+i+'">0,0</div></div></div><div style="display:flex;gap:4px;margin-top:2px;width:100%"><div style="flex:1;font-size:.5rem;color:#ff69b4" id="tg'+i+'">LT:0 RT:0</div><div style="font-size:.5rem;color:#ff69b4" id="dp'+i+'">·</div></div></div></div>';gpGrid.appendChild(c)}
 function ds(c,x,y,m,a){
-  const cx=c.getContext('2d'),ox=40,oy=40,r=30;
-  cx.clearRect(0,0,80,80);
-  cx.beginPath();cx.arc(ox,oy,r,0,Math.PI*2);cx.strokeStyle='#1a1a2e';cx.lineWidth=2;cx.stroke();
-  cx.beginPath();cx.moveTo(ox-20,oy);cx.lineTo(ox+20,oy);cx.moveTo(ox,oy-20);cx.lineTo(ox,oy+20);cx.strokeStyle='#0f3460';cx.lineWidth=1;cx.stroke();
+  const cx=c.getContext('2d'),ox=35,oy=35,r=26;
+  cx.clearRect(0,0,70,70);
+  cx.beginPath();cx.arc(ox,oy,r,0,Math.PI*2);cx.strokeStyle='#1a0a12';cx.lineWidth=2;cx.stroke();
+  cx.beginPath();cx.moveTo(ox-18,oy);cx.lineTo(ox+18,oy);cx.moveTo(ox,oy-18);cx.lineTo(ox,oy+18);cx.strokeStyle='#2a0a1a';cx.lineWidth=1;cx.stroke();
   if(m>0.01){const rad=a*Math.PI/180,dx=Math.cos(rad)*m*r,dy=-Math.sin(rad)*m*r;
-    cx.beginPath();cx.arc(ox+dx,oy+dy,4,0,Math.PI*2);cx.fillStyle='#00d2ff';cx.fill();
-    cx.beginPath();cx.moveTo(ox,oy);cx.lineTo(ox+dx,oy+dy);cx.strokeStyle='#00d2ff';cx.lineWidth=1.5;cx.stroke()}
-  cx.beginPath();cx.arc(ox,oy,3,0,Math.PI*2);cx.fillStyle='#e94560';cx.fill()}
+    cx.beginPath();cx.arc(ox+dx,oy+dy,4,0,Math.PI*2);cx.fillStyle='#ff69b4';cx.fill();
+    cx.beginPath();cx.moveTo(ox,oy);cx.lineTo(ox+dx,oy+dy);cx.strokeStyle='#ff69b4';cx.lineWidth=1.5;cx.stroke()}
+  cx.beginPath();cx.arc(ox,oy,3,0,Math.PI*2);cx.fillStyle='#ff1493';cx.fill()}
 let cs=0;
-function ss(s){cs=s;document.querySelectorAll('.sb').forEach((b,i)=>b.classList.toggle('on',i==s))}
+function ss(s){cs=s;document.getElementById('selGp').textContent='GP'+(s+1);document.querySelectorAll('.det .bb').forEach((b,i)=>b.classList.toggle('on',i==s))}
+function active(g){return g.buttons?.length||g.left_mag>0.01||g.right_mag>0.01}
 function ui(d){
-  const g=d.gamepads||[d],s=g[cs]||g[0];
+  const g=d.gamepads||[d];
+  for(let i=0;i<4;i++){
+    const s=g[i]||{};
+    const act=active(s);
+    document.getElementById('nc'+i).style.display=act?'none':'block';
+    document.getElementById('gp'+i).style.display=act?'block':'none';
+    if(act){
+      const btns=s.buttons?.length?s.buttons.slice(0,6).join(' ')+(s.buttons.length>6?'...':''):'—';
+      document.getElementById('bt'+i).textContent=btns;
+      document.getElementById('l'+i).textContent=(s.lx||0)+','+(s.ly||0);
+      document.getElementById('r'+i).textContent=(s.rx||0)+','+(s.ry||0);
+      document.getElementById('tg'+i).textContent='LT:'+(s.lt||0)+' RT:'+(s.rt||0);
+      document.getElementById('dp'+i).textContent=s.dpad||'·';
+    }
+  }
+  const s=g[cs]||g[0]||{};
   ['left','right'].forEach((sd,i)=>{
     const p=i?'r':'l';
     ds(document.getElementById(p+'c'),s[p+'x']||0,s[p+'y']||0,s[sd+'_mag']||0,s[sd+'_angle']||0);
     document.getElementById(p+'a').textContent=(s[sd+'_angle']||0).toFixed(1);
-    document.getElementById(p+'m').textContent=(s[sd+'_mag']||0).toFixed(3);
-    document.getElementById(p+'af').style.width=Math.min(100,(s[sd+'_mag']||0)*100)+'%'});
+    document.getElementById(p+'m').textContent=(s[sd+'_mag']||0).toFixed(3)});
   ['lt','rt'].forEach(t=>{document.getElementById(t+'v').textContent=s[t]||0;document.getElementById(t+'f').style.width=Math.min(100,(s[t]||0)/2.55)+'%'});
   document.querySelectorAll('.dc').forEach(e=>e.classList.toggle('on',e.dataset.d===s.dpad));
   B.forEach(n=>document.getElementById('b'+n).classList.toggle('on',s.buttons?.includes(n)));
-  if(d.latency_ms!==undefined)document.getElementById('lat').textContent=d.latency_ms+'ms';
-  document.getElementById('ac').textContent=g.filter(x=>x.buttons?.length||x.left_mag>0.01||x.right_mag>0.01).length+'/4'}
+  document.getElementById('ac').textContent=g.filter(x=>active(x)).length+'/4'}
 function poll(){
   var x=new XMLHttpRequest();
   x.open('GET','/api/state',true);
