@@ -1,13 +1,13 @@
-#Wed Jul 01 11:58:57 ADT 2026
-path.3=8/classes.dex
-path.2=4/classes.dex
-path.1=0/classes.dex
-path.0=classes.dex
-base.3=/home/beluchi/android-gamepad-linux/android/app/build/intermediates/dex/debug/mergeProjectDexDebug/8/classes.dex
-base.2=/home/beluchi/android-gamepad-linux/android/app/build/intermediates/dex/debug/mergeProjectDexDebug/4/classes.dex
-base.1=/home/beluchi/android-gamepad-linux/android/app/build/intermediates/dex/debug/mergeProjectDexDebug/0/classes.dex
+#Wed Jul 01 12:21:46 ADT 2026
 base.0=/home/beluchi/android-gamepad-linux/android/app/build/intermediates/dex/debug/mergeExtDexDebug/classes.dex
-renamed.3=classes4.dex
-renamed.2=classes3.dex
-renamed.1=classes2.dex
+base.1=/home/beluchi/android-gamepad-linux/android/app/build/intermediates/dex/debug/mergeProjectDexDebug/0/classes.dex
+base.2=/home/beluchi/android-gamepad-linux/android/app/build/intermediates/dex/debug/mergeProjectDexDebug/4/classes.dex
+base.3=/home/beluchi/android-gamepad-linux/android/app/build/intermediates/dex/debug/mergeProjectDexDebug/8/classes.dex
+path.0=classes.dex
+path.1=0/classes.dex
+path.2=4/classes.dex
+path.3=8/classes.dex
 renamed.0=classes.dex
+renamed.1=classes2.dex
+renamed.2=classes3.dex
+renamed.3=classes4.dex

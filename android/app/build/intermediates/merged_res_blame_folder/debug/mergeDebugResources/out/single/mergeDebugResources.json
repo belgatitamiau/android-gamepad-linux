@@ -1,0 +1,34 @@
+[
+    {
+        "merged": "/home/beluchi/.gradle/daemon/9.1.0/com.gamepadbridge.app-debug-22:/drawable_circle_pink.xml.flat",
+        "source": "/home/beluchi/.gradle/daemon/9.1.0/com.gamepadbridge.app-main-24:/drawable/circle_pink.xml"
+    },
+    {
+        "merged": "/home/beluchi/.gradle/daemon/9.1.0/com.gamepadbridge.app-debug-22:/drawable_circle_blue.xml.flat",
+        "source": "/home/beluchi/.gradle/daemon/9.1.0/com.gamepadbridge.app-main-24:/drawable/circle_blue.xml"
+    },
+    {
+        "merged": "/home/beluchi/.gradle/daemon/9.1.0/com.gamepadbridge.app-debug-22:/xml_network_security_config.xml.flat",
+        "source": "/home/beluchi/.gradle/daemon/9.1.0/com.gamepadbridge.app-main-24:/xml/network_security_config.xml"
+    },
+    {
+        "merged": "/home/beluchi/.gradle/daemon/9.1.0/com.gamepadbridge.app-debug-22:/drawable_circle_green.xml.flat",
+        "source": "/home/beluchi/.gradle/daemon/9.1.0/com.gamepadbridge.app-main-24:/drawable/circle_green.xml"
+    },
+    {
+        "merged": "/home/beluchi/.gradle/daemon/9.1.0/com.gamepadbridge.app-debug-22:/layout_activity_main.xml.flat",
+        "source": "/home/beluchi/.gradle/daemon/9.1.0/com.gamepadbridge.app-main-24:/layout/activity_main.xml"
+    },
+    {
+        "merged": "com.gamepadbridge.app-debug-22:/layout_activity_main.xml.flat",
+        "source": "com.gamepadbridge.app-main-24:/layout/activity_main.xml"
+    },
+    {
+        "merged": "/home/beluchi/.gradle/daemon/9.1.0/com.gamepadbridge.app-debug-22:/drawable_circle_black.xml.flat",
+        "source": "/home/beluchi/.gradle/daemon/9.1.0/com.gamepadbridge.app-main-24:/drawable/circle_black.xml"
+    },
+    {
+        "merged": "/home/beluchi/.gradle/daemon/9.1.0/com.gamepadbridge.app-debug-22:/drawable_circle_yellow.xml.flat",
+        "source": "/home/beluchi/.gradle/daemon/9.1.0/com.gamepadbridge.app-main-24:/drawable/circle_yellow.xml"
+    }
+]

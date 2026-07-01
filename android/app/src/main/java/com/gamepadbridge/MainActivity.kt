@@ -14,6 +14,7 @@ import android.text.SpannableString
 import android.text.Spanned
 import android.text.style.ForegroundColorSpan
 import android.util.Log
+import android.view.GestureDetector
 import android.view.InputDevice
 import android.view.KeyEvent
 import android.view.MotionEvent
@@ -74,6 +75,7 @@ class MainActivity : AppCompatActivity(), InputManager.InputDeviceListener {
     private val GAMEPAD_SOURCES = InputDevice.SOURCE_GAMEPAD or InputDevice.SOURCE_JOYSTICK or 0x00000011
 
     private var currentTheme = 0
+    private lateinit var gestureDetector: GestureDetector
 
     data class ThemeColors(
         val bg: Int, val bg2: Int, val accent: Int, val accent2: Int,
@@ -81,7 +83,7 @@ class MainActivity : AppCompatActivity(), InputManager.InputDeviceListener {
     )
 
     private val themes = listOf(
-        ThemeColors(0xFF000000.toInt(), 0xFF111111.toInt(), 0xFF666666.toInt(), 0xFF444444.toInt(), 0xFF888888.toInt(), 0xFF555555.toInt(), "OLED Black"),
+        ThemeColors(0xFF000000.toInt(), 0xFF000000.toInt(), 0xFF666666.toInt(), 0xFF444444.toInt(), 0xFF888888.toInt(), 0xFF555555.toInt(), "OLED Black"),
         ThemeColors(0xFF1A0A12.toInt(), 0xFF2A0A1A.toInt(), 0xFFFF69B4.toInt(), 0xFFFF1493.toInt(), 0xFFF0D0D8.toInt(), 0xFFB06080.toInt(), "My Melody"),
         ThemeColors(0xFF0A1220.toInt(), 0xFF0A1A2A.toInt(), 0xFF69C4FF.toInt(), 0xFF1493FF.toInt(), 0xFFD0E0F0.toInt(), 0xFF6080B0.toInt(), "Cinnamoroll"),
         ThemeColors(0xFF1A140A.toInt(), 0xFF2A1A0A.toInt(), 0xFFFFD700.toInt(), 0xFFDAA520.toInt(), 0xFFF0E8D0.toInt(), 0xFFB09860.toInt(), "Sugarbunnies"),
@@ -161,6 +163,21 @@ class MainActivity : AppCompatActivity(), InputManager.InputDeviceListener {
             themeBlackS, themePinkS, themeBlueS, themeYellowS, themeGreenS))
 
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+
+        gestureDetector = GestureDetector(this, object : GestureDetector.SimpleOnGestureListener() {
+            override fun onDoubleTap(e: MotionEvent): Boolean {
+                if (screenOff) {
+                    screenOff = false
+                    swScreenOff.isChecked = false
+                    runOnUiThread { updateUI() }
+                    return true
+                }
+                return false
+            }
+        })
+        rootLayout.setOnTouchListener { _, event -> gestureDetector.onTouchEvent(event); false }
+        rootLayout.isClickable = true
+        rootLayout.isFocusable = true
 
         // Restore prefs
         prefs.getString("host", "")?.takeIf { it.isNotEmpty() }?.let { savedHost ->
@@ -407,6 +424,7 @@ class MainActivity : AppCompatActivity(), InputManager.InputDeviceListener {
                 tvPlayerNumber.text = "CONNECTED"
             }
             tvPlayerNumber.visibility = View.VISIBLE
+            tvPlayerNumber.bringToFront()
             tvStatus.text = "Connected: ${activeSlots.size} gamepad(s)"
             tvStatus.setTextColor(themes[currentTheme].accent)
         } else {
