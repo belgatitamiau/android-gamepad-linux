@@ -617,7 +617,14 @@ class MainActivity : AppCompatActivity(), InputManager.InputDeviceListener {
     }
 
     override fun onInputDeviceAdded(deviceId: Int) {
-        listGamepads()
+        val dev = InputDevice.getDevice(deviceId)
+        if (dev != null && (dev.sources and GAMEPAD_SOURCES) != 0) {
+            val slot = service?.gamepadManager?.getOrAssignSlot(deviceId) ?: return
+            if (slot >= 0) {
+                Log.i(TAG, "Gamepad added: ${dev.name} (id=$deviceId) -> slot $slot")
+            }
+        }
+        updateGamepadDisplay()
     }
 
     override fun onInputDeviceRemoved(deviceId: Int) {
@@ -627,7 +634,7 @@ class MainActivity : AppCompatActivity(), InputManager.InputDeviceListener {
     }
 
     override fun onInputDeviceChanged(deviceId: Int) {
-        listGamepads()
+        updateGamepadDisplay()
     }
 
     companion object {
