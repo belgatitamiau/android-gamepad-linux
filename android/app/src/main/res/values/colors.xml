@@ -2,4 +2,36 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <!-- My Melody (Pink) -->
+    <color name="mm_bg">#FF1A0A12</color>
+    <color name="mm_bg2">#FF2A0A1A</color>
+    <color name="mm_accent">#FFFF69B4</color>
+    <color name="mm_accent2">#FFFF1493</color>
+    <color name="mm_text">#FFF0D0D8</color>
+    <color name="mm_text2">#FFB06080</color>
+
+    <!-- Cinnamoroll (Light Blue) -->
+    <color name="ci_bg">#FF0A1220</color>
+    <color name="ci_bg2">#FF0A1A2A</color>
+    <color name="ci_accent">#FF69C4FF</color>
+    <color name="ci_accent2">#FF1493FF</color>
+    <color name="ci_text">#FFD0E0F0</color>
+    <color name="ci_text2">#FF6080B0</color>
+
+    <!-- Sugarbunnies (Yellow) -->
+    <color name="sb_bg">#FF1A140A</color>
+    <color name="sb_bg2">#FF2A1A0A</color>
+    <color name="sb_accent">#FFFFD700</color>
+    <color name="sb_accent2">#FFDAA520</color>
+    <color name="sb_text">#FFF0E8D0</color>
+    <color name="sb_text2">#FFB09860</color>
+
+    <!-- Kerokerokeroppi (Green) -->
+    <color name="kk_bg">#FF0A1A0A</color>
+    <color name="kk_bg2">#FF0A2A0A</color>
+    <color name="kk_accent">#FF69FF69</color>
+    <color name="kk_accent2">#FF32CD32</color>
+    <color name="kk_text">#FFD0F0D0</color>
+    <color name="kk_text2">#FF60B060</color>
 </resources>

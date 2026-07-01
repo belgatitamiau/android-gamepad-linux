@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/rootLayout"
     android:background="#ff000000"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:keepScreenOn="true">
+
+    <!-- Connect panel (shown when disconnected) -->
     <LinearLayout
         android:orientation="vertical"
         android:id="@+id/connectPanel"
@@ -19,7 +22,7 @@
             android:textSize="22sp"
             android:textStyle="bold"
             android:textColor="#ffffff"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="12dp"
             android:text="GamepadBridge"/>
@@ -64,7 +67,56 @@
                 android:text="QR"
                 android:layout_marginStart="8dp"/>
         </LinearLayout>
+        <!-- Theme selector -->
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:gravity="center">
+            <TextView
+                android:textSize="11sp"
+                android:textColor="#88ffffff"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Theme: "
+                android:layout_marginEnd="8dp"/>
+            <View
+                android:id="@+id/themePink"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:background="@drawable/circle_pink"
+                android:layout_marginHorizontal="4dp"
+                android:clickable="true"
+                android:focusable="true"/>
+            <View
+                android:id="@+id/themeBlue"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:background="@drawable/circle_blue"
+                android:layout_marginHorizontal="4dp"
+                android:clickable="true"
+                android:focusable="true"/>
+            <View
+                android:id="@+id/themeYellow"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:background="@drawable/circle_yellow"
+                android:layout_marginHorizontal="4dp"
+                android:clickable="true"
+                android:focusable="true"/>
+            <View
+                android:id="@+id/themeGreen"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:background="@drawable/circle_green"
+                android:layout_marginHorizontal="4dp"
+                android:clickable="true"
+                android:focusable="true"/>
+        </LinearLayout>
     </LinearLayout>
+
+    <!-- Connected panel (shown when connected) -->
     <LinearLayout
         android:orientation="vertical"
         android:id="@+id/connectedPanel"
@@ -76,6 +128,17 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
+        <!-- Player number -->
+        <TextView
+            android:textSize="48sp"
+            android:textStyle="bold"
+            android:textColor="#ffffff"
+            android:id="@+id/tvPlayerNumber"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text=""/>
+        <!-- Status + buttons -->
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
@@ -89,19 +152,19 @@
                 android:text="Connected"
                 android:layout_weight="1"/>
             <Button
+                android:id="@+id/btnToggleLog"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:text="Log"
+                android:textAllCaps="false"
+                android:layout_marginEnd="4dp"/>
+            <Button
                 android:id="@+id/btnDisconnect"
                 android:layout_width="wrap_content"
                 android:layout_height="40dp"
                 android:text="Disconnect"
                 android:textAllCaps="false"/>
         </LinearLayout>
-        <Switch
-            android:textColor="#ffffff"
-            android:id="@+id/swBlackMode"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:text="Black Screen Mode"/>
         <TextView
             android:textSize="10sp"
             android:typeface="monospace"
@@ -113,6 +176,8 @@
             android:lineSpacingExtra="0dp"
             android:alpha="0.7"/>
     </LinearLayout>
+
+    <!-- Gamepad state list -->
     <TextView
         android:textSize="11sp"
         android:typeface="monospace"
@@ -121,22 +186,27 @@
         android:background="#44000000"
         android:padding="8dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:text="No gamepads detected"
         app:layout_constraintBottom_toTopOf="@+id/tvLog"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/connectedPanel"/>
+
+    <!-- Log (hidden by default, toggleable) -->
     <TextView
         android:textSize="10sp"
         android:typeface="monospace"
         android:textColor="#88ffffff"
         android:id="@+id/tvLog"
-        android:background="#44000000"
+        android:background="#88000000"
         android:padding="8dp"
         android:scrollbars="vertical"
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="150dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

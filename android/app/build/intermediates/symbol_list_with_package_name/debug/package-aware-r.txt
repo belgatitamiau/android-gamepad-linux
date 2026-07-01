@@ -647,6 +647,12 @@ color button_material_dark
 color button_material_light
 color call_notification_answer_color
 color call_notification_decline_color
+color ci_accent
+color ci_accent2
+color ci_bg
+color ci_bg2
+color ci_text
+color ci_text2
 color dim_foreground_disabled_material_dark
 color dim_foreground_disabled_material_light
 color dim_foreground_material_dark
@@ -657,6 +663,12 @@ color foreground_material_dark
 color foreground_material_light
 color highlighted_text_material_dark
 color highlighted_text_material_light
+color kk_accent
+color kk_accent2
+color kk_bg
+color kk_bg2
+color kk_text
+color kk_text2
 color material_blue_grey_800
 color material_blue_grey_900
 color material_blue_grey_950
@@ -669,6 +681,12 @@ color material_grey_600
 color material_grey_800
 color material_grey_850
 color material_grey_900
+color mm_accent
+color mm_accent2
+color mm_bg
+color mm_bg2
+color mm_text
+color mm_text2
 color notification_action_color_filter
 color notification_icon_bg_color
 color primary_dark_material_dark
@@ -681,6 +699,12 @@ color primary_text_disabled_material_dark
 color primary_text_disabled_material_light
 color ripple_material_dark
 color ripple_material_light
+color sb_accent
+color sb_accent2
+color sb_bg
+color sb_bg2
+color sb_text
+color sb_text2
 color secondary_text_default_material_dark
 color secondary_text_default_material_light
 color secondary_text_disabled_material_dark
@@ -911,6 +935,10 @@ drawable btn_radio_off_mtrl
 drawable btn_radio_off_to_on_mtrl_animation
 drawable btn_radio_on_mtrl
 drawable btn_radio_on_to_off_mtrl_animation
+drawable circle_blue
+drawable circle_green
+drawable circle_pink
+drawable circle_yellow
 drawable ic_call_answer
 drawable ic_call_answer_low
 drawable ic_call_answer_video
@@ -1028,6 +1056,7 @@ id bounceStart
 id btnConnect
 id btnDisconnect
 id btnScanQR
+id btnToggleLog
 id buttonPanel
 id cache_measures
 id callMeasure
@@ -1209,7 +1238,6 @@ id stop
 id submenuarrow
 id submit_area
 id supportScrollUp
-id swBlackMode
 id tabMode
 id tag_accessibility_actions
 id tag_accessibility_clickable_spans
@@ -1228,6 +1256,10 @@ id text
 id text2
 id textSpacerNoButtons
 id textSpacerNoTitle
+id themeBlue
+id themeGreen
+id themePink
+id themeYellow
 id time
 id title
 id titleDividerNoCustom
@@ -1241,6 +1273,7 @@ id triangle
 id tvFurryArt
 id tvGamepads
 id tvLog
+id tvPlayerNumber
 id tvStatus
 id unchecked
 id uniform

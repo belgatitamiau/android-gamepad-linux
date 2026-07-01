@@ -6,6 +6,7 @@ import android.content.Intent
 import android.content.ServiceConnection
 import android.content.SharedPreferences
 import android.graphics.Color
+import android.graphics.drawable.GradientDrawable
 import android.hardware.input.InputManager
 import android.os.Bundle
 import android.os.IBinder
@@ -38,23 +39,44 @@ class MainActivity : AppCompatActivity(), InputManager.InputDeviceListener {
     private lateinit var btnConnect: Button
     private lateinit var btnScanQR: Button
     private lateinit var btnDisconnect: Button
+    private lateinit var btnToggleLog: Button
     private lateinit var tvStatus: TextView
     private lateinit var tvLog: TextView
     private lateinit var tvGamepads: TextView
     private lateinit var tvFurryArt: TextView
+    private lateinit var tvPlayerNumber: TextView
     private lateinit var rootLayout: ConstraintLayout
-    private lateinit var swBlackMode: Switch
     private lateinit var connectPanel: View
     private lateinit var connectedPanel: View
-    private var gestureDetector: GestureDetector? = null
+
+    // Theme selector views
+    private lateinit var themePink: View
+    private lateinit var themeBlue: View
+    private lateinit var themeYellow: View
+    private lateinit var themeGreen: View
 
     private var service: GamepadBridgeService? = null
     private var bound = false
     private var pendingConnect: Pair<String, Int>? = null
     private var autoConnectAttempted = false
-    private var blackMode = false
+    private var logVisible = false
     private val sbLog = StringBuilder()
     private val GAMEPAD_SOURCES = InputDevice.SOURCE_GAMEPAD or InputDevice.SOURCE_JOYSTICK or 0x00000011
+
+    // Theme system
+    private var currentTheme = 0 // 0=pink, 1=blue, 2=yellow, 3=green
+
+    data class ThemeColors(
+        val bg: Int, val bg2: Int, val accent: Int, val accent2: Int,
+        val text: Int, val text2: Int, val name: String
+    )
+
+    private val themes = listOf(
+        ThemeColors(0xFF1A0A12.toInt(), 0xFF2A0A1A.toInt(), 0xFFFF69B4.toInt(), 0xFFFF1493.toInt(), 0xFFF0D0D8.toInt(), 0xFFB06080.toInt(), "My Melody"),
+        ThemeColors(0xFF0A1220.toInt(), 0xFF0A1A2A.toInt(), 0xFF69C4FF.toInt(), 0xFF1493FF.toInt(), 0xFFD0E0F0.toInt(), 0xFF6080B0.toInt(), "Cinnamoroll"),
+        ThemeColors(0xFF1A140A.toInt(), 0xFF2A1A0A.toInt(), 0xFFFFD700.toInt(), 0xFFDAA520.toInt(), 0xFFF0E8D0.toInt(), 0xFFB09860.toInt(), "Sugarbunnies"),
+        ThemeColors(0xFF0A1A0A.toInt(), 0xFF0A2A0A.toInt(), 0xFF69FF69.toInt(), 0xFF32CD32.toInt(), 0xFFD0F0D0.toInt(), 0xFF60B060.toInt(), "Kerokerokeroppi"),
+    )
 
     private val connection = object : ServiceConnection {
         override fun onServiceConnected(name: ComponentName?, binder: IBinder?) {
@@ -104,14 +126,19 @@ class MainActivity : AppCompatActivity(), InputManager.InputDeviceListener {
         btnConnect = findViewById(R.id.btnConnect)
         btnScanQR = findViewById(R.id.btnScanQR)
         btnDisconnect = findViewById(R.id.btnDisconnect)
+        btnToggleLog = findViewById(R.id.btnToggleLog)
         tvStatus = findViewById(R.id.tvStatus)
         tvLog = findViewById(R.id.tvLog)
         tvGamepads = findViewById(R.id.tvGamepads)
         tvFurryArt = findViewById(R.id.tvFurryArt)
+        tvPlayerNumber = findViewById(R.id.tvPlayerNumber)
         rootLayout = findViewById(R.id.rootLayout)
-        swBlackMode = findViewById(R.id.swBlackMode)
         connectPanel = findViewById(R.id.connectPanel)
         connectedPanel = findViewById(R.id.connectedPanel)
+        themePink = findViewById(R.id.themePink)
+        themeBlue = findViewById(R.id.themeBlue)
+        themeYellow = findViewById(R.id.themeYellow)
+        themeGreen = findViewById(R.id.themeGreen)
 
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
 
@@ -119,28 +146,19 @@ class MainActivity : AppCompatActivity(), InputManager.InputDeviceListener {
             etHost.setText(savedHost)
             etPort.setText(prefs.getInt("port", 60001).toString())
         }
+        currentTheme = prefs.getInt("theme", 0).coerceIn(0, 3)
+        applyTheme()
 
-        gestureDetector = GestureDetector(this, object : GestureDetector.SimpleOnGestureListener() {
-            override fun onDoubleTap(e: MotionEvent): Boolean {
-                if (blackMode) {
-                    blackMode = false
-                    swBlackMode.isChecked = false
-                    applyBlackMode()
-                }
-                return true
-            }
-        })
-
-        rootLayout.setOnTouchListener { _, event -> gestureDetector?.onTouchEvent(event) ?: false }
-        rootLayout.isClickable = true
+        // Theme selector clicks
+        themePink.setOnClickListener { selectTheme(0) }
+        themeBlue.setOnClickListener { selectTheme(1) }
+        themeYellow.setOnClickListener { selectTheme(2) }
+        themeGreen.setOnClickListener { selectTheme(3) }
 
         btnConnect.setOnClickListener { doConnect() }
         btnDisconnect.setOnClickListener { doDisconnect() }
         btnScanQR.setOnClickListener { scanQR() }
-        swBlackMode.setOnCheckedChangeListener { _, isChecked ->
-            blackMode = isChecked
-            applyBlackMode()
-        }
+        btnToggleLog.setOnClickListener { toggleLog() }
 
         applyFurryArt()
         log("App started")
@@ -175,6 +193,72 @@ class MainActivity : AppCompatActivity(), InputManager.InputDeviceListener {
         }
     }
 
+    private fun selectTheme(index: Int) {
+        currentTheme = index
+        prefs.edit().putInt("theme", index).apply()
+        applyTheme()
+        log("Theme: ${themes[index].name}")
+    }
+
+    private fun applyTheme() {
+        val t = themes[currentTheme]
+        rootLayout.setBackgroundColor(t.bg)
+        setViewBackground(connectPanel, t.bg2)
+        setViewBackground(connectedPanel, t.bg2)
+        setViewBackground(tvGamepads, (t.bg2 and 0x00FFFFFF) or 0x44000000.toInt())
+        setViewBackground(tvLog, (t.bg and 0x00FFFFFF) or 0x88000000.toInt())
+
+        // Buttons
+        val btnDrawable = GradientDrawable().apply {
+            setColor(t.accent)
+            setStroke(1, t.accent2)
+            cornerRadius = 8f
+        }
+        btnConnect.background = btnDrawable
+        btnConnect.setTextColor(t.bg)
+        btnScanQR.background = btnDrawable
+        btnScanQR.setTextColor(t.bg)
+        btnDisconnect.background = btnDrawable
+        btnDisconnect.setTextColor(t.bg)
+        btnToggleLog.background = GradientDrawable().apply {
+            setColor(t.bg2)
+            setStroke(1, t.accent)
+            cornerRadius = 8f
+        }
+        btnToggleLog.setTextColor(t.accent)
+
+        // Text colors
+        tvStatus.setTextColor(if (service?.connected == true) Color.GREEN else Color.RED)
+        tvGamepads.setTextColor(t.text)
+        tvLog.setTextColor(t.text2)
+        tvPlayerNumber.setTextColor(t.accent)
+
+        // Theme selector highlight
+        val views = listOf(themePink, themeBlue, themeYellow, themeGreen)
+        views.forEachIndexed { i, v ->
+            val s = v.background as? GradientDrawable
+            if (s != null) {
+                s.setStroke(if (i == currentTheme) 3 else 2, if (i == currentTheme) Color.WHITE else t.text2)
+            }
+        }
+    }
+
+    private fun setViewBackground(view: View, color: Int) {
+        val bg = view.background?.mutate()
+        if (bg is GradientDrawable) {
+            bg.setColor(color)
+        } else {
+            view.setBackgroundColor(color)
+        }
+    }
+
+    private fun toggleLog() {
+        logVisible = !logVisible
+        tvLog.visibility = if (logVisible) View.VISIBLE else View.GONE
+        btnToggleLog.text = if (logVisible) "Hide" else "Log"
+        log(if (logVisible) "Log shown" else "Log hidden")
+    }
+
     private fun doConnect() {
         val host = etHost.text.toString().trim()
         val portStr = etPort.text.toString().trim()
@@ -190,17 +274,20 @@ class MainActivity : AppCompatActivity(), InputManager.InputDeviceListener {
         prefs.edit().putString("host", host).putInt("port", port).apply()
         log("Connecting to $host:$port...")
         startService(Intent(this, GamepadBridgeService::class.java))
-        if (bound && service != null) {
-            service?.connect(host, port)
-        } else {
-            pendingConnect = Pair(host, port)
+        pendingConnect = Pair(host, port)
+        if (!bound) {
             bindService(Intent(this, GamepadBridgeService::class.java), connection, BIND_AUTO_CREATE)
+        } else {
+            service?.connect(host, port)
+            pendingConnect = null
         }
         updateUI()
     }
 
     private fun doDisconnect() {
         log("Disconnecting...")
+        pendingConnect = null
+        autoConnectAttempted = false
         if (bound) {
             service?.disconnect()
             unbindService(connection)
@@ -227,24 +314,6 @@ class MainActivity : AppCompatActivity(), InputManager.InputDeviceListener {
         tvFurryArt.text = spannable
     }
 
-    private fun applyBlackMode() {
-        if (blackMode) {
-            rootLayout.setBackgroundColor(Color.BLACK)
-            connectPanel.visibility = View.GONE
-            connectedPanel.visibility = View.GONE
-            tvGamepads.visibility = View.GONE
-            tvLog.visibility = View.GONE
-        } else {
-            rootLayout.setBackgroundColor(Color.BLACK)
-            connectPanel.visibility = View.VISIBLE
-            connectedPanel.visibility = View.VISIBLE
-            tvGamepads.visibility = View.VISIBLE
-            tvLog.visibility = View.VISIBLE
-            tvStatus.setTextColor(Color.WHITE)
-            tvStatus.textSize = 18.0f
-        }
-    }
-
     private fun updateUI() {
         val srv = service
         val isConnected = srv?.connected == true
@@ -253,20 +322,29 @@ class MainActivity : AppCompatActivity(), InputManager.InputDeviceListener {
         btnConnect.isEnabled = !isConnected
         btnScanQR.isEnabled = !isConnected
         btnDisconnect.isEnabled = isConnected
+        btnToggleLog.isEnabled = isConnected
         connectPanel.visibility = if (isConnected) View.GONE else View.VISIBLE
         connectedPanel.visibility = if (isConnected) View.VISIBLE else View.GONE
-        tvStatus.text = when {
-            isConnected -> ""
-            hasError -> "Error: ${srv?.connectionError}"
-            else -> ""
-        }
-        tvStatus.setTextColor(
-            when {
-                isConnected -> Color.GREEN
-                hasError -> Color.RED
-                else -> Color.GRAY
+
+        if (isConnected) {
+            // Show PLAYER X based on active gamepad slots
+            val mgr = srv?.gamepadManager
+            val activeSlots = mgr?.getActiveSlotIds() ?: emptyList()
+            if (activeSlots.isNotEmpty()) {
+                tvPlayerNumber.text = activeSlots.joinToString("\n") { slot ->
+                    "PLAYER ${slot + 1}"
+                }
+            } else {
+                tvPlayerNumber.text = "CONNECTED"
             }
-        )
+            tvStatus.text = "Connected: ${activeSlots.size} gamepad(s)"
+            tvStatus.setTextColor(themes[currentTheme].accent)
+        } else {
+            tvStatus.text = if (hasError) "Error: ${srv?.connectionError}" else ""
+            tvStatus.setTextColor(if (hasError) Color.RED else themes[currentTheme].text2)
+        }
+
+        applyTheme()
     }
 
     private fun log(msg: String) {
@@ -290,8 +368,11 @@ class MainActivity : AppCompatActivity(), InputManager.InputDeviceListener {
             mgr.getStateBySlot(slot)?.let { sb.append(it.debugString()).append('\n') }
         }
         if (sb.isEmpty()) sb.append("No gamepads detected\n")
-        sb.append("\nConnected gamepads: ${mgr.getSlotCount()}\n")
-        runOnUiThread { tvGamepads.text = sb.toString() }
+        sb.append("\nActive: ${mgr.getSlotCount()}/4\n")
+        runOnUiThread {
+            tvGamepads.text = sb.toString()
+            updateUI()
+        }
     }
 
     private fun listGamepads() {

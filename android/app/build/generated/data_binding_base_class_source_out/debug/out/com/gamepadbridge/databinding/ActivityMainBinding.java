@@ -7,7 +7,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.Switch;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -33,6 +32,9 @@ public final class ActivityMainBinding implements ViewBinding {
   public final Button btnScanQR;
 
   @NonNull
+  public final Button btnToggleLog;
+
+  @NonNull
   public final LinearLayout connectPanel;
 
   @NonNull
@@ -48,7 +50,16 @@ public final class ActivityMainBinding implements ViewBinding {
   public final ConstraintLayout rootLayout;
 
   @NonNull
-  public final Switch swBlackMode;
+  public final View themeBlue;
+
+  @NonNull
+  public final View themeGreen;
+
+  @NonNull
+  public final View themePink;
+
+  @NonNull
+  public final View themeYellow;
 
   @NonNull
   public final TextView tvFurryArt;
@@ -60,27 +71,36 @@ public final class ActivityMainBinding implements ViewBinding {
   public final TextView tvLog;
 
   @NonNull
+  public final TextView tvPlayerNumber;
+
+  @NonNull
   public final TextView tvStatus;
 
   private ActivityMainBinding(@NonNull ConstraintLayout rootView, @NonNull Button btnConnect,
-      @NonNull Button btnDisconnect, @NonNull Button btnScanQR, @NonNull LinearLayout connectPanel,
-      @NonNull LinearLayout connectedPanel, @NonNull EditText etHost, @NonNull EditText etPort,
-      @NonNull ConstraintLayout rootLayout, @NonNull Switch swBlackMode,
-      @NonNull TextView tvFurryArt, @NonNull TextView tvGamepads, @NonNull TextView tvLog,
-      @NonNull TextView tvStatus) {
+      @NonNull Button btnDisconnect, @NonNull Button btnScanQR, @NonNull Button btnToggleLog,
+      @NonNull LinearLayout connectPanel, @NonNull LinearLayout connectedPanel,
+      @NonNull EditText etHost, @NonNull EditText etPort, @NonNull ConstraintLayout rootLayout,
+      @NonNull View themeBlue, @NonNull View themeGreen, @NonNull View themePink,
+      @NonNull View themeYellow, @NonNull TextView tvFurryArt, @NonNull TextView tvGamepads,
+      @NonNull TextView tvLog, @NonNull TextView tvPlayerNumber, @NonNull TextView tvStatus) {
     this.rootView = rootView;
     this.btnConnect = btnConnect;
     this.btnDisconnect = btnDisconnect;
     this.btnScanQR = btnScanQR;
+    this.btnToggleLog = btnToggleLog;
     this.connectPanel = connectPanel;
     this.connectedPanel = connectedPanel;
     this.etHost = etHost;
     this.etPort = etPort;
     this.rootLayout = rootLayout;
-    this.swBlackMode = swBlackMode;
+    this.themeBlue = themeBlue;
+    this.themeGreen = themeGreen;
+    this.themePink = themePink;
+    this.themeYellow = themeYellow;
     this.tvFurryArt = tvFurryArt;
     this.tvGamepads = tvGamepads;
     this.tvLog = tvLog;
+    this.tvPlayerNumber = tvPlayerNumber;
     this.tvStatus = tvStatus;
   }
 
@@ -129,6 +149,12 @@ public final class ActivityMainBinding implements ViewBinding {
         break missingId;
       }
 
+      id = R.id.btnToggleLog;
+      Button btnToggleLog = ViewBindings.findChildViewById(rootView, id);
+      if (btnToggleLog == null) {
+        break missingId;
+      }
+
       id = R.id.connectPanel;
       LinearLayout connectPanel = ViewBindings.findChildViewById(rootView, id);
       if (connectPanel == null) {
@@ -155,9 +181,27 @@ public final class ActivityMainBinding implements ViewBinding {
 
       ConstraintLayout rootLayout = (ConstraintLayout) rootView;
 
-      id = R.id.swBlackMode;
-      Switch swBlackMode = ViewBindings.findChildViewById(rootView, id);
-      if (swBlackMode == null) {
+      id = R.id.themeBlue;
+      View themeBlue = ViewBindings.findChildViewById(rootView, id);
+      if (themeBlue == null) {
+        break missingId;
+      }
+
+      id = R.id.themeGreen;
+      View themeGreen = ViewBindings.findChildViewById(rootView, id);
+      if (themeGreen == null) {
+        break missingId;
+      }
+
+      id = R.id.themePink;
+      View themePink = ViewBindings.findChildViewById(rootView, id);
+      if (themePink == null) {
+        break missingId;
+      }
+
+      id = R.id.themeYellow;
+      View themeYellow = ViewBindings.findChildViewById(rootView, id);
+      if (themeYellow == null) {
         break missingId;
       }
 
@@ -179,6 +223,12 @@ public final class ActivityMainBinding implements ViewBinding {
         break missingId;
       }
 
+      id = R.id.tvPlayerNumber;
+      TextView tvPlayerNumber = ViewBindings.findChildViewById(rootView, id);
+      if (tvPlayerNumber == null) {
+        break missingId;
+      }
+
       id = R.id.tvStatus;
       TextView tvStatus = ViewBindings.findChildViewById(rootView, id);
       if (tvStatus == null) {
@@ -186,8 +236,9 @@ public final class ActivityMainBinding implements ViewBinding {
       }
 
       return new ActivityMainBinding((ConstraintLayout) rootView, btnConnect, btnDisconnect,
-          btnScanQR, connectPanel, connectedPanel, etHost, etPort, rootLayout, swBlackMode,
-          tvFurryArt, tvGamepads, tvLog, tvStatus);
+          btnScanQR, btnToggleLog, connectPanel, connectedPanel, etHost, etPort, rootLayout,
+          themeBlue, themeGreen, themePink, themeYellow, tvFurryArt, tvGamepads, tvLog,
+          tvPlayerNumber, tvStatus);
     }
     String missingId = rootView.getResources().getResourceName(id);
     throw new NullPointerException("Missing required view with ID: ".concat(missingId));
