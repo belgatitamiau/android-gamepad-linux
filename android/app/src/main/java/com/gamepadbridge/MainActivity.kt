@@ -51,12 +51,18 @@ class MainActivity : AppCompatActivity(), InputManager.InputDeviceListener {
     private lateinit var settingsPanel: View
     private lateinit var swScreenOff: Switch
 
-    // Theme views
+    // Theme views (connect panel)
     private lateinit var themeBlack: View
     private lateinit var themePink: View
     private lateinit var themeBlue: View
     private lateinit var themeYellow: View
     private lateinit var themeGreen: View
+    // Theme views (settings panel)
+    private lateinit var themeBlackS: View
+    private lateinit var themePinkS: View
+    private lateinit var themeBlueS: View
+    private lateinit var themeYellowS: View
+    private lateinit var themeGreenS: View
     private val allThemeViews = mutableListOf<View>()
 
     private var service: GamepadBridgeService? = null
@@ -146,7 +152,13 @@ class MainActivity : AppCompatActivity(), InputManager.InputDeviceListener {
         themeBlue = findViewById(R.id.themeBlue)
         themeYellow = findViewById(R.id.themeYellow)
         themeGreen = findViewById(R.id.themeGreen)
-        allThemeViews.addAll(listOf(themeBlack, themePink, themeBlue, themeYellow, themeGreen))
+        themeBlackS = findViewById(R.id.themeBlackS)
+        themePinkS = findViewById(R.id.themePinkS)
+        themeBlueS = findViewById(R.id.themeBlueS)
+        themeYellowS = findViewById(R.id.themeYellowS)
+        themeGreenS = findViewById(R.id.themeGreenS)
+        allThemeViews.addAll(listOf(themeBlack, themePink, themeBlue, themeYellow, themeGreen,
+            themeBlackS, themePinkS, themeBlueS, themeYellowS, themeGreenS))
 
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
 
@@ -166,6 +178,11 @@ class MainActivity : AppCompatActivity(), InputManager.InputDeviceListener {
         themeBlue.setOnClickListener { selectTheme(2) }
         themeYellow.setOnClickListener { selectTheme(3) }
         themeGreen.setOnClickListener { selectTheme(4) }
+        themeBlackS.setOnClickListener { selectTheme(0) }
+        themePinkS.setOnClickListener { selectTheme(1) }
+        themeBlueS.setOnClickListener { selectTheme(2) }
+        themeYellowS.setOnClickListener { selectTheme(3) }
+        themeGreenS.setOnClickListener { selectTheme(4) }
 
         btnConnect.setOnClickListener { doConnect() }
         btnDisconnect.setOnClickListener { doDisconnect() }
@@ -254,9 +271,10 @@ class MainActivity : AppCompatActivity(), InputManager.InputDeviceListener {
         tvPlayerNumber.setTextColor(t.accent)
 
         allThemeViews.forEachIndexed { i, v ->
+            val themeIdx = i % 5
             val bg = v.background?.mutate()
             if (bg is GradientDrawable) {
-                bg.setStroke(if (i == currentTheme) 3 else 2, if (i == currentTheme) 0xFFFFFFFF.toInt() else t.text2)
+                bg.setStroke(if (themeIdx == currentTheme) 3 else 2, if (themeIdx == currentTheme) 0xFFFFFFFF.toInt() else t.text2)
             }
         }
     }
@@ -289,7 +307,7 @@ class MainActivity : AppCompatActivity(), InputManager.InputDeviceListener {
                 connectPanel.visibility = View.VISIBLE
             }
             applyTheme()
-            if (logVisible) tvLog.visibility = View.VISIBLE
+            tvLog.visibility = if (logVisible) View.VISIBLE else View.GONE
         }
     }
 
@@ -329,6 +347,9 @@ class MainActivity : AppCompatActivity(), InputManager.InputDeviceListener {
         pendingConnect = null
         screenOff = false
         swScreenOff.isChecked = false
+        logVisible = false
+        tvLog.visibility = View.GONE
+        btnToggleLog.text = "Log"
         if (bound) {
             service?.disconnect()
             unbindService(connection)
@@ -372,6 +393,8 @@ class MainActivity : AppCompatActivity(), InputManager.InputDeviceListener {
         connectPanel.visibility = if (isConnected) View.GONE else View.VISIBLE
         connectedPanel.visibility = if (isConnected) View.VISIBLE else View.GONE
         settingsPanel.visibility = if (isConnected) View.VISIBLE else View.GONE
+
+        tvLog.visibility = if (isConnected && logVisible) View.VISIBLE else View.GONE
 
         if (isConnected) {
             val mgr = srv?.gamepadManager

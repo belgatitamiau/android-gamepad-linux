@@ -67,6 +67,61 @@
                 android:text="QR"
                 android:layout_marginStart="8dp"/>
         </LinearLayout>
+        <!-- Theme/skin selector in connect panel -->
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_marginTop="12dp">
+            <TextView
+                android:textSize="10sp"
+                android:textColor="#88ffffff"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Skins"
+                android:layout_marginEnd="8dp"/>
+            <View
+                android:id="@+id/themeBlack"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:background="@drawable/circle_black"
+                android:layout_marginHorizontal="3dp"
+                android:clickable="true"
+                android:focusable="true"/>
+            <View
+                android:id="@+id/themePink"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:background="@drawable/circle_pink"
+                android:layout_marginHorizontal="3dp"
+                android:clickable="true"
+                android:focusable="true"/>
+            <View
+                android:id="@+id/themeBlue"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:background="@drawable/circle_blue"
+                android:layout_marginHorizontal="3dp"
+                android:clickable="true"
+                android:focusable="true"/>
+            <View
+                android:id="@+id/themeYellow"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:background="@drawable/circle_yellow"
+                android:layout_marginHorizontal="3dp"
+                android:clickable="true"
+                android:focusable="true"/>
+            <View
+                android:id="@+id/themeGreen"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:background="@drawable/circle_green"
+                android:layout_marginHorizontal="3dp"
+                android:clickable="true"
+                android:focusable="true"/>
+        </LinearLayout>
     </LinearLayout>
 
     <!-- PLAYER X centered full-screen (shown when connected) -->
@@ -134,7 +189,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
-        <!-- Theme/skin selector -->
+        <!-- Theme/skin selector in settings panel -->
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
@@ -149,7 +204,7 @@
                 android:text="Skins"
                 android:layout_marginEnd="8dp"/>
             <View
-                android:id="@+id/themeBlack"
+                android:id="@+id/themeBlackS"
                 android:layout_width="28dp"
                 android:layout_height="28dp"
                 android:background="@drawable/circle_black"
