@@ -49,14 +49,17 @@
         android:appComponentFactory="androidx.core.app.CoreComponentFactory"
         android:debuggable="true"
         android:extractNativeLibs="false"
+        android:icon="@mipmap/ic_launcher"
         android:label="GamepadBridge"
         android:networkSecurityConfig="@xml/network_security_config"
+        android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.GamepadBridge" >
         <activity
             android:name="com.gamepadbridge.MainActivity"
             android:configChanges="screenSize|orientation"
             android:exported="true"
+            android:launchMode="singleTask"
             android:screenOrientation="reverseLandscape" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

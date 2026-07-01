@@ -512,8 +512,8 @@ qb.onclick=function(){qo.style.display='block';qb.style.display='none'};
 
 async def main():
     srv = GamepadBridgeServer()
-    tcp_server = await asyncio.start_server(srv.handle_gamepad_client, '0.0.0.0', 60001)
-    http_server = await asyncio.start_server(srv.handle_http, '0.0.0.0', 8080)
+    tcp_server = await asyncio.start_server(srv.handle_gamepad_client, '0.0.0.0', 60001, reuse_port=True)
+    http_server = await asyncio.start_server(srv.handle_http, '0.0.0.0', 8080, reuse_port=True)
     print('[server] TCP gamepad listener on :60001')
     print('[server] HTTP dashboard on :8080')
 

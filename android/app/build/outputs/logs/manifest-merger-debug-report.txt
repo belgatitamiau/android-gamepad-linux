@@ -1,9 +1,9 @@
 -- Merging decision tree log ---
 manifest
-ADDED from /home/beluchi/android-gamepad-linux/android/app/src/main/AndroidManifest.xml:2:1-50:12
-INJECTED from /home/beluchi/android-gamepad-linux/android/app/src/main/AndroidManifest.xml:2:1-50:12
-INJECTED from /home/beluchi/android-gamepad-linux/android/app/src/main/AndroidManifest.xml:2:1-50:12
-INJECTED from /home/beluchi/android-gamepad-linux/android/app/src/main/AndroidManifest.xml:2:1-50:12
+ADDED from /home/beluchi/android-gamepad-linux/android/app/src/main/AndroidManifest.xml:2:1-53:12
+INJECTED from /home/beluchi/android-gamepad-linux/android/app/src/main/AndroidManifest.xml:2:1-53:12
+INJECTED from /home/beluchi/android-gamepad-linux/android/app/src/main/AndroidManifest.xml:2:1-53:12
+INJECTED from /home/beluchi/android-gamepad-linux/android/app/src/main/AndroidManifest.xml:2:1-53:12
 MERGED from [androidx.databinding:viewbinding:8.9.1] /home/beluchi/.gradle/caches/9.1.0/transforms/e9db2407fb64bec3d3d3b7e58ce28a44/transformed/viewbinding-8.9.1/AndroidManifest.xml:2:1-7:12
 MERGED from [androidx.constraintlayout:constraintlayout:2.1.4] /home/beluchi/.gradle/caches/9.1.0/transforms/9f3fa732e2bbacda2a7764258f788f15/transformed/constraintlayout-2.1.4/AndroidManifest.xml:2:1-11:12
 MERGED from [androidx.appcompat:appcompat-resources:1.6.1] /home/beluchi/.gradle/caches/9.1.0/transforms/6cd3bd7968d28c9ec38cdecf4f19262f/transformed/appcompat-resources-1.6.1/AndroidManifest.xml:17:1-22:12
@@ -188,8 +188,8 @@ MERGED from [com.journeyapps:zxing-android-embedded:4.3.0] /home/beluchi/.gradle
 	android:name
 		ADDED from /home/beluchi/android-gamepad-linux/android/app/src/main/AndroidManifest.xml:18:19-67
 application
-ADDED from /home/beluchi/android-gamepad-linux/android/app/src/main/AndroidManifest.xml:20:5-48:19
-INJECTED from /home/beluchi/android-gamepad-linux/android/app/src/main/AndroidManifest.xml:20:5-48:19
+ADDED from /home/beluchi/android-gamepad-linux/android/app/src/main/AndroidManifest.xml:20:5-51:19
+INJECTED from /home/beluchi/android-gamepad-linux/android/app/src/main/AndroidManifest.xml:20:5-51:19
 MERGED from [androidx.constraintlayout:constraintlayout:2.1.4] /home/beluchi/.gradle/caches/9.1.0/transforms/9f3fa732e2bbacda2a7764258f788f15/transformed/constraintlayout-2.1.4/AndroidManifest.xml:9:5-20
 MERGED from [androidx.constraintlayout:constraintlayout:2.1.4] /home/beluchi/.gradle/caches/9.1.0/transforms/9f3fa732e2bbacda2a7764258f788f15/transformed/constraintlayout-2.1.4/AndroidManifest.xml:9:5-20
 MERGED from [androidx.emoji2:emoji2:1.2.0] /home/beluchi/.gradle/caches/9.1.0/transforms/48f8a38320d573d4253bdf695ef17701/transformed/emoji2-1.2.0/AndroidManifest.xml:23:5-33:19
@@ -209,51 +209,57 @@ MERGED from [com.journeyapps:zxing-android-embedded:4.3.0] /home/beluchi/.gradle
 	android:appComponentFactory
 		ADDED from [androidx.core:core:1.12.0] /home/beluchi/.gradle/caches/9.1.0/transforms/dd79b389327327bde9cc913c2207269d/transformed/core-1.12.0/AndroidManifest.xml:28:18-86
 	android:supportsRtl
-		ADDED from /home/beluchi/android-gamepad-linux/android/app/src/main/AndroidManifest.xml:23:9-35
+		ADDED from /home/beluchi/android-gamepad-linux/android/app/src/main/AndroidManifest.xml:25:9-35
 	android:label
-		ADDED from /home/beluchi/android-gamepad-linux/android/app/src/main/AndroidManifest.xml:22:9-38
+		ADDED from /home/beluchi/android-gamepad-linux/android/app/src/main/AndroidManifest.xml:24:9-38
 	android:debuggable
-		ADDED from /home/beluchi/android-gamepad-linux/android/app/src/main/AndroidManifest.xml:26:9-34
+		ADDED from /home/beluchi/android-gamepad-linux/android/app/src/main/AndroidManifest.xml:28:9-34
+	android:roundIcon
+		ADDED from /home/beluchi/android-gamepad-linux/android/app/src/main/AndroidManifest.xml:23:9-54
+	android:icon
+		ADDED from /home/beluchi/android-gamepad-linux/android/app/src/main/AndroidManifest.xml:22:9-43
 	android:allowBackup
 		ADDED from /home/beluchi/android-gamepad-linux/android/app/src/main/AndroidManifest.xml:21:9-35
 	android:theme
-		ADDED from /home/beluchi/android-gamepad-linux/android/app/src/main/AndroidManifest.xml:24:9-51
+		ADDED from /home/beluchi/android-gamepad-linux/android/app/src/main/AndroidManifest.xml:26:9-51
 	android:networkSecurityConfig
-		ADDED from /home/beluchi/android-gamepad-linux/android/app/src/main/AndroidManifest.xml:25:9-69
+		ADDED from /home/beluchi/android-gamepad-linux/android/app/src/main/AndroidManifest.xml:27:9-69
 activity#com.gamepadbridge.MainActivity
-ADDED from /home/beluchi/android-gamepad-linux/android/app/src/main/AndroidManifest.xml:28:9-37:20
+ADDED from /home/beluchi/android-gamepad-linux/android/app/src/main/AndroidManifest.xml:30:9-40:20
 	android:screenOrientation
-		ADDED from /home/beluchi/android-gamepad-linux/android/app/src/main/AndroidManifest.xml:31:13-57
+		ADDED from /home/beluchi/android-gamepad-linux/android/app/src/main/AndroidManifest.xml:34:13-57
+	android:launchMode
+		ADDED from /home/beluchi/android-gamepad-linux/android/app/src/main/AndroidManifest.xml:33:13-44
 	android:exported
-		ADDED from /home/beluchi/android-gamepad-linux/android/app/src/main/AndroidManifest.xml:30:13-36
+		ADDED from /home/beluchi/android-gamepad-linux/android/app/src/main/AndroidManifest.xml:32:13-36
 	android:configChanges
-		ADDED from /home/beluchi/android-gamepad-linux/android/app/src/main/AndroidManifest.xml:32:13-59
+		ADDED from /home/beluchi/android-gamepad-linux/android/app/src/main/AndroidManifest.xml:35:13-59
 	android:name
-		ADDED from /home/beluchi/android-gamepad-linux/android/app/src/main/AndroidManifest.xml:29:13-58
+		ADDED from /home/beluchi/android-gamepad-linux/android/app/src/main/AndroidManifest.xml:31:13-58
 intent-filter#action:name:android.intent.action.MAIN+category:name:android.intent.category.LAUNCHER
-ADDED from /home/beluchi/android-gamepad-linux/android/app/src/main/AndroidManifest.xml:33:13-36:29
+ADDED from /home/beluchi/android-gamepad-linux/android/app/src/main/AndroidManifest.xml:36:13-39:29
 action#android.intent.action.MAIN
-ADDED from /home/beluchi/android-gamepad-linux/android/app/src/main/AndroidManifest.xml:34:17-69
+ADDED from /home/beluchi/android-gamepad-linux/android/app/src/main/AndroidManifest.xml:37:17-69
 	android:name
-		ADDED from /home/beluchi/android-gamepad-linux/android/app/src/main/AndroidManifest.xml:34:25-66
+		ADDED from /home/beluchi/android-gamepad-linux/android/app/src/main/AndroidManifest.xml:37:25-66
 category#android.intent.category.LAUNCHER
-ADDED from /home/beluchi/android-gamepad-linux/android/app/src/main/AndroidManifest.xml:35:17-77
+ADDED from /home/beluchi/android-gamepad-linux/android/app/src/main/AndroidManifest.xml:38:17-77
 	android:name
-		ADDED from /home/beluchi/android-gamepad-linux/android/app/src/main/AndroidManifest.xml:35:27-74
+		ADDED from /home/beluchi/android-gamepad-linux/android/app/src/main/AndroidManifest.xml:38:27-74
 activity#com.gamepadbridge.QRScannerActivity
-ADDED from /home/beluchi/android-gamepad-linux/android/app/src/main/AndroidManifest.xml:39:9-41:40
+ADDED from /home/beluchi/android-gamepad-linux/android/app/src/main/AndroidManifest.xml:42:9-44:40
 	android:exported
-		ADDED from /home/beluchi/android-gamepad-linux/android/app/src/main/AndroidManifest.xml:41:13-37
+		ADDED from /home/beluchi/android-gamepad-linux/android/app/src/main/AndroidManifest.xml:44:13-37
 	android:name
-		ADDED from /home/beluchi/android-gamepad-linux/android/app/src/main/AndroidManifest.xml:40:13-63
+		ADDED from /home/beluchi/android-gamepad-linux/android/app/src/main/AndroidManifest.xml:43:13-63
 service#com.gamepadbridge.GamepadBridgeService
-ADDED from /home/beluchi/android-gamepad-linux/android/app/src/main/AndroidManifest.xml:43:9-46:56
+ADDED from /home/beluchi/android-gamepad-linux/android/app/src/main/AndroidManifest.xml:46:9-49:56
 	android:exported
-		ADDED from /home/beluchi/android-gamepad-linux/android/app/src/main/AndroidManifest.xml:45:13-37
+		ADDED from /home/beluchi/android-gamepad-linux/android/app/src/main/AndroidManifest.xml:48:13-37
 	android:foregroundServiceType
-		ADDED from /home/beluchi/android-gamepad-linux/android/app/src/main/AndroidManifest.xml:46:13-53
+		ADDED from /home/beluchi/android-gamepad-linux/android/app/src/main/AndroidManifest.xml:49:13-53
 	android:name
-		ADDED from /home/beluchi/android-gamepad-linux/android/app/src/main/AndroidManifest.xml:44:13-66
+		ADDED from /home/beluchi/android-gamepad-linux/android/app/src/main/AndroidManifest.xml:47:13-66
 provider#androidx.startup.InitializationProvider
 ADDED from [androidx.emoji2:emoji2:1.2.0] /home/beluchi/.gradle/caches/9.1.0/transforms/48f8a38320d573d4253bdf695ef17701/transformed/emoji2-1.2.0/AndroidManifest.xml:24:9-32:20
 MERGED from [androidx.lifecycle:lifecycle-process:2.4.1] /home/beluchi/.gradle/caches/9.1.0/transforms/40c21cfbb695b81ecf50a3a33470795d/transformed/lifecycle-process-2.4.1/AndroidManifest.xml:26:9-34:20

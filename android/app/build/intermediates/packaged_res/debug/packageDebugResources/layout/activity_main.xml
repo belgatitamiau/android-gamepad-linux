@@ -67,7 +67,7 @@
                 android:text="QR"
                 android:layout_marginStart="8dp"/>
         </LinearLayout>
-        <!-- Theme/skin selector in connect panel -->
+        <!-- Skin selector in connect panel -->
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
@@ -81,46 +81,11 @@
                 android:layout_height="wrap_content"
                 android:text="Skins"
                 android:layout_marginEnd="8dp"/>
-            <View
-                android:id="@+id/themeBlack"
-                android:layout_width="28dp"
-                android:layout_height="28dp"
-                android:background="@drawable/circle_black"
-                android:layout_marginHorizontal="3dp"
-                android:clickable="true"
-                android:focusable="true"/>
-            <View
-                android:id="@+id/themePink"
-                android:layout_width="28dp"
-                android:layout_height="28dp"
-                android:background="@drawable/circle_pink"
-                android:layout_marginHorizontal="3dp"
-                android:clickable="true"
-                android:focusable="true"/>
-            <View
-                android:id="@+id/themeBlue"
-                android:layout_width="28dp"
-                android:layout_height="28dp"
-                android:background="@drawable/circle_blue"
-                android:layout_marginHorizontal="3dp"
-                android:clickable="true"
-                android:focusable="true"/>
-            <View
-                android:id="@+id/themeYellow"
-                android:layout_width="28dp"
-                android:layout_height="28dp"
-                android:background="@drawable/circle_yellow"
-                android:layout_marginHorizontal="3dp"
-                android:clickable="true"
-                android:focusable="true"/>
-            <View
-                android:id="@+id/themeGreen"
-                android:layout_width="28dp"
-                android:layout_height="28dp"
-                android:background="@drawable/circle_green"
-                android:layout_marginHorizontal="3dp"
-                android:clickable="true"
-                android:focusable="true"/>
+            <View android:id="@+id/themeBlack" android:layout_width="28dp" android:layout_height="28dp" android:background="@drawable/circle_black" android:layout_marginHorizontal="3dp" android:clickable="true" android:focusable="true"/>
+            <View android:id="@+id/themePink" android:layout_width="28dp" android:layout_height="28dp" android:background="@drawable/circle_pink" android:layout_marginHorizontal="3dp" android:clickable="true" android:focusable="true"/>
+            <View android:id="@+id/themeBlue" android:layout_width="28dp" android:layout_height="28dp" android:background="@drawable/circle_blue" android:layout_marginHorizontal="3dp" android:clickable="true" android:focusable="true"/>
+            <View android:id="@+id/themeYellow" android:layout_width="28dp" android:layout_height="28dp" android:background="@drawable/circle_yellow" android:layout_marginHorizontal="3dp" android:clickable="true" android:focusable="true"/>
+            <View android:id="@+id/themeGreen" android:layout_width="28dp" android:layout_height="28dp" android:background="@drawable/circle_green" android:layout_marginHorizontal="3dp" android:clickable="true" android:focusable="true"/>
         </LinearLayout>
     </LinearLayout>
 
@@ -139,63 +104,52 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 
-    <!-- Connected top bar (shown when connected) -->
-    <LinearLayout
-        android:orientation="horizontal"
-        android:id="@+id/connectedPanel"
-        android:background="#66000000"
-        android:padding="8dp"
-        android:visibility="gone"
-        android:layout_width="match_parent"
+    <!-- Options button (bottom-right, shown when connected) -->
+    <TextView
+        android:textSize="12sp"
+        android:textColor="#55ffffff"
+        android:id="@+id/tvOptions"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-        <TextView
-            android:textSize="12sp"
-            android:textColor="#00ff00"
-            android:id="@+id/tvStatus"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_gravity="center_vertical"
-            android:text="Connected"/>
-        <Button
-            android:id="@+id/btnToggleLog"
-            android:layout_width="wrap_content"
-            android:layout_height="36dp"
-            android:text="Log"
-            android:textAllCaps="false"
-            android:textSize="10sp"
-            android:layout_marginEnd="4dp"/>
-        <Button
-            android:id="@+id/btnDisconnect"
-            android:layout_width="wrap_content"
-            android:layout_height="36dp"
-            android:text="Disconnect"
-            android:textAllCaps="false"
-            android:textSize="10sp"/>
-    </LinearLayout>
+        android:padding="8dp"
+        android:gravity="end"
+        android:visibility="gone"
+        android:text="options"
+        android:clickable="true"
+        android:focusable="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
-    <!-- Bottom settings panel (shown when connected) -->
+    <!-- Options overlay panel -->
     <LinearLayout
         android:orientation="vertical"
-        android:id="@+id/settingsPanel"
-        android:background="#66000000"
-        android:padding="8dp"
+        android:id="@+id/optionsPanel"
+        android:background="#cc000000"
+        android:padding="12dp"
         android:visibility="gone"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
-        <!-- Theme/skin selector in settings panel -->
+        app:layout_constraintTop_toTopOf="parent">
+        <!-- Close button -->
+        <TextView
+            android:textSize="16sp"
+            android:textColor="#ffffff"
+            android:id="@+id/btnCloseOptions"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="✕"
+            android:gravity="end"
+            android:clickable="true"
+            android:focusable="true"/>
+        <!-- Skin selector -->
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:layout_marginBottom="6dp">
+            android:layout_marginBottom="8dp">
             <TextView
                 android:textSize="10sp"
                 android:textColor="#88ffffff"
@@ -203,47 +157,30 @@
                 android:layout_height="wrap_content"
                 android:text="Skins"
                 android:layout_marginEnd="8dp"/>
-            <View
-                android:id="@+id/themeBlackS"
-                android:layout_width="28dp"
-                android:layout_height="28dp"
-                android:background="@drawable/circle_black"
-                android:layout_marginHorizontal="3dp"
-                android:clickable="true"
-                android:focusable="true"/>
-            <View
-                android:id="@+id/themePinkS"
-                android:layout_width="28dp"
-                android:layout_height="28dp"
-                android:background="@drawable/circle_pink"
-                android:layout_marginHorizontal="3dp"
-                android:clickable="true"
-                android:focusable="true"/>
-            <View
-                android:id="@+id/themeBlueS"
-                android:layout_width="28dp"
-                android:layout_height="28dp"
-                android:background="@drawable/circle_blue"
-                android:layout_marginHorizontal="3dp"
-                android:clickable="true"
-                android:focusable="true"/>
-            <View
-                android:id="@+id/themeYellowS"
-                android:layout_width="28dp"
-                android:layout_height="28dp"
-                android:background="@drawable/circle_yellow"
-                android:layout_marginHorizontal="3dp"
-                android:clickable="true"
-                android:focusable="true"/>
-            <View
-                android:id="@+id/themeGreenS"
-                android:layout_width="28dp"
-                android:layout_height="28dp"
-                android:background="@drawable/circle_green"
-                android:layout_marginHorizontal="3dp"
-                android:clickable="true"
-                android:focusable="true"/>
+            <View android:id="@+id/themeBlackO" android:layout_width="28dp" android:layout_height="28dp" android:background="@drawable/circle_black" android:layout_marginHorizontal="3dp" android:clickable="true" android:focusable="true"/>
+            <View android:id="@+id/themePinkO" android:layout_width="28dp" android:layout_height="28dp" android:background="@drawable/circle_pink" android:layout_marginHorizontal="3dp" android:clickable="true" android:focusable="true"/>
+            <View android:id="@+id/themeBlueO" android:layout_width="28dp" android:layout_height="28dp" android:background="@drawable/circle_blue" android:layout_marginHorizontal="3dp" android:clickable="true" android:focusable="true"/>
+            <View android:id="@+id/themeYellowO" android:layout_width="28dp" android:layout_height="28dp" android:background="@drawable/circle_yellow" android:layout_marginHorizontal="3dp" android:clickable="true" android:focusable="true"/>
+            <View android:id="@+id/themeGreenO" android:layout_width="28dp" android:layout_height="28dp" android:background="@drawable/circle_green" android:layout_marginHorizontal="3dp" android:clickable="true" android:focusable="true"/>
         </LinearLayout>
+        <!-- Log toggle -->
+        <Button
+            android:id="@+id/btnToggleLog"
+            android:layout_width="match_parent"
+            android:layout_height="36dp"
+            android:text="Log"
+            android:textAllCaps="false"
+            android:textSize="10sp"
+            android:layout_marginBottom="4dp"/>
+        <!-- Disconnect -->
+        <Button
+            android:id="@+id/btnDisconnect"
+            android:layout_width="match_parent"
+            android:layout_height="36dp"
+            android:text="Disconnect"
+            android:textAllCaps="false"
+            android:textSize="10sp"
+            android:layout_marginBottom="4dp"/>
         <!-- Screen-off toggle -->
         <LinearLayout
             android:orientation="horizontal"
@@ -264,37 +201,9 @@
                 android:layout_height="wrap_content"
                 android:text=""/>
         </LinearLayout>
-        <!-- Furry art -->
-        <TextView
-            android:textSize="8sp"
-            android:typeface="monospace"
-            android:gravity="end"
-            android:id="@+id/tvFurryArt"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="2dp"
-            android:lineSpacingExtra="0dp"
-            android:alpha="0.5"/>
     </LinearLayout>
 
-    <!-- Gamepad state list -->
-    <TextView
-        android:textSize="11sp"
-        android:typeface="monospace"
-        android:textColor="#aaffffff"
-        android:id="@+id/tvGamepads"
-        android:background="#44000000"
-        android:padding="8dp"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:text="No gamepads detected"
-        android:visibility="gone"
-        app:layout_constraintBottom_toTopOf="@+id/tvLog"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/connectedPanel"/>
-
-    <!-- Log panel (hidden by default) -->
+    <!-- Log panel -->
     <TextView
         android:textSize="10sp"
         android:typeface="monospace"

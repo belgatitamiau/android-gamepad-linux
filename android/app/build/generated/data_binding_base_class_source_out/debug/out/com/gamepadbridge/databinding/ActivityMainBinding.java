@@ -24,6 +24,9 @@ public final class ActivityMainBinding implements ViewBinding {
   private final ConstraintLayout rootView;
 
   @NonNull
+  public final TextView btnCloseOptions;
+
+  @NonNull
   public final Button btnConnect;
 
   @NonNull
@@ -39,19 +42,16 @@ public final class ActivityMainBinding implements ViewBinding {
   public final LinearLayout connectPanel;
 
   @NonNull
-  public final LinearLayout connectedPanel;
-
-  @NonNull
   public final EditText etHost;
 
   @NonNull
   public final EditText etPort;
 
   @NonNull
-  public final ConstraintLayout rootLayout;
+  public final LinearLayout optionsPanel;
 
   @NonNull
-  public final LinearLayout settingsPanel;
+  public final ConstraintLayout rootLayout;
 
   @NonNull
   public final Switch swScreenOff;
@@ -60,84 +60,75 @@ public final class ActivityMainBinding implements ViewBinding {
   public final View themeBlack;
 
   @NonNull
-  public final View themeBlackS;
+  public final View themeBlackO;
 
   @NonNull
   public final View themeBlue;
 
   @NonNull
-  public final View themeBlueS;
+  public final View themeBlueO;
 
   @NonNull
   public final View themeGreen;
 
   @NonNull
-  public final View themeGreenS;
+  public final View themeGreenO;
 
   @NonNull
   public final View themePink;
 
   @NonNull
-  public final View themePinkS;
+  public final View themePinkO;
 
   @NonNull
   public final View themeYellow;
 
   @NonNull
-  public final View themeYellowS;
-
-  @NonNull
-  public final TextView tvFurryArt;
-
-  @NonNull
-  public final TextView tvGamepads;
+  public final View themeYellowO;
 
   @NonNull
   public final TextView tvLog;
 
   @NonNull
-  public final TextView tvPlayerNumber;
+  public final TextView tvOptions;
 
   @NonNull
-  public final TextView tvStatus;
+  public final TextView tvPlayerNumber;
 
-  private ActivityMainBinding(@NonNull ConstraintLayout rootView, @NonNull Button btnConnect,
-      @NonNull Button btnDisconnect, @NonNull Button btnScanQR, @NonNull Button btnToggleLog,
-      @NonNull LinearLayout connectPanel, @NonNull LinearLayout connectedPanel,
-      @NonNull EditText etHost, @NonNull EditText etPort, @NonNull ConstraintLayout rootLayout,
-      @NonNull LinearLayout settingsPanel, @NonNull Switch swScreenOff, @NonNull View themeBlack,
-      @NonNull View themeBlackS, @NonNull View themeBlue, @NonNull View themeBlueS,
-      @NonNull View themeGreen, @NonNull View themeGreenS, @NonNull View themePink,
-      @NonNull View themePinkS, @NonNull View themeYellow, @NonNull View themeYellowS,
-      @NonNull TextView tvFurryArt, @NonNull TextView tvGamepads, @NonNull TextView tvLog,
-      @NonNull TextView tvPlayerNumber, @NonNull TextView tvStatus) {
+  private ActivityMainBinding(@NonNull ConstraintLayout rootView, @NonNull TextView btnCloseOptions,
+      @NonNull Button btnConnect, @NonNull Button btnDisconnect, @NonNull Button btnScanQR,
+      @NonNull Button btnToggleLog, @NonNull LinearLayout connectPanel, @NonNull EditText etHost,
+      @NonNull EditText etPort, @NonNull LinearLayout optionsPanel,
+      @NonNull ConstraintLayout rootLayout, @NonNull Switch swScreenOff, @NonNull View themeBlack,
+      @NonNull View themeBlackO, @NonNull View themeBlue, @NonNull View themeBlueO,
+      @NonNull View themeGreen, @NonNull View themeGreenO, @NonNull View themePink,
+      @NonNull View themePinkO, @NonNull View themeYellow, @NonNull View themeYellowO,
+      @NonNull TextView tvLog, @NonNull TextView tvOptions, @NonNull TextView tvPlayerNumber) {
     this.rootView = rootView;
+    this.btnCloseOptions = btnCloseOptions;
     this.btnConnect = btnConnect;
     this.btnDisconnect = btnDisconnect;
     this.btnScanQR = btnScanQR;
     this.btnToggleLog = btnToggleLog;
     this.connectPanel = connectPanel;
-    this.connectedPanel = connectedPanel;
     this.etHost = etHost;
     this.etPort = etPort;
+    this.optionsPanel = optionsPanel;
     this.rootLayout = rootLayout;
-    this.settingsPanel = settingsPanel;
     this.swScreenOff = swScreenOff;
     this.themeBlack = themeBlack;
-    this.themeBlackS = themeBlackS;
+    this.themeBlackO = themeBlackO;
     this.themeBlue = themeBlue;
-    this.themeBlueS = themeBlueS;
+    this.themeBlueO = themeBlueO;
     this.themeGreen = themeGreen;
-    this.themeGreenS = themeGreenS;
+    this.themeGreenO = themeGreenO;
     this.themePink = themePink;
-    this.themePinkS = themePinkS;
+    this.themePinkO = themePinkO;
     this.themeYellow = themeYellow;
-    this.themeYellowS = themeYellowS;
-    this.tvFurryArt = tvFurryArt;
-    this.tvGamepads = tvGamepads;
+    this.themeYellowO = themeYellowO;
     this.tvLog = tvLog;
+    this.tvOptions = tvOptions;
     this.tvPlayerNumber = tvPlayerNumber;
-    this.tvStatus = tvStatus;
   }
 
   @Override
@@ -167,6 +158,12 @@ public final class ActivityMainBinding implements ViewBinding {
     // This is done to optimize the compiled bytecode for size and performance.
     int id;
     missingId: {
+      id = R.id.btnCloseOptions;
+      TextView btnCloseOptions = ViewBindings.findChildViewById(rootView, id);
+      if (btnCloseOptions == null) {
+        break missingId;
+      }
+
       id = R.id.btnConnect;
       Button btnConnect = ViewBindings.findChildViewById(rootView, id);
       if (btnConnect == null) {
@@ -197,12 +194,6 @@ public final class ActivityMainBinding implements ViewBinding {
         break missingId;
       }
 
-      id = R.id.connectedPanel;
-      LinearLayout connectedPanel = ViewBindings.findChildViewById(rootView, id);
-      if (connectedPanel == null) {
-        break missingId;
-      }
-
       id = R.id.etHost;
       EditText etHost = ViewBindings.findChildViewById(rootView, id);
       if (etHost == null) {
@@ -215,13 +206,13 @@ public final class ActivityMainBinding implements ViewBinding {
         break missingId;
       }
 
-      ConstraintLayout rootLayout = (ConstraintLayout) rootView;
-
-      id = R.id.settingsPanel;
-      LinearLayout settingsPanel = ViewBindings.findChildViewById(rootView, id);
-      if (settingsPanel == null) {
+      id = R.id.optionsPanel;
+      LinearLayout optionsPanel = ViewBindings.findChildViewById(rootView, id);
+      if (optionsPanel == null) {
         break missingId;
       }
+
+      ConstraintLayout rootLayout = (ConstraintLayout) rootView;
 
       id = R.id.swScreenOff;
       Switch swScreenOff = ViewBindings.findChildViewById(rootView, id);
@@ -235,9 +226,9 @@ public final class ActivityMainBinding implements ViewBinding {
         break missingId;
       }
 
-      id = R.id.themeBlackS;
-      View themeBlackS = ViewBindings.findChildViewById(rootView, id);
-      if (themeBlackS == null) {
+      id = R.id.themeBlackO;
+      View themeBlackO = ViewBindings.findChildViewById(rootView, id);
+      if (themeBlackO == null) {
         break missingId;
       }
 
@@ -247,9 +238,9 @@ public final class ActivityMainBinding implements ViewBinding {
         break missingId;
       }
 
-      id = R.id.themeBlueS;
-      View themeBlueS = ViewBindings.findChildViewById(rootView, id);
-      if (themeBlueS == null) {
+      id = R.id.themeBlueO;
+      View themeBlueO = ViewBindings.findChildViewById(rootView, id);
+      if (themeBlueO == null) {
         break missingId;
       }
 
@@ -259,9 +250,9 @@ public final class ActivityMainBinding implements ViewBinding {
         break missingId;
       }
 
-      id = R.id.themeGreenS;
-      View themeGreenS = ViewBindings.findChildViewById(rootView, id);
-      if (themeGreenS == null) {
+      id = R.id.themeGreenO;
+      View themeGreenO = ViewBindings.findChildViewById(rootView, id);
+      if (themeGreenO == null) {
         break missingId;
       }
 
@@ -271,9 +262,9 @@ public final class ActivityMainBinding implements ViewBinding {
         break missingId;
       }
 
-      id = R.id.themePinkS;
-      View themePinkS = ViewBindings.findChildViewById(rootView, id);
-      if (themePinkS == null) {
+      id = R.id.themePinkO;
+      View themePinkO = ViewBindings.findChildViewById(rootView, id);
+      if (themePinkO == null) {
         break missingId;
       }
 
@@ -283,21 +274,9 @@ public final class ActivityMainBinding implements ViewBinding {
         break missingId;
       }
 
-      id = R.id.themeYellowS;
-      View themeYellowS = ViewBindings.findChildViewById(rootView, id);
-      if (themeYellowS == null) {
-        break missingId;
-      }
-
-      id = R.id.tvFurryArt;
-      TextView tvFurryArt = ViewBindings.findChildViewById(rootView, id);
-      if (tvFurryArt == null) {
-        break missingId;
-      }
-
-      id = R.id.tvGamepads;
-      TextView tvGamepads = ViewBindings.findChildViewById(rootView, id);
-      if (tvGamepads == null) {
+      id = R.id.themeYellowO;
+      View themeYellowO = ViewBindings.findChildViewById(rootView, id);
+      if (themeYellowO == null) {
         break missingId;
       }
 
@@ -307,23 +286,23 @@ public final class ActivityMainBinding implements ViewBinding {
         break missingId;
       }
 
+      id = R.id.tvOptions;
+      TextView tvOptions = ViewBindings.findChildViewById(rootView, id);
+      if (tvOptions == null) {
+        break missingId;
+      }
+
       id = R.id.tvPlayerNumber;
       TextView tvPlayerNumber = ViewBindings.findChildViewById(rootView, id);
       if (tvPlayerNumber == null) {
         break missingId;
       }
 
-      id = R.id.tvStatus;
-      TextView tvStatus = ViewBindings.findChildViewById(rootView, id);
-      if (tvStatus == null) {
-        break missingId;
-      }
-
-      return new ActivityMainBinding((ConstraintLayout) rootView, btnConnect, btnDisconnect,
-          btnScanQR, btnToggleLog, connectPanel, connectedPanel, etHost, etPort, rootLayout,
-          settingsPanel, swScreenOff, themeBlack, themeBlackS, themeBlue, themeBlueS, themeGreen,
-          themeGreenS, themePink, themePinkS, themeYellow, themeYellowS, tvFurryArt, tvGamepads,
-          tvLog, tvPlayerNumber, tvStatus);
+      return new ActivityMainBinding((ConstraintLayout) rootView, btnCloseOptions, btnConnect,
+          btnDisconnect, btnScanQR, btnToggleLog, connectPanel, etHost, etPort, optionsPanel,
+          rootLayout, swScreenOff, themeBlack, themeBlackO, themeBlue, themeBlueO, themeGreen,
+          themeGreenO, themePink, themePinkO, themeYellow, themeYellowO, tvLog, tvOptions,
+          tvPlayerNumber);
     }
     String missingId = rootView.getResources().getResourceName(id);
     throw new NullPointerException("Missing required view with ID: ".concat(missingId));
