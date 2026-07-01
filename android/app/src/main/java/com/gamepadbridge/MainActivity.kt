@@ -10,9 +10,6 @@ import android.graphics.drawable.GradientDrawable
 import android.hardware.input.InputManager
 import android.os.Bundle
 import android.os.IBinder
-import android.text.SpannableString
-import android.text.Spanned
-import android.text.style.ForegroundColorSpan
 import android.util.Log
 import android.view.GestureDetector
 import android.view.InputDevice
@@ -34,46 +31,41 @@ class MainActivity : AppCompatActivity(), InputManager.InputDeviceListener {
     private lateinit var inputManager: InputManager
     private lateinit var prefs: SharedPreferences
 
-    // Views
     private lateinit var etHost: EditText
     private lateinit var etPort: EditText
     private lateinit var btnConnect: Button
     private lateinit var btnScanQR: Button
     private lateinit var btnDisconnect: Button
     private lateinit var btnToggleLog: Button
-    private lateinit var tvStatus: TextView
+    private lateinit var btnCloseOptions: TextView
+    private lateinit var tvOptions: TextView
     private lateinit var tvLog: TextView
-    private lateinit var tvGamepads: TextView
-    private lateinit var tvFurryArt: TextView
     private lateinit var tvPlayerNumber: TextView
     private lateinit var rootLayout: ConstraintLayout
     private lateinit var connectPanel: View
-    private lateinit var connectedPanel: View
-    private lateinit var settingsPanel: View
+    private lateinit var optionsPanel: View
     private lateinit var swScreenOff: Switch
 
-    // Theme views (connect panel)
     private lateinit var themeBlack: View
     private lateinit var themePink: View
     private lateinit var themeBlue: View
     private lateinit var themeYellow: View
     private lateinit var themeGreen: View
-    // Theme views (settings panel)
-    private lateinit var themeBlackS: View
-    private lateinit var themePinkS: View
-    private lateinit var themeBlueS: View
-    private lateinit var themeYellowS: View
-    private lateinit var themeGreenS: View
+    private lateinit var themeBlackO: View
+    private lateinit var themePinkO: View
+    private lateinit var themeBlueO: View
+    private lateinit var themeYellowO: View
+    private lateinit var themeGreenO: View
     private val allThemeViews = mutableListOf<View>()
 
     private var service: GamepadBridgeService? = null
     private var bound = false
     private var pendingConnect: Pair<String, Int>? = null
     private var logVisible = false
+    private var optionsVisible = false
     private var screenOff = false
     private val sbLog = StringBuilder()
-    private val GAMEPAD_SOURCES = InputDevice.SOURCE_GAMEPAD or InputDevice.SOURCE_JOYSTICK or 0x00000011
-
+    private val GAMEPAD_SOURCES = InputDevice.SOURCE_GAMEPAD or InputDevice.SOURCE_JOYSTICK
     private var currentTheme = 0
     private lateinit var gestureDetector: GestureDetector
 
@@ -139,30 +131,34 @@ class MainActivity : AppCompatActivity(), InputManager.InputDeviceListener {
         btnScanQR = findViewById(R.id.btnScanQR)
         btnDisconnect = findViewById(R.id.btnDisconnect)
         btnToggleLog = findViewById(R.id.btnToggleLog)
-        tvStatus = findViewById(R.id.tvStatus)
+        btnCloseOptions = findViewById(R.id.btnCloseOptions)
+        tvOptions = findViewById(R.id.tvOptions)
         tvLog = findViewById(R.id.tvLog)
-        tvGamepads = findViewById(R.id.tvGamepads)
-        tvFurryArt = findViewById(R.id.tvFurryArt)
         tvPlayerNumber = findViewById(R.id.tvPlayerNumber)
         rootLayout = findViewById(R.id.rootLayout)
         connectPanel = findViewById(R.id.connectPanel)
-        connectedPanel = findViewById(R.id.connectedPanel)
-        settingsPanel = findViewById(R.id.settingsPanel)
+        optionsPanel = findViewById(R.id.optionsPanel)
         swScreenOff = findViewById(R.id.swScreenOff)
         themeBlack = findViewById(R.id.themeBlack)
         themePink = findViewById(R.id.themePink)
         themeBlue = findViewById(R.id.themeBlue)
         themeYellow = findViewById(R.id.themeYellow)
         themeGreen = findViewById(R.id.themeGreen)
-        themeBlackS = findViewById(R.id.themeBlackS)
-        themePinkS = findViewById(R.id.themePinkS)
-        themeBlueS = findViewById(R.id.themeBlueS)
-        themeYellowS = findViewById(R.id.themeYellowS)
-        themeGreenS = findViewById(R.id.themeGreenS)
+        themeBlackO = findViewById(R.id.themeBlackO)
+        themePinkO = findViewById(R.id.themePinkO)
+        themeBlueO = findViewById(R.id.themeBlueO)
+        themeYellowO = findViewById(R.id.themeYellowO)
+        themeGreenO = findViewById(R.id.themeGreenO)
         allThemeViews.addAll(listOf(themeBlack, themePink, themeBlue, themeYellow, themeGreen,
-            themeBlackS, themePinkS, themeBlueS, themeYellowS, themeGreenS))
+            themeBlackO, themePinkO, themeBlueO, themeYellowO, themeGreenO))
 
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+        window.decorView.setOnSystemUiVisibilityChangeListener { visibility ->
+            if (visibility and View.SYSTEM_UI_FLAG_FULLSCREEN == 0) {
+                window.decorView.postDelayed({ hideSystemUI() }, 3000)
+            }
+        }
+        hideSystemUI()
 
         gestureDetector = GestureDetector(this, object : GestureDetector.SimpleOnGestureListener() {
             override fun onDoubleTap(e: MotionEvent): Boolean {
@@ -179,7 +175,6 @@ class MainActivity : AppCompatActivity(), InputManager.InputDeviceListener {
         rootLayout.isClickable = true
         rootLayout.isFocusable = true
 
-        // Restore prefs
         prefs.getString("host", "")?.takeIf { it.isNotEmpty() }?.let { savedHost ->
             etHost.setText(savedHost)
             etPort.setText(prefs.getInt("port", 60001).toString())
@@ -189,18 +184,19 @@ class MainActivity : AppCompatActivity(), InputManager.InputDeviceListener {
         tvLog.visibility = View.GONE
         applyTheme()
 
-        // Theme clicks
         themeBlack.setOnClickListener { selectTheme(0) }
         themePink.setOnClickListener { selectTheme(1) }
         themeBlue.setOnClickListener { selectTheme(2) }
         themeYellow.setOnClickListener { selectTheme(3) }
         themeGreen.setOnClickListener { selectTheme(4) }
-        themeBlackS.setOnClickListener { selectTheme(0) }
-        themePinkS.setOnClickListener { selectTheme(1) }
-        themeBlueS.setOnClickListener { selectTheme(2) }
-        themeYellowS.setOnClickListener { selectTheme(3) }
-        themeGreenS.setOnClickListener { selectTheme(4) }
+        themeBlackO.setOnClickListener { selectTheme(0) }
+        themePinkO.setOnClickListener { selectTheme(1) }
+        themeBlueO.setOnClickListener { selectTheme(2) }
+        themeYellowO.setOnClickListener { selectTheme(3) }
+        themeGreenO.setOnClickListener { selectTheme(4) }
 
+        tvOptions.setOnClickListener { toggleOptions() }
+        btnCloseOptions.setOnClickListener { toggleOptions() }
         btnConnect.setOnClickListener { doConnect() }
         btnDisconnect.setOnClickListener { doDisconnect() }
         btnScanQR.setOnClickListener { scanQR() }
@@ -210,19 +206,17 @@ class MainActivity : AppCompatActivity(), InputManager.InputDeviceListener {
             applyScreenOff()
         }
 
-        applyFurryArt()
         log("App started")
         updateUI()
     }
 
     override fun onResume() {
         super.onResume()
+        hideSystemUI()
         inputManager.registerInputDeviceListener(this, null)
         if (!bound) {
             bindService(Intent(this, GamepadBridgeService::class.java), connection, BIND_AUTO_CREATE)
         }
-        listGamepads()
-
         val savedHost = prefs.getString("host", "") ?: ""
         val autoDone = prefs.getBoolean("auto_connect_done", false)
         if (savedHost.isNotEmpty() &&
@@ -235,6 +229,11 @@ class MainActivity : AppCompatActivity(), InputManager.InputDeviceListener {
         }
     }
 
+    override fun onWindowFocusChanged(hasFocus: Boolean) {
+        super.onWindowFocusChanged(hasFocus)
+        if (hasFocus) hideSystemUI()
+    }
+
     override fun onPause() {
         super.onPause()
         inputManager.unregisterInputDeviceListener(this)
@@ -244,7 +243,22 @@ class MainActivity : AppCompatActivity(), InputManager.InputDeviceListener {
         }
     }
 
+    private fun hideSystemUI() {
+        window.decorView.systemUiVisibility = (
+            View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+            or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+            or View.SYSTEM_UI_FLAG_FULLSCREEN
+            or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+            or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+            or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+        )
+    }
+
     override fun onBackPressed() {
+        if (optionsVisible) {
+            toggleOptions()
+            return
+        }
         moveTaskToBack(true)
     }
 
@@ -259,9 +273,7 @@ class MainActivity : AppCompatActivity(), InputManager.InputDeviceListener {
         val t = themes[currentTheme]
         rootLayout.setBackgroundColor(t.bg)
         setViewBg(connectPanel, t.bg2)
-        setViewBg(connectedPanel, t.bg2)
-        setViewBg(settingsPanel, t.bg2)
-        setViewBg(tvGamepads, (t.bg2 and 0x00FFFFFF) or 0x44000000.toInt())
+        setViewBg(optionsPanel, (t.bg and 0x00FFFFFF) or 0xCC000000.toInt())
         setViewBg(tvLog, (t.bg and 0x00FFFFFF) or 0x88000000.toInt())
 
         val btnStyle = GradientDrawable().apply {
@@ -283,9 +295,9 @@ class MainActivity : AppCompatActivity(), InputManager.InputDeviceListener {
         btnToggleLog.background = logBtnStyle
         btnToggleLog.setTextColor(t.accent)
 
-        tvGamepads.setTextColor(t.text)
         tvLog.setTextColor(t.text2)
         tvPlayerNumber.setTextColor(t.accent)
+        tvOptions.setTextColor((t.accent and 0x00FFFFFF) or 0x55000000.toInt())
 
         allThemeViews.forEachIndexed { i, v ->
             val themeIdx = i % 5
@@ -309,23 +321,27 @@ class MainActivity : AppCompatActivity(), InputManager.InputDeviceListener {
     private fun applyScreenOff() {
         if (screenOff) {
             tvPlayerNumber.visibility = View.GONE
-            connectedPanel.visibility = View.GONE
-            settingsPanel.visibility = View.GONE
-            tvGamepads.visibility = View.GONE
+            tvOptions.visibility = View.GONE
+            optionsPanel.visibility = View.GONE
             tvLog.visibility = View.GONE
+            optionsVisible = false
             rootLayout.setBackgroundColor(Color.BLACK)
             window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         } else {
             if (service?.connected == true) {
-                connectedPanel.visibility = View.VISIBLE
-                settingsPanel.visibility = View.VISIBLE
                 tvPlayerNumber.visibility = View.VISIBLE
+                tvOptions.visibility = View.VISIBLE
             } else {
                 connectPanel.visibility = View.VISIBLE
             }
             applyTheme()
             tvLog.visibility = if (logVisible) View.VISIBLE else View.GONE
         }
+    }
+
+    private fun toggleOptions() {
+        optionsVisible = !optionsVisible
+        optionsPanel.visibility = if (optionsVisible) View.VISIBLE else View.GONE
     }
 
     private fun toggleLog() {
@@ -365,6 +381,8 @@ class MainActivity : AppCompatActivity(), InputManager.InputDeviceListener {
         screenOff = false
         swScreenOff.isChecked = false
         logVisible = false
+        optionsVisible = false
+        optionsPanel.visibility = View.GONE
         tvLog.visibility = View.GONE
         btnToggleLog.text = "Log"
         if (bound) {
@@ -381,19 +399,6 @@ class MainActivity : AppCompatActivity(), InputManager.InputDeviceListener {
         qrLauncher.launch(Intent(this, QRScannerActivity::class.java))
     }
 
-    private fun applyFurryArt() {
-        val lines = FURRY_ART.split("\n")
-        val spannable = SpannableString(FURRY_ART)
-        var start = 0
-        for ((i, line) in lines.withIndex()) {
-            val end = line.length + start + 1
-            val color = TRANS_COLORS[i % TRANS_COLORS.size]
-            spannable.setSpan(ForegroundColorSpan(color), start, minOf(end, spannable.length), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
-            start = end
-        }
-        tvFurryArt.text = spannable
-    }
-
     private fun updateUI() {
         val srv = service
         val isConnected = srv?.connected == true
@@ -405,33 +410,22 @@ class MainActivity : AppCompatActivity(), InputManager.InputDeviceListener {
 
         btnConnect.isEnabled = !isConnected
         btnScanQR.isEnabled = !isConnected
-        btnDisconnect.isEnabled = isConnected
-        btnToggleLog.isEnabled = isConnected
         connectPanel.visibility = if (isConnected) View.GONE else View.VISIBLE
-        connectedPanel.visibility = if (isConnected) View.VISIBLE else View.GONE
-        settingsPanel.visibility = if (isConnected) View.VISIBLE else View.GONE
-
+        tvOptions.visibility = if (isConnected) View.VISIBLE else View.GONE
         tvLog.visibility = if (isConnected && logVisible) View.VISIBLE else View.GONE
 
         if (isConnected) {
             val mgr = srv?.gamepadManager
             val activeSlots = mgr?.getActiveSlotIds() ?: emptyList()
-            if (activeSlots.isNotEmpty()) {
-                tvPlayerNumber.text = activeSlots.joinToString("\n") { slot ->
-                    "PLAYER ${slot + 1}"
-                }
+            tvPlayerNumber.text = if (activeSlots.isNotEmpty()) {
+                activeSlots.joinToString("\n") { slot -> "PLAYER ${slot + 1}" }
             } else {
-                tvPlayerNumber.text = "CONNECTED"
+                "PLAYER 1"
             }
             tvPlayerNumber.visibility = View.VISIBLE
             tvPlayerNumber.bringToFront()
-            tvStatus.text = "Connected: ${activeSlots.size} gamepad(s)"
-            tvStatus.setTextColor(themes[currentTheme].accent)
         } else {
             tvPlayerNumber.visibility = View.GONE
-            val hasError = srv?.connectionError != null
-            tvStatus.text = if (hasError) "Error: ${srv?.connectionError}" else ""
-            tvStatus.setTextColor(if (hasError) Color.RED else themes[currentTheme].text2)
         }
 
         applyTheme()
@@ -459,11 +453,7 @@ class MainActivity : AppCompatActivity(), InputManager.InputDeviceListener {
         }
         if (sb.isEmpty()) sb.append("No gamepads detected\n")
         sb.append("\nActive: ${mgr.getSlotCount()}/4\n")
-        runOnUiThread {
-            tvGamepads.text = sb.toString()
-            tvGamepads.visibility = View.VISIBLE
-            updateUI()
-        }
+        runOnUiThread { updateUI() }
     }
 
     private fun listGamepads() {
@@ -643,26 +633,5 @@ class MainActivity : AppCompatActivity(), InputManager.InputDeviceListener {
     companion object {
         private const val TAG = "GamepadBridge"
         private const val PREFS_NAME = "gb_prefs"
-
-        private val TRANS_COLORS = intArrayOf(
-            Color.CYAN, Color.MAGENTA, Color.WHITE, Color.MAGENTA, Color.CYAN
-        )
-
-        private val FURRY_ART = "\n" +
-            " ⠀⠀ ⠀⠀⠀⠀⠀⠀⠀⣠⠦⣄⠀⠀⠀⠀⠀⠀⠀⡷⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀\n" +
-            " ⠀⠀⠀⠀⠀⠀⠀⠀⢀⢞⡡⠤⠒⠓⠒⠒⠒⠒⠢⠤⣇⠈⠢⡀⠀⠀⠀⠀⠀⣀⣀⣀⠤⠤⠔⠒⠒⠂⢇⠀⠀⠀⠀⠀⠀⠀\n" +
-            " ⠀⠀⠀⠀⠀⠀⠀⢀⠎⠉⢉⡚⠯⠴⠦⠄⠀⠀⠀⠀⠀⠁⠀⠬⠖⠒⠊⠉⠉⠀⠀⠀⠀⠀⠀⠀⢀⣀⢸⠀⠀⠀⠀⠀⠀⠀\n" +
-            " ⠀⠀⠀⠀⠀⠀⢀⡼⢒⠉⠰⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⠠⠒⠉⢀⠃⠸⠀⠀⠀⠀⠀\n" +
-            " ⠀⠀⠀⠀⢠⠞⠊⠀⠈⢢⡱⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢠⡮⠁⢀⠃⠀⡘⠀⡇⠀⠀⠀⠀⠀⠀\n" +
-            " ⠀⠀⠀⢀⠇⣀⣤⠖⠊⠁⠈⢷⠀⠀⠀⠀⠀⢀⡴⠁⠀⠀⠀⠀⠀⠀⠀⠀⣛⡅⠀⣠⠦⡄⢠⠁⠸⠀⠀⠀⠀⠀⠀\n" +
-            " ⠀⠀⠀⢸⢾⠟⠁⠀⠀⠀⢀⣀⣀⣀⢠⡴⣞⢕⣡⠤⠤⠤⠤⠤⢄⡀⠀⠀⢠⠀⠀⢀⠜⡠⠃⢠⠃⠀⠀⠀⠀⠀⠀⠀\n" +
-            " ⠀⠀⠀⠀⡜⠀⠀⠀⢠⣈⣡⣴⣽⣯⠑⠉⠀⢀⢤⣰⣶⣤⣤⣤⣤⣀⣀⣠⠘⠠⠤⣒⠟⠁⡰⠃⠀⠀⠀⠀⠀⠀⠀⠀⠀\n" +
-            " ⠀⠀⠀⠀⡇⠀⠀⠀⠨⣿⡏⠉⢹⣿⠂⠀⠀⢰⡛⠉⠸⣿⣿⡇⠍⣿⣿⠅⠀⢗⠊⢀⣰⠾⡆⠀⠀⠀⠀⠀⠀⠀⠀⠀\n" +
-            " ⠀⠀⠀⠀⢱⠀⠀⠀⡘⡘⡇⠀⠰⣿⠀⠀⠀⢸⠀⠀⠈⣿⡿⠃⢰⠇⠀⠀⠀⠠⡿⠅⠃⠀⢸⠀⠀⠀⠀⠀⠀⠀⠀\n" +
-            " ⠀⠀⠀⠀⠀⢧⡀⠀⡇⡷⠿⠀⣴⣯⣤⠤⠒⠈⠀⠀⠀⠀⢠⠠⡸⠲⡀⠀⠀⠀⠃⠀⢄⠀⠀⡆⠀⠀⠀⠀⠀⠀\n" +
-            " ⠀⠀⠀⠀⠀⠀⢳⣄⢻⠐⡀⠀⠁⠉⠁⠀⠀⠀⢀⠄⠀⠀⠀⠀⠀⣠⠁⠀⡆⢀⠆⠀⠈⢆⢀⠃⠀⠀⠀⠀⠀⠀⠀\n" +
-            " ⠀⠀⠀⢀⣤⣫⠆⠙⢣⠈⡒⢤⣈⠉⠉⠁⠉⠁⠀⢀⡀⡤⠒⢍⢸⢀⡜⠹⠊⠀⠀⠀⠘⡞⠀⠀⠀⠀⠀⠀⠀⠀\n" +
-            " ⠀⠀⠀⠉⠉⡙⠀⠀⠀⡗⠧⠎⠀⠉⠐⠒⢲⡶⠟⠋⠀⢀⠀⠀⠙⠋⠀⣀⠴⠀⠀⠀⠀⡇⠀⠀⠀⠀⠀⠀⠀⠀\n" +
-            " ⠀⠀⠀⠀⠀⠀⡇⠀⠀⠀⣁⡀⠀⠀⠀⠀⠀⣸⠀⠀⢀⣀⠨⠭⠙⠛⠉⠀⠀⠈⠹⠶⠀⢸⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀\n"
     }
 }
