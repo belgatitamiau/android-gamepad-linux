@@ -10,7 +10,7 @@ import hashlib
 import threading
 from collections import defaultdict
 
-from evdev import UInput, ecodes as e
+import uinput
 
 # -------------------------------------------------------------------
 # Button bit definitions
@@ -35,25 +35,21 @@ BIT_MAP = {
     'HOME':   1 << 16,
 }
 
-XBOX_EVENTS = {
-    e.EV_KEY: [
-        e.BTN_A, e.BTN_B, e.BTN_X, e.BTN_Y,
-        e.BTN_TL, e.BTN_TR,
-        e.BTN_SELECT, e.BTN_START, e.BTN_MODE,
-        e.BTN_THUMBL, e.BTN_THUMBR,
-        e.BTN_DPAD_UP, e.BTN_DPAD_DOWN, e.BTN_DPAD_LEFT, e.BTN_DPAD_RIGHT,
-    ],
-    e.EV_ABS: [
-        (e.ABS_X, (0, -32768, 32767, 0, 0, 0)),
-        (e.ABS_Y, (0, -32768, 32767, 0, 0, 0)),
-        (e.ABS_RX, (0, -32768, 32767, 0, 0, 0)),
-        (e.ABS_RY, (0, -32768, 32767, 0, 0, 0)),
-        (e.ABS_Z, (0, 0, 255, 0, 0, 0)),
-        (e.ABS_RZ, (0, 0, 255, 0, 0, 0)),
-        (e.ABS_HAT0X, (0, -1, 1, 0, 0, 0)),
-        (e.ABS_HAT0Y, (0, -1, 1, 0, 0, 0)),
-    ],
-}
+XBOX_EVENTS = [
+    uinput.BTN_A, uinput.BTN_B, uinput.BTN_X, uinput.BTN_Y,
+    uinput.BTN_TL, uinput.BTN_TR,
+    uinput.BTN_SELECT, uinput.BTN_START, uinput.BTN_MODE,
+    uinput.BTN_THUMBL, uinput.BTN_THUMBR,
+    uinput.ABS_X + (-32768, 32767, 0, 0),
+    uinput.ABS_Y + (-32768, 32767, 0, 0),
+    uinput.ABS_RX + (-32768, 32767, 0, 0),
+    uinput.ABS_RY + (-32768, 32767, 0, 0),
+    uinput.ABS_Z + (0, 255, 0, 0),
+    uinput.ABS_RZ + (0, 255, 0, 0),
+    uinput.ABS_HAT0X + (-1, 1, 0, 0),
+    uinput.ABS_HAT0Y + (-1, 1, 0, 0),
+
+]
 
 
 class GamepadState:
@@ -66,6 +62,7 @@ class GamepadState:
         self.lt = 0
         self.rt = 0
         self.gamepad_id = 0
+        self.last_seen = 0.0
 
     def apply_android_report(self, data: bytes):
         if len(data) < 16:
@@ -78,9 +75,11 @@ class GamepadState:
         self.ry = struct.unpack_from('<h', data, 12)[0]
         self.lt = data[14]
         self.rt = data[15]
+        self.last_seen = time.time()
 
     def as_dict(self):
         pressed = [k for k, v in BIT_MAP.items() if self.buttons & v]
+        connected = (time.time() - self.last_seen) < 2.0
         dpad = self._dpad_str()
         mag_left = min(math.hypot(self.lx / 32767, self.ly / 32767), 1.0)
         mag_right = min(math.hypot(self.rx / 32767, self.ry / 32767), 1.0)
@@ -97,6 +96,7 @@ class GamepadState:
             'dpad': dpad,
             'buttons': pressed,
             'gamepad_id': self.gamepad_id,
+            'connected': connected,
         }
 
     def _dpad_str(self):
@@ -126,11 +126,10 @@ class VirtualGamepad:
 
     def _create(self):
         try:
-            self.device = UInput(
+            self.device = uinput.Device(
                 XBOX_EVENTS,
                 name=f'GamepadBridge Gamepad {self.gamepad_id}',
                 vendor=0x045e, product=0x028e, version=0x110,
-                input_props=[0],
             )
             print(f'[uinput] Created virtual gamepad #{self.gamepad_id}')
         except Exception as e:
@@ -143,34 +142,30 @@ class VirtualGamepad:
         with self._lock:
             d = self.device
             try:
-                d.write(e.EV_KEY, e.BTN_A, 1 if state.buttons & BIT_MAP['A'] else 0)
-                d.write(e.EV_KEY, e.BTN_B, 1 if state.buttons & BIT_MAP['B'] else 0)
-                d.write(e.EV_KEY, e.BTN_X, 1 if state.buttons & BIT_MAP['X'] else 0)
-                d.write(e.EV_KEY, e.BTN_Y, 1 if state.buttons & BIT_MAP['Y'] else 0)
-                d.write(e.EV_KEY, e.BTN_TL, 1 if state.buttons & BIT_MAP['LB'] else 0)
-                d.write(e.EV_KEY, e.BTN_TR, 1 if state.buttons & BIT_MAP['RB'] else 0)
-                d.write(e.EV_KEY, e.BTN_SELECT, 1 if state.buttons & BIT_MAP['SELECT'] else 0)
-                d.write(e.EV_KEY, e.BTN_START, 1 if state.buttons & BIT_MAP['START'] else 0)
-                d.write(e.EV_KEY, e.BTN_MODE, 1 if state.buttons & BIT_MAP['HOME'] else 0)
-                d.write(e.EV_KEY, e.BTN_THUMBL, 1 if state.buttons & BIT_MAP['L3'] else 0)
-                d.write(e.EV_KEY, e.BTN_THUMBR, 1 if state.buttons & BIT_MAP['R3'] else 0)
-                d.write(e.EV_KEY, e.BTN_DPAD_UP, 1 if state.buttons & BIT_MAP['DPAD_UP'] else 0)
-                d.write(e.EV_KEY, e.BTN_DPAD_DOWN, 1 if state.buttons & BIT_MAP['DPAD_DOWN'] else 0)
-                d.write(e.EV_KEY, e.BTN_DPAD_LEFT, 1 if state.buttons & BIT_MAP['DPAD_LEFT'] else 0)
-                d.write(e.EV_KEY, e.BTN_DPAD_RIGHT, 1 if state.buttons & BIT_MAP['DPAD_RIGHT'] else 0)
-                d.write(e.EV_ABS, e.ABS_X, state.lx)
-                d.write(e.EV_ABS, e.ABS_Y, state.ly)
-                d.write(e.EV_ABS, e.ABS_RX, state.rx)
-                d.write(e.EV_ABS, e.ABS_RY, state.ry)
-                d.write(e.EV_ABS, e.ABS_Z, state.lt)
-                d.write(e.EV_ABS, e.ABS_RZ, state.rt)
+                d.emit(uinput.BTN_A, 1 if state.buttons & BIT_MAP['A'] else 0)
+                d.emit(uinput.BTN_B, 1 if state.buttons & BIT_MAP['B'] else 0)
+                d.emit(uinput.BTN_X, 1 if state.buttons & BIT_MAP['X'] else 0)
+                d.emit(uinput.BTN_Y, 1 if state.buttons & BIT_MAP['Y'] else 0)
+                d.emit(uinput.BTN_TL, 1 if state.buttons & BIT_MAP['LB'] else 0)
+                d.emit(uinput.BTN_TR, 1 if state.buttons & BIT_MAP['RB'] else 0)
+                d.emit(uinput.BTN_SELECT, 1 if state.buttons & BIT_MAP['SELECT'] else 0)
+                d.emit(uinput.BTN_START, 1 if state.buttons & BIT_MAP['START'] else 0)
+                d.emit(uinput.BTN_MODE, 1 if state.buttons & BIT_MAP['HOME'] else 0)
+                d.emit(uinput.BTN_THUMBL, 1 if state.buttons & BIT_MAP['L3'] else 0)
+                d.emit(uinput.BTN_THUMBR, 1 if state.buttons & BIT_MAP['R3'] else 0)
+                d.emit(uinput.ABS_X, state.lx)
+                d.emit(uinput.ABS_Y, state.ly)
+                d.emit(uinput.ABS_RX, state.rx)
+                d.emit(uinput.ABS_RY, state.ry)
+                d.emit(uinput.ABS_Z, state.lt)
+                d.emit(uinput.ABS_RZ, state.rt)
                 hx, hy = 0, 0
                 if state.buttons & BIT_MAP['DPAD_LEFT']: hx = -1
                 elif state.buttons & BIT_MAP['DPAD_RIGHT']: hx = 1
                 if state.buttons & BIT_MAP['DPAD_UP']: hy = -1
                 elif state.buttons & BIT_MAP['DPAD_DOWN']: hy = 1
-                d.write(e.EV_ABS, e.ABS_HAT0X, hx)
-                d.write(e.EV_ABS, e.ABS_HAT0Y, hy)
+                d.emit(uinput.ABS_HAT0X, hx)
+                d.emit(uinput.ABS_HAT0Y, hy)
                 d.syn()
             except Exception:
                 pass
@@ -401,18 +396,38 @@ h1{font-size:1.2rem;color:#ff69b4;text-align:center;margin-bottom:8px;text-shado
 .gw{position:relative;margin-bottom:8px}
 .g2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 #qrOver{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);z-index:10;background:#2a0a12e6;border-radius:12px;padding:10px;border:1px solid #ff69b466;text-align:center;backdrop-filter:blur(4px);transition:opacity .3s}
-#qrOver img{width:100px;height:100px;background:#fff;border-radius:6px;display:block}
+#qrOver img{width:300px;height:300px;background:#fff;border-radius:6px;display:block}
 #qrOver .l{font-size:.5rem;color:#b06080;margin-top:2px}
 #qrTog{position:absolute;top:4px;right:4px;background:none;border:none;color:#ff69b4;font-size:.9rem;cursor:pointer;z-index:12;line-height:1;padding:2px 6px;border-radius:4px}
 #qrTog:hover{background:#ff69b433}
 #qrBtn{display:none;position:fixed;bottom:12px;right:12px;z-index:20;background:#ff69b4;color:#1a0a12;border:none;border-radius:8px;padding:8px 12px;font-size:.7rem;font-weight:600;cursor:pointer}
 #qrBtn:hover{background:#ff1493}
-.gc{background:#2a0a1a;border-radius:10px;padding:16px;border:1px solid #ff69b433;min-height:360px;display:flex;flex-direction:column;justify-content:center;align-items:center}
-.gc h2{font-size:.8rem;color:#ff69b4;text-transform:uppercase;letter-spacing:1px;margin-bottom:4px}
-.gc .st{font-size:1.5rem;color:#ff69b4;font-weight:700}
-.gc .nc{font-size:.9rem;color:#b06080}
-.gc .btns{font-size:.7rem;color:#f0d0d8;margin-top:4px;text-align:center}
-.gc .ax{font-size:.65rem;color:#b06080;margin-top:2px}
+.gc{background:#2a0a1a;border-radius:10px;padding:8px;border:1px solid #ff69b433;min-height:360px;display:flex;flex-direction:column}
+.gc .nc{font-size:1rem;color:#b06080;margin:auto;text-align:center}
+.gp{display:flex;flex-direction:column;flex:1}
+.gp-h{font-size:.65rem;color:#ff69b4;text-align:center;letter-spacing:1px;margin-bottom:4px}
+.gp-row{display:flex;justify-content:space-between;align-items:center;gap:4px;flex:1}
+.gp-st{position:relative;width:100px;height:100px;flex-shrink:0}
+.gp-st canvas{width:100px;height:100px;display:block}
+.gp-mb{display:flex;gap:4px;flex-wrap:wrap;justify-content:center}
+.gp-mb>div{padding:3px 8px;border-radius:4px;font-size:.6rem;background:#1a0a12;color:#444;font-weight:600}
+.gp-mb>div.on{background:#ff69b4;color:#111}
+.gp-tg{flex:1;height:8px;background:#1a0a12;border-radius:4px;overflow:hidden}
+.gp-tg>div{height:100%;background:linear-gradient(90deg,#ff69b4,#ff1493);border-radius:4px}
+.gp-dp{display:grid;grid-template-columns:repeat(3,28px);gap:2px;justify-content:center}
+.gp-dp>div{width:28px;height:28px;border-radius:4px;background:#1a0a12;display:flex;align-items:center;justify-content:center;font-size:.55rem;color:#444}
+.gp-dp>div.on{background:#ff69b4;color:#111}
+.gp-ab{display:grid;grid-template-columns:36px 36px;gap:3px;justify-content:center}
+.gp-ab>div{width:36px;height:36px;border-radius:50%;background:#1a0a12;display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:700;color:#555}
+.gp-ab>div.on{color:#111}
+.gp-ab .a{background:#1a8a1a}
+.gp-ab .a.on{background:#2aff2a}
+.gp-ab .b{background:#8a1a1a}
+.gp-ab .b.on{background:#ff2a2a}
+.gp-ab .x{background:#1a1a8a}
+.gp-ab .x.on{background:#2a2aff}
+.gp-ab .y{background:#8a8a1a}
+.gp-ab .y.on{background:#ffff2a}
 
 .sg{display:grid;grid-template-columns:1fr 1fr;gap:2px}
 .sl{font-size:.5rem;color:#b06080}
@@ -434,25 +449,48 @@ h1{font-size:1.2rem;color:#ff69b4;text-align:center;margin-bottom:8px;text-shado
 <button id="qrBtn">📱 QR</button>
 <script>
 const gpGrid=document.getElementById('gpGrid');
-for(let i=0;i<4;i++){const c=document.createElement('div');c.className='gc';c.id='gc'+i;c.innerHTML='<h2>GP'+(i+1)+'</h2><div class="nc" id="nc'+i+'">not connected</div><div style="display:none" id="gp'+i+'"><div class="st">● connected</div><div class="btns" id="bt'+i+'"></div><div class="ax" id="ax'+i+'"></div><div style="display:flex;gap:4px;margin-top:4px;width:100%"><div style="flex:1;background:#1a0a12;border-radius:4px;padding:2px;text-align:center"><div style="font-size:.45rem;color:#b06080">L</div><div style="font-size:.55rem;color:#f0d0d8" id="l'+i+'">0,0</div></div><div style="flex:1;background:#1a0a12;border-radius:4px;padding:2px;text-align:center"><div style="font-size:.45rem;color:#b06080">R</div><div style="font-size:.55rem;color:#f0d0d8" id="r'+i+'">0,0</div></div></div><div style="display:flex;gap:4px;margin-top:2px;width:100%"><div style="flex:1;font-size:.5rem;color:#ff69b4" id="tg'+i+'">LT:0 RT:0</div><div style="font-size:.5rem;color:#ff69b4" id="dp'+i+'">·</div></div></div></div>';gpGrid.appendChild(c)}
-function active(g){return g.buttons?.length||g.left_mag>0.01||g.right_mag>0.01}
+for(let i=0;i<4;i++){
+  const c=document.createElement('div');c.className='gc';c.id='gc'+i;
+  c.innerHTML='<div class="nc" id="nc'+i+'">not connected</div><div class="gp" id="gp'+i+'" style="display:none"><div class="gp-h">GP'+(i+1)+'</div><div class="gp-row"><div class="gp-mb"><div id="lb'+i+'">LB</div><div id="rb'+i+'">RB</div></div></div><div class="gp-row"><div class="gp-tg"><div id="ltf'+i+'" style="width:0%"></div></div><div class="gp-tg"><div id="rtf'+i+'" style="width:0%"></div></div></div><div class="gp-row" style="justify-content:center;gap:8px"><div class="gp-st"><canvas id="lc'+i+'" width="100" height="100"></canvas></div><div class="gp-mb" style="flex-direction:column;gap:2px"><div id="sel'+i+'" style="font-size:.5rem">SEL</div><div id="sta'+i+'" style="font-size:.5rem">STA</div></div><div class="gp-st"><canvas id="rc'+i+'" width="100" height="100"></canvas></div></div><div class="gp-row" style="justify-content:center;gap:16px;margin-top:2px"><div class="gp-dp"><div></div><div data-d="up" id="dup'+i+'">↑</div><div></div><div data-d="left" id="dl'+i+'">←</div><div data-d="neutral" id="dn'+i+'">·</div><div data-d="right" id="dr'+i+'">→</div><div></div><div data-d="down" id="dd'+i+'">↓</div><div></div></div><div class="gp-ab"><div id="y'+i+'" class="y">Y</div><div id="x'+i+'" class="x">X</div><div id="b'+i+'" class="b">B</div><div id="a'+i+'" class="a">A</div></div></div><div class="gp-row" style="justify-content:center;margin-top:2px"><div class="gp-mb"><div id="hm'+i+'">HOME</div></div></div></div>';
+  gpGrid.appendChild(c);
+  // init stick canvases
+  ['l','r'].forEach(sd=>{const cx=document.getElementById(sd+'c'+i).getContext('2d');cx.fillStyle='#1a0a12';cx.fillRect(0,0,100,100)});
+}
+function ds(cx,x,y,m,a){
+  const ox=50,oy=50,r=40;
+  cx.clearRect(0,0,100,100);
+  cx.beginPath();cx.arc(ox,oy,r,0,Math.PI*2);cx.fillStyle='#1a0a12';cx.fill();cx.strokeStyle='#2a0a1a';cx.lineWidth=2;cx.stroke();
+  cx.beginPath();cx.moveTo(ox-24,oy);cx.lineTo(ox+24,oy);cx.moveTo(ox,oy-24);cx.lineTo(ox,oy+24);cx.strokeStyle='#2a0a1a';cx.lineWidth=1.5;cx.stroke();
+  if(m>0.01){const rad=a*Math.PI/180,dx=Math.cos(rad)*m*r,dy=-Math.sin(rad)*m*r;
+    cx.beginPath();cx.arc(ox+dx,oy+dy,6,0,Math.PI*2);cx.fillStyle='#ff69b4';cx.fill()}
+  cx.beginPath();cx.arc(ox,oy,3,0,Math.PI*2);cx.fillStyle='#ff1493';cx.fill()}
 function ui(d){
   const g=d.gamepads||[d];
   for(let i=0;i<4;i++){
     const s=g[i]||{};
-    const act=active(s);
-    document.getElementById('nc'+i).style.display=act?'none':'block';
-    document.getElementById('gp'+i).style.display=act?'block':'none';
-    if(act){
-      const btns=s.buttons?.length?s.buttons.slice(0,6).join(' ')+(s.buttons.length>6?'...':''):'—';
-      document.getElementById('bt'+i).textContent=btns;
-      document.getElementById('l'+i).textContent=(s.lx||0)+','+(s.ly||0);
-      document.getElementById('r'+i).textContent=(s.rx||0)+','+(s.ry||0);
-      document.getElementById('tg'+i).textContent='LT:'+(s.lt||0)+' RT:'+(s.rt||0);
-      document.getElementById('dp'+i).textContent=s.dpad||'·';
+    const conn=s.connected;
+    document.getElementById('nc'+i).style.display=conn?'none':'block';
+    document.getElementById('gp'+i).style.display=conn?'flex':'none';
+    if(conn){
+      const bt=new Set(s.buttons||[]);
+      const bp=n=>bt.has(n);
+      ['A','B','X','Y'].forEach(n=>document.getElementById(n.toLowerCase()+i).classList.toggle('on',bp(n)));
+      ['LB','RB'].forEach(n=>document.getElementById(n.toLowerCase()+i).classList.toggle('on',bp(n)));
+      document.getElementById('sel'+i).classList.toggle('on',bp('SELECT'));
+      document.getElementById('sta'+i).classList.toggle('on',bp('START'));
+      document.getElementById('hm'+i).classList.toggle('on',bp('HOME'));
+      document.getElementById('ltf'+i).style.width=Math.min(100,(s.lt||0)/2.55)+'%';
+      document.getElementById('rtf'+i).style.width=Math.min(100,(s.rt||0)/2.55)+'%';
+      const lcx=document.getElementById('lc'+i).getContext('2d');
+      const rcx=document.getElementById('rc'+i).getContext('2d');
+      ds(lcx,s.lx||0,s.ly||0,s.left_mag||0,s.left_angle||0);
+      ds(rcx,s.rx||0,s.ry||0,s.right_mag||0,s.right_angle||0);
+      const dpa=s.dpad||'neutral';
+      const dmap={up:'dup'+i,down:'dd'+i,left:'dl'+i,right:'dr'+i,neutral:'dn'+i};
+      Object.keys(dmap).forEach(d=>document.getElementById(dmap[d]).classList.toggle('on',d===dpa));
     }
   }
-  document.getElementById('ac').textContent=g.filter(x=>active(x)).length+'/4'}
+  document.getElementById('ac').textContent=g.filter(x=>x.connected).length+'/4'}
 function poll(){
   var x=new XMLHttpRequest();
   x.open('GET','/api/state',true);
