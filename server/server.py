@@ -8,6 +8,7 @@ import io
 import base64
 import hashlib
 import threading
+import os
 from collections import defaultdict
 
 import uinput
@@ -239,6 +240,18 @@ class GamepadBridgeServer:
                 await self._handle_ws(reader, writer, headers)
             elif path == '/api/state':
                 await self._serve_api_state(writer)
+            elif path == '/controller.svg':
+                with open(os.path.join(os.path.dirname(__file__), 'controller.svg'), 'rb') as f:
+                    svg_data = f.read()
+                resp = (
+                    'HTTP/1.1 200 OK\r\n'
+                    'Content-Type: image/svg+xml\r\n'
+                    f'Content-Length: {len(svg_data)}\r\n'
+                    '\r\n'
+                ).encode() + svg_data
+                writer.write(resp)
+                await writer.drain()
+                return
             else:
                 writer.write(b'HTTP/1.1 404 Not Found\r\nContent-Length: 0\r\n\r\n')
                 await writer.drain()
@@ -391,48 +404,73 @@ DASHBOARD_HTML = r'''<!DOCTYPE html>
 <title>Gamepad Bridge</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-body{background:#1a0a12;color:#f0d0d8;font-family:'Segoe UI',sans-serif;padding:10px;min-height:100vh}
-h1{font-size:1.2rem;color:#ff69b4;text-align:center;margin-bottom:8px;text-shadow:0 0 8px #ff69b466}
+body{background:#12070e;color:#e8c8d8;font-family:'Segoe UI',sans-serif;padding:10px;min-height:100vh}
+h1{font-size:1.1rem;color:#ff69b4;text-align:center;margin-bottom:8px;letter-spacing:2px;text-shadow:0 0 12px #ff69b455}
 .gw{position:relative;margin-bottom:8px}
 .g2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-#qrOver{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);z-index:10;background:#2a0a12e6;border-radius:12px;padding:10px;border:1px solid #ff69b466;text-align:center;backdrop-filter:blur(4px);transition:opacity .3s}
+#qrOver{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);z-index:10;background:#1a0a12ee;border-radius:12px;padding:10px;border:1px solid #ff69b466;text-align:center;backdrop-filter:blur(4px);transition:opacity .3s}
 #qrOver img{width:300px;height:300px;background:#fff;border-radius:6px;display:block}
 #qrOver .l{font-size:.5rem;color:#b06080;margin-top:2px}
 #qrTog{position:absolute;top:4px;right:4px;background:none;border:none;color:#ff69b4;font-size:.9rem;cursor:pointer;z-index:12;line-height:1;padding:2px 6px;border-radius:4px}
 #qrTog:hover{background:#ff69b433}
 #qrBtn{display:none;position:fixed;bottom:12px;right:12px;z-index:20;background:#ff69b4;color:#1a0a12;border:none;border-radius:8px;padding:8px 12px;font-size:.7rem;font-weight:600;cursor:pointer}
 #qrBtn:hover{background:#ff1493}
-.gc{background:#2a0a1a;border-radius:10px;padding:8px;border:1px solid #ff69b433;min-height:360px;display:flex;flex-direction:column}
-.gc .nc{font-size:1rem;color:#b06080;margin:auto;text-align:center}
-.gp{display:flex;flex-direction:column;flex:1}
-.gp-h{font-size:.65rem;color:#ff69b4;text-align:center;letter-spacing:1px;margin-bottom:4px}
-.gp-row{display:flex;justify-content:space-between;align-items:center;gap:4px;flex:1}
-.gp-st{position:relative;width:100px;height:100px;flex-shrink:0}
-.gp-st canvas{width:100px;height:100px;display:block}
-.gp-mb{display:flex;gap:4px;flex-wrap:wrap;justify-content:center}
-.gp-mb>div{padding:3px 8px;border-radius:4px;font-size:.6rem;background:#1a0a12;color:#444;font-weight:600}
-.gp-mb>div.on{background:#ff69b4;color:#111}
-.gp-tg{flex:1;height:8px;background:#1a0a12;border-radius:4px;overflow:hidden}
-.gp-tg>div{height:100%;background:linear-gradient(90deg,#ff69b4,#ff1493);border-radius:4px}
-.gp-dp{display:grid;grid-template-columns:repeat(3,28px);gap:2px;justify-content:center}
-.gp-dp>div{width:28px;height:28px;border-radius:4px;background:#1a0a12;display:flex;align-items:center;justify-content:center;font-size:.55rem;color:#444}
-.gp-dp>div.on{background:#ff69b4;color:#111}
-.gp-ab{display:grid;grid-template-columns:36px 36px;gap:3px;justify-content:center}
-.gp-ab>div{width:36px;height:36px;border-radius:50%;background:#1a0a12;display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:700;color:#555}
-.gp-ab>div.on{color:#111}
-.gp-ab .a{background:#1a8a1a}
-.gp-ab .a.on{background:#2aff2a}
-.gp-ab .b{background:#8a1a1a}
-.gp-ab .b.on{background:#ff2a2a}
-.gp-ab .x{background:#1a1a8a}
-.gp-ab .x.on{background:#2a2aff}
-.gp-ab .y{background:#8a8a1a}
-.gp-ab .y.on{background:#ffff2a}
-
 .sg{display:grid;grid-template-columns:1fr 1fr;gap:2px}
 .sl{font-size:.5rem;color:#b06080}
 .sv{font-size:.6rem;font-weight:600;color:#f0d0d8}
 #lat{color:#ff69b4;font-family:monospace;font-size:.7rem}
+
+.gc{background:#1e0a14;border-radius:12px;padding:6px;border:1px solid #ff69b422;display:flex;flex-direction:column;position:relative;min-height:400px}
+.gc .nc{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:.85rem;color:#604050;letter-spacing:1px;z-index:1}
+.xb{display:flex;flex-direction:column;gap:2px;position:relative;z-index:2;flex:1}
+.xb-h{font-size:.55rem;color:#ff69b488;text-align:center;letter-spacing:2px;padding:2px 0;text-transform:uppercase}
+.xb-wrap{position:relative;flex:1;overflow:hidden;border-radius:12px}
+.xb-wrap img{width:100%;height:100%;object-fit:contain;display:block;filter:brightness(0.7) contrast(1.1)}
+.xb-ov{position:absolute;inset:0;pointer-events:none}
+
+.xb-stick{position:absolute;width:9%;height:9%}
+.xb-stick canvas{width:100%;height:100%;display:block}
+#lc0,#lc1,#lc2,#lc3{left:19.5%;top:38%}
+#rc0,#rc1,#rc2,#rc3{left:71%;top:52%}
+
+.xb-abxy{position:absolute;left:63.5%;top:21%;display:grid;grid-template-columns:14px 14px;gap:2px}
+.xb-abxy>div{width:14px;height:14px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.35rem;font-weight:700;border:1px solid #5558;transition:all .08s;color:#ccc}
+.xb-abxy>div.on{color:#fff;border-color:#fff;box-shadow:0 0 8px #ff69b488}
+.xb-abxy .ya{background:#c8960e}
+.xb-abxy .ya.on{background:#ffe066}
+.xb-abxy .xa{background:#1a6ab0}
+.xb-abxy .xa.on{background:#3a9aff}
+.xb-abxy .ba{background:#b02020}
+.xb-abxy .ba.on{background:#ff4040}
+.xb-abxy .aa{background:#1a8a30}
+.xb-abxy .aa.on{background:#30e060}
+
+.xb-dpad{position:absolute;left:35%;top:55%;display:grid;grid-template-columns:12px 12px 12px;grid-template-rows:12px 12px 12px;gap:1px}
+.xb-dpad>div{width:12px;height:12px;border-radius:1px;background:#3338;display:flex;align-items:center;justify-content:center;font-size:.28rem;color:#666;border:1px solid #5554;transition:all .08s}
+.xb-dpad>div.on{background:#ff69b466;color:#ff69b4;border-color:#ff69b488}
+
+.xb-mid{position:absolute;left:46.5%;top:44%;display:flex;gap:5px;align-items:center}
+.xb-mid-btn{width:5%;padding-bottom:5%;border-radius:3px;background:#3338;border:1px solid #5554;display:flex;align-items:center;justify-content:center;font-size:.25rem;color:#666;transition:all .08s;position:relative}
+.xb-mid-btn.on{background:#ff69b444;color:#ff69b4;border-color:#ff69b466}
+.xb-mid-btn span{position:absolute;inset:0;display:flex;align-items:center;justify-content:center}
+
+.xb-home{position:absolute;left:48%;top:32%;width:4%;padding-bottom:4%;border-radius:50%;background:#3338;border:1px solid #5556;display:flex;align-items:center;justify-content:center;font-size:.25rem;color:#888;transition:all .08s}
+.xb-home.on{background:#39ff7f44;border-color:#39ff7f88;color:#39ff7f;box-shadow:0 0 6px #39ff7f66}
+
+.xb-lr{position:absolute;display:flex;gap:4px}
+.xb-lr>div{font-size:.4rem;color:#888;text-align:center;padding:1px 5px;border-radius:2px;background:#3338;min-width:20px;border:1px solid #5554;transition:all .08s}
+.xb-lr>div.on{background:#ff69b444;color:#ff69b4;border-color:#ff69b466}
+#lw0,#lw1,#lw2,#lw3{left:15%;top:16%}
+#rw0,#rw1,#rw2,#rw3{left:75%;top:16%}
+
+.xb-trig{position:absolute;height:4px;display:flex;gap:4px}
+.xb-trig>div{flex:1;background:#222;border-radius:2px;overflow:hidden;width:50px}
+.xb-trig>div>div{height:100%;border-radius:2px;transition:width .05s}
+.xb-trig .ltf{background:linear-gradient(90deg,#ff69b4,#ff1493)}
+.xb-trig .rtf{background:linear-gradient(90deg,#ff69b4,#ff1493)}
+#trig0,#trig1,#trig2,#trig3{left:12%;right:12%;top:12%}
+
+.xb-sel{position:absolute;left:44%;top:50%;display:flex;gap:6px}
 </style>
 </head>
 <body>
@@ -448,19 +486,19 @@ h1{font-size:1.2rem;color:#ff69b4;text-align:center;margin-bottom:8px;text-shado
 </div>
 <button id="qrBtn">📱 QR</button>
 <script>
+const SVG_PATH='/controller.svg';
 const gpGrid=document.getElementById('gpGrid');
 for(let i=0;i<4;i++){
   const c=document.createElement('div');c.className='gc';c.id='gc'+i;
-  c.innerHTML='<div class="nc" id="nc'+i+'">not connected</div><div class="gp" id="gp'+i+'" style="display:none"><div class="gp-h">GP'+(i+1)+'</div><div class="gp-row"><div class="gp-mb"><div id="lb'+i+'">LB</div><div id="rb'+i+'">RB</div></div></div><div class="gp-row"><div class="gp-tg"><div id="ltf'+i+'" style="width:0%"></div></div><div class="gp-tg"><div id="rtf'+i+'" style="width:0%"></div></div></div><div class="gp-row" style="justify-content:center;gap:8px"><div class="gp-st"><canvas id="lc'+i+'" width="100" height="100"></canvas></div><div class="gp-mb" style="flex-direction:column;gap:2px"><div id="sel'+i+'" style="font-size:.5rem">SEL</div><div id="sta'+i+'" style="font-size:.5rem">STA</div></div><div class="gp-st"><canvas id="rc'+i+'" width="100" height="100"></canvas></div></div><div class="gp-row" style="justify-content:center;gap:16px;margin-top:2px"><div class="gp-dp"><div></div><div data-d="up" id="dup'+i+'">↑</div><div></div><div data-d="left" id="dl'+i+'">←</div><div data-d="neutral" id="dn'+i+'">·</div><div data-d="right" id="dr'+i+'">→</div><div></div><div data-d="down" id="dd'+i+'">↓</div><div></div></div><div class="gp-ab"><div id="y'+i+'" class="y">Y</div><div id="x'+i+'" class="x">X</div><div id="b'+i+'" class="b">B</div><div id="a'+i+'" class="a">A</div></div></div><div class="gp-row" style="justify-content:center;margin-top:2px"><div class="gp-mb"><div id="hm'+i+'">HOME</div></div></div></div>';
+  c.innerHTML='<div class="nc" id="nc'+i+'">not connected</div><div class="xb" id="gp'+i+'" style="display:none"><div class="xb-h">GAMEPAD '+(i+1)+'</div><div class="xb-wrap"><img src="'+SVG_PATH+'" alt="controller"><div class="xb-ov"><div class="xb-trig" id="trig'+i+'"><div><div class="ltf" id="ltf'+i+'" style="width:0%"></div></div><div><div class="rtf" id="rtf'+i+'" style="width:0%"></div></div></div><div class="xb-lr" id="lw'+i+'"><div id="lb'+i+'">LB</div></div><div class="xb-lr" id="rw'+i+'"><div id="rb'+i+'">RB</div></div><div class="xb-abxy"><div id="y'+i+'" class="ya">Y</div><div id="x'+i+'" class="xa">X</div><div id="b'+i+'" class="ba">B</div><div id="a'+i+'" class="aa">A</div></div><div class="xb-dpad"><div></div><div id="dup'+i+'">&#9650;</div><div></div><div id="dl'+i+'">&#9664;</div><div id="dn'+i+'">&#183;</div><div id="dr'+i+'">&#9654;</div><div></div><div id="dd'+i+'">&#9660;</div><div></div></div><div class="xb-stick"><canvas id="lc'+i+'" width="80" height="80"></canvas></div><div class="xb-stick"><canvas id="rc'+i+'" width="80" height="80"></canvas></div><div class="xb-home" id="hm'+i+'">&#9679;</div><div class="xb-mid"><div class="xb-mid-btn" id="sel'+i+'"><span>&#9776;</span></div><div class="xb-mid-btn" id="sta'+i+'"><span>&#10095;</span></div></div></div></div></div>';
   gpGrid.appendChild(c);
-  // init stick canvases
-  ['l','r'].forEach(sd=>{const cx=document.getElementById(sd+'c'+i).getContext('2d');cx.fillStyle='#1a0a12';cx.fillRect(0,0,100,100)});
+  ['l','r'].forEach(sd=>{const cx=document.getElementById(sd+'c'+i).getContext('2d');cx.fillStyle='#222';cx.fillRect(0,0,80,80)});
 }
 function ds(cx,x,y,m,a){
-  const ox=50,oy=50,r=40;
-  cx.clearRect(0,0,100,100);
-  cx.beginPath();cx.arc(ox,oy,r,0,Math.PI*2);cx.fillStyle='#1a0a12';cx.fill();cx.strokeStyle='#2a0a1a';cx.lineWidth=2;cx.stroke();
-  cx.beginPath();cx.moveTo(ox-24,oy);cx.lineTo(ox+24,oy);cx.moveTo(ox,oy-24);cx.lineTo(ox,oy+24);cx.strokeStyle='#2a0a1a';cx.lineWidth=1.5;cx.stroke();
+  const ox=40,oy=40,r=34;
+  cx.clearRect(0,0,80,80);
+  cx.beginPath();cx.arc(ox,oy,r,0,Math.PI*2);cx.fillStyle='#222';cx.fill();cx.strokeStyle='#444';cx.lineWidth=1.5;cx.stroke();
+  cx.beginPath();cx.moveTo(ox-20,oy);cx.lineTo(ox+20,oy);cx.moveTo(ox,oy-20);cx.lineTo(ox,oy+20);cx.strokeStyle='#444';cx.lineWidth=1;cx.stroke();
   if(m>0.01){const rad=a*Math.PI/180,dx=Math.cos(rad)*m*r,dy=-Math.sin(rad)*m*r;
     cx.beginPath();cx.arc(ox+dx,oy+dy,6,0,Math.PI*2);cx.fillStyle='#ff69b4';cx.fill()}
   cx.beginPath();cx.arc(ox,oy,3,0,Math.PI*2);cx.fillStyle='#ff1493';cx.fill()}
@@ -469,7 +507,7 @@ function ui(d){
   for(let i=0;i<4;i++){
     const s=g[i]||{};
     const conn=s.connected;
-    document.getElementById('nc'+i).style.display=conn?'none':'block';
+    document.getElementById('nc'+i).style.display=conn?'none':'';
     document.getElementById('gp'+i).style.display=conn?'flex':'none';
     if(conn){
       const bt=new Set(s.buttons||[]);
@@ -479,8 +517,10 @@ function ui(d){
       document.getElementById('sel'+i).classList.toggle('on',bp('SELECT'));
       document.getElementById('sta'+i).classList.toggle('on',bp('START'));
       document.getElementById('hm'+i).classList.toggle('on',bp('HOME'));
-      document.getElementById('ltf'+i).style.width=Math.min(100,(s.lt||0)/2.55)+'%';
-      document.getElementById('rtf'+i).style.width=Math.min(100,(s.rt||0)/2.55)+'%';
+      const lt=Math.min(100,(s.lt||0)/2.55);
+      const rt=Math.min(100,(s.rt||0)/2.55);
+      document.getElementById('ltf'+i).style.width=lt+'%';
+      document.getElementById('rtf'+i).style.width=rt+'%';
       const lcx=document.getElementById('lc'+i).getContext('2d');
       const rcx=document.getElementById('rc'+i).getContext('2d');
       ds(lcx,s.lx||0,s.ly||0,s.left_mag||0,s.left_angle||0);

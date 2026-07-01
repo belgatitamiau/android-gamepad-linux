@@ -65,14 +65,9 @@ class GamepadBridgeService : Service() {
         val thread = Thread({ ->
             while (connected) {
                 synchronized(gamepadManager) {
-                    for (slot in 0..3) {
-                        val state = gamepadManager.getStateBySlot(slot)
-                        if (state != null) {
-                            networkClient?.send(state)
-                        } else {
-                            // send default (zero) state for inactive slots
-                            networkClient?.send(stateSnapshot[slot])
-                        }
+                    for (slot in gamepadManager.getActiveSlotIds()) {
+                        val state = gamepadManager.getStateBySlot(slot) ?: continue
+                        networkClient?.send(state)
                     }
                 }
                 try {
