@@ -15,7 +15,6 @@ class GamepadBridgeService : Service() {
 
     private val binder = LocalBinder()
     val gamepadManager = GamepadManager()
-    private val stateSnapshot = Array(4) { GamepadState(it) }
     private var networkClient: NetworkClient? = null
     private var senderThread: Thread? = null
 
