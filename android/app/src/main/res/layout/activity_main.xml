@@ -212,7 +212,7 @@
                 android:clickable="true"
                 android:focusable="true"/>
             <View
-                android:id="@+id/themePink"
+                android:id="@+id/themePinkS"
                 android:layout_width="28dp"
                 android:layout_height="28dp"
                 android:background="@drawable/circle_pink"
@@ -220,7 +220,7 @@
                 android:clickable="true"
                 android:focusable="true"/>
             <View
-                android:id="@+id/themeBlue"
+                android:id="@+id/themeBlueS"
                 android:layout_width="28dp"
                 android:layout_height="28dp"
                 android:background="@drawable/circle_blue"
@@ -228,7 +228,7 @@
                 android:clickable="true"
                 android:focusable="true"/>
             <View
-                android:id="@+id/themeYellow"
+                android:id="@+id/themeYellowS"
                 android:layout_width="28dp"
                 android:layout_height="28dp"
                 android:background="@drawable/circle_yellow"
@@ -236,7 +236,7 @@
                 android:clickable="true"
                 android:focusable="true"/>
             <View
-                android:id="@+id/themeGreen"
+                android:id="@+id/themeGreenS"
                 android:layout_width="28dp"
                 android:layout_height="28dp"
                 android:background="@drawable/circle_green"
