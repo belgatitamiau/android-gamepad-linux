@@ -415,13 +415,7 @@ class MainActivity : AppCompatActivity(), InputManager.InputDeviceListener {
         tvLog.visibility = if (isConnected && logVisible) View.VISIBLE else View.GONE
 
         if (isConnected) {
-            val mgr = srv?.gamepadManager
-            val activeSlots = mgr?.getActiveSlotIds() ?: emptyList()
-            tvPlayerNumber.text = if (activeSlots.isNotEmpty()) {
-                activeSlots.joinToString("\n") { slot -> "PLAYER ${slot + 1}" }
-            } else {
-                "PLAYER 1"
-            }
+            tvPlayerNumber.text = "PLAYER 1"
             tvPlayerNumber.visibility = View.VISIBLE
             tvPlayerNumber.bringToFront()
         } else {
@@ -630,7 +624,7 @@ class MainActivity : AppCompatActivity(), InputManager.InputDeviceListener {
     override fun onInputDeviceRemoved(deviceId: Int) {
         service?.gamepadManager?.releaseSlot(deviceId)
         deviceAxes.remove(deviceId)
-        listGamepads()
+        updateGamepadDisplay()
     }
 
     override fun onInputDeviceChanged(deviceId: Int) {
