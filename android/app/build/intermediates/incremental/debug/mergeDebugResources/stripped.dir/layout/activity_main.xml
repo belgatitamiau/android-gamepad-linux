@@ -94,6 +94,7 @@
         android:textSize="72sp"
         android:textStyle="bold"
         android:id="@+id/tvPlayerNumber"
+        android:fontFamily="@font/press_start_2p"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center"
@@ -106,17 +107,18 @@
 
     <!-- Options button (bottom-right, shown when connected) -->
     <TextView
-        android:textSize="12sp"
-        android:textColor="#55ffffff"
+        android:textSize="14sp"
+        android:textColor="#ffffff"
         android:id="@+id/tvOptions"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:padding="8dp"
-        android:gravity="end"
+        android:background="@drawable/options_bg"
+        android:paddingHorizontal="14dp"
+        android:paddingVertical="6dp"
+        android:gravity="center"
         android:visibility="gone"
         android:text="options"
         android:clickable="true"
         android:focusable="true"
+        android:layout_margin="12dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 

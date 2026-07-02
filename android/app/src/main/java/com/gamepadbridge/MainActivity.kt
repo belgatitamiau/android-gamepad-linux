@@ -9,7 +9,9 @@ import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
 import android.hardware.input.InputManager
 import android.os.Bundle
+import android.os.Handler
 import android.os.IBinder
+import android.os.Looper
 import android.util.Log
 import android.view.GestureDetector
 import android.view.InputDevice
@@ -69,6 +71,8 @@ class MainActivity : AppCompatActivity(), InputManager.InputDeviceListener {
     private val GAMEPAD_SOURCES = InputDevice.SOURCE_GAMEPAD or InputDevice.SOURCE_JOYSTICK
     private var currentTheme = 0
     private lateinit var gestureDetector: GestureDetector
+    private val connectTimeoutHandler = Handler(Looper.getMainLooper())
+    private val CONNECT_TIMEOUT_MS = 10000L
 
     data class ThemeColors(
         val bg: Int, val bg2: Int, val accent: Int, val accent2: Int,
@@ -378,9 +382,6 @@ class MainActivity : AppCompatActivity(), InputManager.InputDeviceListener {
             return
         }
         prefs.edit().putString("host", host).putInt("port", port).apply()
-        connecting = true
-        log("Connecting to $host:$port...")
-        updateUI()
         startService(Intent(this, GamepadBridgeService::class.java))
         pendingConnect = Pair(host, port)
         if (!bound) {
@@ -389,6 +390,31 @@ class MainActivity : AppCompatActivity(), InputManager.InputDeviceListener {
             service?.connect(host, port)
             pendingConnect = null
         }
+        startConnecting()
+    }
+
+    private fun startConnecting() {
+        connecting = true
+        log("Connecting...")
+        updateUI()
+        connectTimeoutHandler.removeCallbacksAndMessages(null)
+        connectTimeoutHandler.postDelayed({
+            if (isConnecting()) {
+                log("ERROR: Connection timed out")
+                stopConnecting()
+                if (bound) {
+                    service?.disconnect()
+                } else {
+                    pendingConnect = null
+                }
+                updateUI()
+            }
+        }, CONNECT_TIMEOUT_MS)
+    }
+
+    private fun stopConnecting() {
+        connecting = false
+        connectTimeoutHandler.removeCallbacksAndMessages(null)
     }
 
     private fun doDisconnect() {
@@ -436,7 +462,7 @@ class MainActivity : AppCompatActivity(), InputManager.InputDeviceListener {
         btnConnect.isEnabled = !connected && !connecting
         btnScanQR.isEnabled = !connected && !connecting
         btnConnect.text = if (connecting) "..." else "Connect"
-        connectPanel.visibility = if (connected) View.GONE else View.VISIBLE
+        connectPanel.visibility = if (connected || connecting) View.GONE else View.VISIBLE
         tvOptions.visibility = if (connected) View.VISIBLE else View.GONE
         tvLog.visibility = if (connected && logVisible) View.VISIBLE else View.GONE
 

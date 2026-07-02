@@ -34,6 +34,8 @@ drawable circle_yellow
 drawable gamepad_logo
 drawable ic_launcher_background
 drawable ic_launcher_foreground
+drawable options_bg
+font press_start_2p
 id btnCloseOptions
 id btnConnect
 id btnDisconnect
