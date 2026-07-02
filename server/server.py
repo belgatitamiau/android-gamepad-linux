@@ -433,48 +433,48 @@ DASHBOARD_HTML = r'''<!DOCTYPE html>
 <title>Gamepad Bridge</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-body{background:#1a0a12;color:#f0d0d8;font-family:'Segoe UI',sans-serif;padding:10px;min-height:100vh}
-h1{font-size:1.2rem;color:#ff69b4;text-align:center;margin-bottom:8px;text-shadow:0 0 8px #ff69b466}
+body{background:#3d2028;color:#e8c8d0;font-family:'Segoe UI',sans-serif;padding:10px;min-height:100vh}
+h1{font-size:1.2rem;color:#ff85b4;text-align:center;margin-bottom:8px}
 .gw{position:relative;margin-bottom:8px}
 .g2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-#qrOver{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);z-index:10;background:#2a0a12e6;border-radius:12px;padding:10px;border:1px solid #ff69b466;text-align:center;backdrop-filter:blur(4px);transition:opacity .3s}
+#qrOver{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);z-index:10;background:#4d2832ec;border-radius:12px;padding:10px;border:1px solid #ff85b455;text-align:center;backdrop-filter:blur(4px);transition:opacity .3s}
 #qrOver img{width:300px;height:300px;background:#fff;border-radius:6px;display:block}
-#qrOver .l{font-size:.5rem;color:#b06080;margin-top:2px}
-#qrTog{position:absolute;top:4px;right:4px;background:none;border:none;color:#ff69b4;font-size:.9rem;cursor:pointer;z-index:12;line-height:1;padding:2px 6px;border-radius:4px}
-#qrTog:hover{background:#ff69b433}
-#qrBtn{display:none;position:fixed;bottom:12px;right:12px;z-index:20;background:#ff69b4;color:#1a0a12;border:none;border-radius:8px;padding:8px 12px;font-size:.7rem;font-weight:600;cursor:pointer}
-#qrBtn:hover{background:#ff1493}
-.gc{background:#2a0a1a;border-radius:10px;padding:8px;border:1px solid #ff69b433;min-height:360px;display:flex;flex-direction:column}
-.gc .nc{font-size:1rem;color:#b06080;margin:auto;text-align:center}
+#qrOver .l{font-size:.5rem;color:#c09098;margin-top:2px}
+#qrTog{position:absolute;top:4px;right:4px;background:none;border:none;color:#ff85b4;font-size:.9rem;cursor:pointer;z-index:12;line-height:1;padding:2px 6px;border-radius:4px}
+#qrTog:hover{background:#ff85b422}
+#qrBtn{display:none;position:fixed;bottom:12px;right:12px;z-index:20;background:#ff85b4;color:#1a0a12;border:none;border-radius:8px;padding:8px 12px;font-size:.7rem;font-weight:600;cursor:pointer}
+#qrBtn:hover{background:#e86a98}
+.gc{background:#4d2832;border-radius:10px;padding:8px;border:1px solid #ff85b433;min-height:360px;display:flex;flex-direction:column}
+.gc .nc{font-size:1rem;color:#c09098;margin:auto;text-align:center}
 .gp{display:flex;flex-direction:column;flex:1}
-.gp-h{font-size:.65rem;color:#ff69b4;text-align:center;letter-spacing:1px;margin-bottom:4px}
+.gp-h{font-size:.65rem;color:#ff85b4;text-align:center;letter-spacing:1px;margin-bottom:4px}
 .gp-row{display:flex;justify-content:space-between;align-items:center;gap:4px;flex:1}
 .gp-st{position:relative;width:100px;height:100px;flex-shrink:0}
 .gp-st canvas{width:100px;height:100px;display:block}
 .gp-mb{display:flex;gap:4px;flex-wrap:wrap;justify-content:center}
-.gp-mb>div{padding:3px 8px;border-radius:4px;font-size:.6rem;background:#1a0a12;color:#444;font-weight:600}
-.gp-mb>div.on{background:#ff69b4;color:#111}
-.gp-tg{flex:1;height:8px;background:#1a0a12;border-radius:4px;overflow:hidden}
-.gp-tg>div{height:100%;background:linear-gradient(90deg,#ff69b4,#ff1493);border-radius:4px}
+.gp-mb>div{padding:3px 8px;border-radius:4px;font-size:.6rem;background:#3d2028;color:#b08890;font-weight:600}
+.gp-mb>div.on{background:#ff85b4;color:#2a1018}
+.gp-tg{flex:1;height:8px;background:#3d2028;border-radius:4px;overflow:hidden}
+.gp-tg>div{height:100%;background:linear-gradient(90deg,#ff85b4,#e86a98);border-radius:4px}
 .gp-dp{display:grid;grid-template-columns:repeat(3,28px);gap:2px;justify-content:center}
-.gp-dp>div{width:28px;height:28px;border-radius:4px;background:#1a0a12;display:flex;align-items:center;justify-content:center;font-size:.55rem;color:#444}
-.gp-dp>div.on{background:#ff69b4;color:#111}
+.gp-dp>div{width:28px;height:28px;border-radius:4px;background:#3d2028;display:flex;align-items:center;justify-content:center;font-size:.55rem;color:#b08890}
+.gp-dp>div.on{background:#ff85b4;color:#2a1018}
 .gp-ab{display:grid;grid-template-columns:36px 36px;gap:3px;justify-content:center}
-.gp-ab>div{width:36px;height:36px;border-radius:50%;background:#1a0a12;display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:700;color:#555}
-.gp-ab>div.on{color:#111}
-.gp-ab .a{background:#1a8a1a}
-.gp-ab .a.on{background:#2aff2a}
-.gp-ab .b{background:#8a1a1a}
-.gp-ab .b.on{background:#ff2a2a}
-.gp-ab .x{background:#1a1a8a}
-.gp-ab .x.on{background:#2a2aff}
-.gp-ab .y{background:#8a8a1a}
-.gp-ab .y.on{background:#ffff2a}
+.gp-ab>div{width:36px;height:36px;border-radius:50%;background:#3d2028;display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:700;color:#b08890}
+.gp-ab>div.on{color:#fff}
+.gp-ab .a{background:#1a5a2a}
+.gp-ab .a.on{background:#3aff5a}
+.gp-ab .b{background:#5a1a1a}
+.gp-ab .b.on{background:#ff3a3a}
+.gp-ab .x{background:#1a1a5a}
+.gp-ab .x.on{background:#3a3aff}
+.gp-ab .y{background:#5a5a1a}
+.gp-ab .y.on{background:#ffff3a}
 
 .sg{display:grid;grid-template-columns:1fr 1fr;gap:2px}
-.sl{font-size:.5rem;color:#b06080}
-.sv{font-size:.6rem;font-weight:600;color:#f0d0d8}
-#lat{color:#ff69b4;font-family:monospace;font-size:.7rem}
+.sl{font-size:.5rem;color:#c09098}
+.sv{font-size:.6rem;font-weight:600;color:#e8c8d0}
+#lat{color:#ff85b4;font-family:monospace;font-size:.7rem}
 </style>
 </head>
 <body>
@@ -497,16 +497,16 @@ for(let i=0;i<4;i++){
   c.innerHTML='<div class="nc" id="nc'+i+'">not connected</div><div class="gp" id="gp'+i+'" style="display:none"><div class="gp-h">GP'+(i+1)+'</div><div class="gp-row"><div class="gp-mb"><div id="lb'+i+'">LB</div><div id="rb'+i+'">RB</div></div></div><div class="gp-row"><div class="gp-tg"><div id="ltf'+i+'" style="width:0%"></div></div><div class="gp-tg"><div id="rtf'+i+'" style="width:0%"></div></div></div><div class="gp-row" style="justify-content:center;gap:8px"><div class="gp-st"><canvas id="lc'+i+'" width="100" height="100"></canvas></div><div class="gp-mb" style="flex-direction:column;gap:2px"><div id="sel'+i+'" style="font-size:.5rem">SEL</div><div id="sta'+i+'" style="font-size:.5rem">STA</div></div><div class="gp-st"><canvas id="rc'+i+'" width="100" height="100"></canvas></div></div><div class="gp-row" style="justify-content:center;gap:16px;margin-top:2px"><div class="gp-dp"><div></div><div data-d="up" id="dup'+i+'">↑</div><div></div><div data-d="left" id="dl'+i+'">←</div><div data-d="neutral" id="dn'+i+'">·</div><div data-d="right" id="dr'+i+'">→</div><div></div><div data-d="down" id="dd'+i+'">↓</div><div></div></div><div class="gp-ab"><div id="y'+i+'" class="y">Y</div><div id="x'+i+'" class="x">X</div><div id="b'+i+'" class="b">B</div><div id="a'+i+'" class="a">A</div></div></div><div class="gp-row" style="justify-content:center;margin-top:2px"><div class="gp-mb"><div id="hm'+i+'">HOME</div></div></div></div>';
   gpGrid.appendChild(c);
   // init stick canvases
-  ['l','r'].forEach(sd=>{const cx=document.getElementById(sd+'c'+i).getContext('2d');cx.fillStyle='#1a0a12';cx.fillRect(0,0,100,100)});
+  ['l','r'].forEach(sd=>{const cx=document.getElementById(sd+'c'+i).getContext('2d');cx.fillStyle='#3d2028';cx.fillRect(0,0,100,100)});
 }
 function ds(cx,x,y,m,a){
   const ox=50,oy=50,r=40;
   cx.clearRect(0,0,100,100);
-  cx.beginPath();cx.arc(ox,oy,r,0,Math.PI*2);cx.fillStyle='#1a0a12';cx.fill();cx.strokeStyle='#2a0a1a';cx.lineWidth=2;cx.stroke();
-  cx.beginPath();cx.moveTo(ox-24,oy);cx.lineTo(ox+24,oy);cx.moveTo(ox,oy-24);cx.lineTo(ox,oy+24);cx.strokeStyle='#2a0a1a';cx.lineWidth=1.5;cx.stroke();
+  cx.beginPath();cx.arc(ox,oy,r,0,Math.PI*2);cx.fillStyle='#3d2028';cx.fill();cx.strokeStyle='#5a3842';cx.lineWidth=2;cx.stroke();
+  cx.beginPath();cx.moveTo(ox-24,oy);cx.lineTo(ox+24,oy);cx.moveTo(ox,oy-24);cx.lineTo(ox,oy+24);cx.strokeStyle='#5a3842';cx.lineWidth=1.5;cx.stroke();
   if(m>0.01){const rad=a*Math.PI/180,dx=Math.cos(rad)*m*r,dy=-Math.sin(rad)*m*r;
-    cx.beginPath();cx.arc(ox+dx,oy+dy,6,0,Math.PI*2);cx.fillStyle='#ff69b4';cx.fill()}
-  cx.beginPath();cx.arc(ox,oy,3,0,Math.PI*2);cx.fillStyle='#ff1493';cx.fill()}
+    cx.beginPath();cx.arc(ox+dx,oy+dy,6,0,Math.PI*2);cx.fillStyle='#ff85b4';cx.fill()}
+  cx.beginPath();cx.arc(ox,oy,3,0,Math.PI*2);cx.fillStyle='#e86a98';cx.fill()}
 function ui(d){
   const g=d.gamepads||[d];
   for(let i=0;i<4;i++){

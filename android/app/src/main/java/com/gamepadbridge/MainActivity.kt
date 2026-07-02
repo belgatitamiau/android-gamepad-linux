@@ -5,6 +5,8 @@ import android.content.Context
 import android.content.Intent
 import android.content.ServiceConnection
 import android.content.SharedPreferences
+import android.animation.Animator
+import android.animation.ObjectAnimator
 import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
 import android.hardware.input.InputManager
@@ -26,6 +28,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
+import kotlin.random.Random
 
 class MainActivity : AppCompatActivity(), InputManager.InputDeviceListener {
 
@@ -43,6 +46,8 @@ class MainActivity : AppCompatActivity(), InputManager.InputDeviceListener {
     private lateinit var tvOptions: TextView
     private lateinit var tvLog: TextView
     private lateinit var tvPlayerNumber: TextView
+    private lateinit var tvGamepadStatus: TextView
+    private var blinkAnimator: ObjectAnimator? = null
     private lateinit var rootLayout: ConstraintLayout
     private lateinit var connectPanel: View
     private lateinit var optionsPanel: View
@@ -61,6 +66,7 @@ class MainActivity : AppCompatActivity(), InputManager.InputDeviceListener {
     private val allThemeViews = mutableListOf<View>()
 
     private var service: GamepadBridgeService? = null
+    private lateinit var soundManager: SoundManager
     private var bound = false
     private var pendingConnect: Pair<String, Int>? = null
     private var connecting = false
@@ -93,6 +99,7 @@ class MainActivity : AppCompatActivity(), InputManager.InputDeviceListener {
             bound = true
             log("Service bound")
             service?.onConnectionStateChanged = { runOnUiThread { updateUI() } }
+            service?.onSoundTrigger = { playerNum -> runOnUiThread { soundManager.playConnectedSequence(playerNum) } }
             pendingConnect?.let { (h, p) ->
                 log("Pending connect to $h:$p")
                 service?.connect(h, p)
@@ -133,6 +140,7 @@ class MainActivity : AppCompatActivity(), InputManager.InputDeviceListener {
 
         inputManager = getSystemService(Context.INPUT_SERVICE) as InputManager
         prefs = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+        soundManager = SoundManager(this)
 
         etHost = findViewById(R.id.etHost)
         etPort = findViewById(R.id.etPort)
@@ -144,6 +152,7 @@ class MainActivity : AppCompatActivity(), InputManager.InputDeviceListener {
         tvOptions = findViewById(R.id.tvOptions)
         tvLog = findViewById(R.id.tvLog)
         tvPlayerNumber = findViewById(R.id.tvPlayerNumber)
+        tvGamepadStatus = findViewById(R.id.tvGamepadStatus)
         rootLayout = findViewById(R.id.rootLayout)
         connectPanel = findViewById(R.id.connectPanel)
         optionsPanel = findViewById(R.id.optionsPanel)
@@ -174,6 +183,12 @@ class MainActivity : AppCompatActivity(), InputManager.InputDeviceListener {
                 if (screenOff) {
                     screenOff = false
                     swScreenOff.isChecked = false
+                    runOnUiThread { updateUI() }
+                    return true
+                }
+                if (service?.connected == true) {
+                    screenOff = true
+                    swScreenOff.isChecked = true
                     runOnUiThread { updateUI() }
                     return true
                 }
@@ -255,6 +270,7 @@ class MainActivity : AppCompatActivity(), InputManager.InputDeviceListener {
 
     override fun onPause() {
         super.onPause()
+        blinkAnimator?.cancel()
         inputManager.unregisterInputDeviceListener(this)
         if (bound) {
             unbindService(connection)
@@ -316,6 +332,7 @@ class MainActivity : AppCompatActivity(), InputManager.InputDeviceListener {
 
         tvLog.setTextColor(t.text2)
         tvPlayerNumber.setTextColor(t.accent)
+        tvGamepadStatus.setTextColor(t.text2)
         tvOptions.setTextColor((t.accent and 0x00FFFFFF) or 0x55000000.toInt())
 
         allThemeViews.forEachIndexed { i, v ->
@@ -453,6 +470,10 @@ class MainActivity : AppCompatActivity(), InputManager.InputDeviceListener {
     private fun updateUI() {
         if (screenOff) {
             applyScreenOff()
+            if (isConnected() && service?.gamepadManager?.hasSlots() == true) {
+                tvGamepadStatus.visibility = View.GONE
+                blinkAnimator?.cancel()
+            }
             return
         }
 
@@ -471,12 +492,31 @@ class MainActivity : AppCompatActivity(), InputManager.InputDeviceListener {
             tvPlayerNumber.text = "PLAYER $playerNum"
             tvPlayerNumber.visibility = View.VISIBLE
             tvPlayerNumber.bringToFront()
+            val hasGamepad = service?.gamepadManager?.hasSlots() == true
+            if (hasGamepad) {
+                tvGamepadStatus.visibility = View.GONE
+                blinkAnimator?.cancel()
+            } else {
+                tvGamepadStatus.visibility = View.VISIBLE
+                tvGamepadStatus.bringToFront()
+                blinkAnimator?.cancel()
+                blinkAnimator = ObjectAnimator.ofFloat(tvGamepadStatus, "alpha", 1f, 0f).apply {
+                    duration = 500
+                    repeatMode = ObjectAnimator.REVERSE
+                    repeatCount = ObjectAnimator.INFINITE
+                    start()
+                }
+            }
         } else if (connecting) {
             tvPlayerNumber.text = "CONNECTING..."
             tvPlayerNumber.visibility = View.VISIBLE
             tvPlayerNumber.bringToFront()
+            tvGamepadStatus.visibility = View.GONE
+            blinkAnimator?.cancel()
         } else {
             tvPlayerNumber.visibility = View.GONE
+            tvGamepadStatus.visibility = View.GONE
+            blinkAnimator?.cancel()
         }
 
         applyTheme()

@@ -18,6 +18,7 @@ class GamepadBridgeService : Service() {
     private var networkClient: NetworkClient? = null
     private var senderThread: Thread? = null
     var onConnectionStateChanged: (() -> Unit)? = null
+    var onSoundTrigger: ((Int) -> Unit)? = null
 
     @Volatile
     var connected: Boolean = false
@@ -65,6 +66,7 @@ class GamepadBridgeService : Service() {
                 playerNumber = playerNum
                 connectionError = null
                 onConnectionStateChanged?.invoke()
+                onSoundTrigger?.invoke(playerNum)
                 startStateSender()
             },
             onDisconnected = { ex ->
@@ -80,11 +82,20 @@ class GamepadBridgeService : Service() {
 
     private fun startStateSender() {
         val thread = Thread({ ->
+            var lastHeartbeat = 0L
             while (connected) {
+                val now = System.currentTimeMillis()
                 synchronized(gamepadManager) {
-                    for (slot in gamepadManager.getActiveSlotIds()) {
-                        val state = gamepadManager.getStateBySlot(slot) ?: continue
-                        networkClient?.send(state)
+                    val activeSlots = gamepadManager.getActiveSlotIds()
+                    if (activeSlots.isNotEmpty()) {
+                        for (slot in activeSlots) {
+                            val state = gamepadManager.getStateBySlot(slot) ?: continue
+                            networkClient?.send(state)
+                        }
+                        lastHeartbeat = now
+                    } else if (now - lastHeartbeat >= 1000L) {
+                        networkClient?.send(GamepadState(gamepadId = playerNumber - 1))
+                        lastHeartbeat = now
                     }
                 }
                 try {
