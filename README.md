@@ -1,55 +1,61 @@
-# Android Gamepad Bridge (Linux)
+# GamepadBridge
 
-Forward physical gamepad input from Android to Linux over local network.
+Forward physical gamepad input from Android to Linux over your local network.
+Turns your phone into a wireless gamepad receiver with a live web dashboard.
 
-## Architecture
+## Features
 
-```
-Android (Kotlin) ── TCP binary protocol ──► Linux PC (Python)
-                        20 bytes/packet          │
-                     ┌─────────────────┐         │
-                     │ gamepad_id (1)  │         │
-                     │ buttons (4)     │         ├── HTTP Dashboard :8080
-                     │ lx,ly,rx,ry (8) │         ├── WebSocket :8080
-                     │ lt,rt (2)       │         └── XUSB receiver (USB)
-                     │ timestamp (4)   │
-                     └─────────────────┘
-```
+- **4 virtual Xbox 360 gamepads** on the Linux host via `/dev/uinput`
+- **Android app** forwards Bluetooth/USB gamepad input over TCP
+- **Live dashboard** at `http://PC-IP:8080` with real-time stick visualisation, button states, and QR code for easy connection
+- **Audio feedback** — retro connection jingles and player-number callouts
+- **Multi-device** — up to 4 phones can connect simultaneously, each gets a unique player slot
 
 ## Quick Start
 
 ### Server (Linux)
+
 ```bash
-cd server
-pip install -r requirements.txt
-python3 server.py        # needs root for /dev/uinput
+sudo dnf install -y python3-uinput   # Fedora
+pip install qrcode[pil]
+sudo python3 server/server.py
 ```
 
-### Dashboard
-Open http://PC-IP:8080 in browser (shows QR with connection string).
+Or use the included `install.sh` for a one‑shot setup (sudoers entry + launcher).
+
+Open `http://localhost:8080/` in your browser.
 
 ### Android App
-Open `android/` in Android Studio or build with:
+
 ```bash
 cd android
 ./gradlew assembleDebug
 adb install app/build/outputs/apk/debug/app-debug.apk
 ```
 
+Open **GamepadBridge** on your phone, enter the PC's IP and port `60001`, tap **Connect**.
+
+## Ports
+
+| Port  | Protocol | Purpose              |
+|-------|----------|----------------------|
+| 60001 | TCP      | Gamepad data from phone |
+| 8080  | HTTP+WS  | Dashboard + live updates |
+
 ## Protocol
 
-| Offset | Size | Field |
-|--------|------|-------|
-| 0  | 1  | Message type (0 = state) |
-| 1  | 1  | Gamepad ID (0-3) |
-| 2  | 4  | Button bitmask (uint32 LE) |
-| 6  | 2  | Left stick X (int16 LE) |
-| 8  | 2  | Left stick Y (int16 LE) |
-| 10 | 2  | Right stick X (int16 LE) |
-| 12 | 2  | Right stick Y (int16 LE) |
-| 14 | 1  | Left trigger (0-255) |
-| 15 | 1  | Right trigger (0-255) |
-| 16 | 4  | Timestamp (uint32 LE) |
+| Offset | Size | Field              |
+|--------|------|--------------------|
+| 0      | 1    | Message type (0 = state) |
+| 1      | 1    | Gamepad ID (0-3)   |
+| 2      | 4    | Button bitmask (LE) |
+| 6      | 2    | Left stick X (i16) |
+| 8      | 2    | Left stick Y (i16) |
+| 10     | 2    | Right stick X (i16) |
+| 12     | 2    | Right stick Y (i16) |
+| 14     | 1    | Left trigger (0-255) |
+| 15     | 1    | Right trigger (0-255) |
+| 16     | 4    | Timestamp (LE)     |
 
 ## Button Bits
 
@@ -73,7 +79,11 @@ adb install app/build/outputs/apk/debug/app-debug.apk
 | 15  | DPAD_RIGHT |
 | 16  | HOME   |
 
-## Ports
+## Build Requirements
 
-- `60001` — TCP gamepad data from Android
-- `8080`  — HTTP dashboard + WebSocket
+- **Server**: Python 3.10+, `python-uinput`, `qrcode[pil]`
+- **Android**: JDK 17, Android SDK 34, Gradle 8.11
+
+## License
+
+MIT
