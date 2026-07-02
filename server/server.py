@@ -434,7 +434,8 @@ DASHBOARD_HTML = r'''<!DOCTYPE html>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{background:#3d2028;color:#e8c8d0;font-family:'Segoe UI',sans-serif;padding:10px;min-height:100vh}
-h1{font-size:1.2rem;color:#ff85b4;text-align:center;margin-bottom:8px}
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+h1{font-size:.9rem;color:#ff85b4;text-align:center;margin-bottom:8px;font-family:'Press Start 2P',monospace;letter-spacing:1px}
 .gw{position:relative;margin-bottom:8px}
 .g2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 #qrOver{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);z-index:10;background:#4d2832ec;border-radius:12px;padding:10px;border:1px solid #ff85b455;text-align:center;backdrop-filter:blur(4px);transition:opacity .3s}
@@ -478,7 +479,7 @@ h1{font-size:1.2rem;color:#ff85b4;text-align:center;margin-bottom:8px}
 </style>
 </head>
 <body>
-<h1>🌸 Gamepad Bridge</h1>
+<h1>=｀ω´= Gamepad Bridge</h1>
 <div class="gw">
   <div class="g2" id="gpGrid"></div>
   <div id="qrOver">

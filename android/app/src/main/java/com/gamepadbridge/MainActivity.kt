@@ -78,7 +78,7 @@ class MainActivity : AppCompatActivity(), InputManager.InputDeviceListener {
     private var currentTheme = 0
     private lateinit var gestureDetector: GestureDetector
     private val connectTimeoutHandler = Handler(Looper.getMainLooper())
-    private val CONNECT_TIMEOUT_MS = 10000L
+    private val CONNECT_TIMEOUT_MS = 3000L
 
     data class ThemeColors(
         val bg: Int, val bg2: Int, val accent: Int, val accent2: Int,
@@ -172,7 +172,7 @@ class MainActivity : AppCompatActivity(), InputManager.InputDeviceListener {
 
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         window.decorView.setOnSystemUiVisibilityChangeListener { visibility ->
-            if (visibility and View.SYSTEM_UI_FLAG_FULLSCREEN == 0) {
+            if (visibility and View.SYSTEM_UI_FLAG_FULLSCREEN == 0 && !etHost.isFocused && !etPort.isFocused) {
                 window.decorView.postDelayed({ hideSystemUI() }, 3000)
             }
         }
@@ -265,7 +265,7 @@ class MainActivity : AppCompatActivity(), InputManager.InputDeviceListener {
 
     override fun onWindowFocusChanged(hasFocus: Boolean) {
         super.onWindowFocusChanged(hasFocus)
-        if (hasFocus) hideSystemUI()
+        if (hasFocus && !etHost.isFocused && !etPort.isFocused) hideSystemUI()
     }
 
     override fun onPause() {
@@ -279,6 +279,7 @@ class MainActivity : AppCompatActivity(), InputManager.InputDeviceListener {
     }
 
     private fun hideSystemUI() {
+        if (etHost.isFocused || etPort.isFocused) return
         window.decorView.systemUiVisibility = (
             View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
             or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
@@ -415,9 +416,16 @@ class MainActivity : AppCompatActivity(), InputManager.InputDeviceListener {
         log("Connecting...")
         updateUI()
         connectTimeoutHandler.removeCallbacksAndMessages(null)
+        val targetHost = etHost.text.toString().trim()
+        val targetPort = etPort.text.toString().trim()
         connectTimeoutHandler.postDelayed({
             if (isConnecting()) {
-                log("ERROR: Connection timed out")
+                val reason = when {
+                    targetHost.isEmpty() -> "no IP entered"
+                    targetPort.isEmpty() -> "no port entered"
+                    else -> "could not reach $targetHost:$targetPort"
+                }
+                log("ERROR: $reason")
                 stopConnecting()
                 if (bound) {
                     service?.disconnect()
