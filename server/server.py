@@ -184,6 +184,25 @@ class GamepadBridgeServer:
         self.virtual = [VirtualGamepad(i) for i in range(self.MAX_GAMEPADS)]
         self.ws_clients: set[asyncio.StreamWriter] = set()
         self._ws_lock = threading.Lock()
+        self._tcp_slots: dict[str, int] = {}  # addr -> server slot
+        self._tcp_lock = threading.Lock()
+
+    def _allocate_tcp_slot(self, addr: str) -> int | None:
+        with self._tcp_lock:
+            used = set(self._tcp_slots.values())
+            for slot in range(self.MAX_GAMEPADS):
+                if slot not in used:
+                    self._tcp_slots[addr] = slot
+                    self.states[slot].gamepad_id = slot
+                    return slot
+            return None
+
+    def _free_tcp_slot(self, addr: str):
+        with self._tcp_lock:
+            slot = self._tcp_slots.pop(addr, None)
+            if slot is not None:
+                self.states[slot] = GamepadState()
+                self.states[slot].gamepad_id = slot
 
     # -- uinput thread worker ---------------------------------------
 
@@ -195,22 +214,27 @@ class GamepadBridgeServer:
 
     async def handle_gamepad_client(self, reader: asyncio.StreamReader, writer: asyncio.StreamWriter):
         addr = writer.get_extra_info('peername')
-        print(f'[tcp] Gamepad client connected: {addr}')
+        addr_key = f'{addr[0]}:{addr[1]}'
+        print(f'[tcp] Gamepad client connected: {addr_key}')
+        slot = self._allocate_tcp_slot(addr_key)
+        if slot is None:
+            print(f'[tcp] No free slots for {addr_key}, rejecting')
+            writer.close()
+            return
+        print(f'[tcp] Assigned slot {slot} to {addr_key}')
         loop = asyncio.get_running_loop()
         try:
             while True:
                 data = await asyncio.wait_for(reader.readexactly(20), timeout=600)
                 if len(data) < 20:
                     break
-                gid = data[1]
-                if gid < 0 or gid >= self.MAX_GAMEPADS:
-                    continue
-                self.states[gid].apply_android_report(data)
-                loop.run_in_executor(None, self._uinput_worker, gid)
+                self.states[slot].apply_android_report(data)
+                loop.run_in_executor(None, self._uinput_worker, slot)
         except (asyncio.IncompleteReadError, asyncio.TimeoutError, ConnectionResetError, EOFError):
             pass
         finally:
-            print(f'[tcp] Gamepad client disconnected: {addr}')
+            print(f'[tcp] Gamepad client disconnected: {addr_key} (slot {slot})')
+            self._free_tcp_slot(addr_key)
             try:
                 writer.close()
                 await writer.wait_closed()
