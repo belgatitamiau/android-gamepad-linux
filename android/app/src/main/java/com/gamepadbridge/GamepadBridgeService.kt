@@ -17,9 +17,14 @@ class GamepadBridgeService : Service() {
     val gamepadManager = GamepadManager()
     private var networkClient: NetworkClient? = null
     private var senderThread: Thread? = null
+    var onConnectionStateChanged: (() -> Unit)? = null
 
     @Volatile
     var connected: Boolean = false
+        private set
+
+    @Volatile
+    var connecting: Boolean = false
         private set
 
     @Volatile
@@ -41,19 +46,26 @@ class GamepadBridgeService : Service() {
     fun connect(host: String, port: Int) {
         Log.i(TAG, "Connecting to $host:$port")
         startForeground(NOTIF_ID, buildNotification())
+        connected = false
+        connecting = true
         connectionError = null
+        onConnectionStateChanged?.invoke()
         networkClient = NetworkClient(
             host = host,
             port = port,
             onConnected = {
                 Log.i(TAG, "Network connected, starting state sender")
                 connected = true
+                connecting = false
                 connectionError = null
+                onConnectionStateChanged?.invoke()
                 startStateSender()
             },
             onDisconnected = { ex ->
                 connected = false
+                connecting = false
                 connectionError = ex?.message ?: "Unknown error"
+                onConnectionStateChanged?.invoke()
                 Log.e(TAG, "Network disconnected: $connectionError")
             }
         )
@@ -83,6 +95,7 @@ class GamepadBridgeService : Service() {
     fun disconnect() {
         Log.i(TAG, "Disconnecting")
         connected = false
+        connecting = false
         networkClient?.stop()
         networkClient = null
         senderThread?.interrupt()

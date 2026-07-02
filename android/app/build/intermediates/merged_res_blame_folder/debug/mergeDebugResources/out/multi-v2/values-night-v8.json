@@ -4,7 +4,7 @@
             "outputFile": "com.gamepadbridge.app-mergeDebugResources-20:/values-night-v8/values-night-v8.xml",
             "map": [
                 {
-                    "source": "/home/beluchi/.gradle/caches/9.1.0/transforms/970003d2577c7cbcfb2cd82c1bb4da5b/transformed/appcompat-1.6.1/res/values-night-v8/values-night-v8.xml",
+                    "source": "/home/beluchi/.gradle/caches/8.11.1/transforms/04081599e67b0e3a5dc01e6121977aa6/transformed/appcompat-1.6.1/res/values-night-v8/values-night-v8.xml",
                     "from": {
                         "startLines": "2,3,4,5,6,7,8,9",
                         "startColumns": "4,4,4,4,4,4,4,4",

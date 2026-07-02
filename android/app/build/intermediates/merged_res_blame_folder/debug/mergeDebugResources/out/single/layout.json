@@ -1,9 +1,5 @@
 [
     {
-        "merged": "/home/beluchi/.gradle/daemon/9.1.0/com.gamepadbridge.app-mergeDebugResources-21:/layout/activity_main.xml",
-        "source": "/home/beluchi/.gradle/daemon/9.1.0/com.gamepadbridge.app-main-24:/layout/activity_main.xml"
-    },
-    {
         "merged": "com.gamepadbridge.app-mergeDebugResources-21:/layout/activity_main.xml",
         "source": "com.gamepadbridge.app-main-24:/layout/activity_main.xml"
     }

@@ -4,7 +4,7 @@
             "outputFile": "com.gamepadbridge.app-mergeDebugResources-20:/values-he/values-he.xml",
             "map": [
                 {
-                    "source": "/home/beluchi/.gradle/caches/9.1.0/transforms/70484e8a363a9c79bc38b74e3e528802/transformed/zxing-android-embedded-4.3.0/res/values-he/values-he.xml",
+                    "source": "/home/beluchi/.gradle/caches/8.11.1/transforms/6f7d89a9dccf7731ecc7d2981700f3e0/transformed/zxing-android-embedded-4.3.0/res/values-he/values-he.xml",
                     "from": {
                         "startLines": "2,3,4,5",
                         "startColumns": "4,4,4,4",

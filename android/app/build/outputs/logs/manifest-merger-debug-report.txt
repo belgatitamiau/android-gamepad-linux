@@ -4,37 +4,37 @@ ADDED from /home/beluchi/android-gamepad-linux/android/app/src/main/AndroidManif
 INJECTED from /home/beluchi/android-gamepad-linux/android/app/src/main/AndroidManifest.xml:2:1-53:12
 INJECTED from /home/beluchi/android-gamepad-linux/android/app/src/main/AndroidManifest.xml:2:1-53:12
 INJECTED from /home/beluchi/android-gamepad-linux/android/app/src/main/AndroidManifest.xml:2:1-53:12
-MERGED from [androidx.databinding:viewbinding:8.9.1] /home/beluchi/.gradle/caches/9.1.0/transforms/e9db2407fb64bec3d3d3b7e58ce28a44/transformed/viewbinding-8.9.1/AndroidManifest.xml:2:1-7:12
-MERGED from [androidx.constraintlayout:constraintlayout:2.1.4] /home/beluchi/.gradle/caches/9.1.0/transforms/9f3fa732e2bbacda2a7764258f788f15/transformed/constraintlayout-2.1.4/AndroidManifest.xml:2:1-11:12
-MERGED from [androidx.appcompat:appcompat-resources:1.6.1] /home/beluchi/.gradle/caches/9.1.0/transforms/6cd3bd7968d28c9ec38cdecf4f19262f/transformed/appcompat-resources-1.6.1/AndroidManifest.xml:17:1-22:12
-MERGED from [androidx.appcompat:appcompat:1.6.1] /home/beluchi/.gradle/caches/9.1.0/transforms/970003d2577c7cbcfb2cd82c1bb4da5b/transformed/appcompat-1.6.1/AndroidManifest.xml:17:1-22:12
-MERGED from [androidx.fragment:fragment:1.3.6] /home/beluchi/.gradle/caches/9.1.0/transforms/7fc2ad61ade0242bd9c80041f3b77bad/transformed/fragment-1.3.6/AndroidManifest.xml:17:1-24:12
-MERGED from [androidx.activity:activity:1.6.0] /home/beluchi/.gradle/caches/9.1.0/transforms/c91dcba3f66084714f4e039b6b2cdfc8/transformed/activity-1.6.0/AndroidManifest.xml:17:1-22:12
-MERGED from [androidx.drawerlayout:drawerlayout:1.0.0] /home/beluchi/.gradle/caches/9.1.0/transforms/e5c4ac633175dd05d550cc8a9d758033/transformed/drawerlayout-1.0.0/AndroidManifest.xml:17:1-22:12
-MERGED from [androidx.emoji2:emoji2-views-helper:1.2.0] /home/beluchi/.gradle/caches/9.1.0/transforms/880570984b4bc5950b25d5a6f985b36a/transformed/emoji2-views-helper-1.2.0/AndroidManifest.xml:2:1-7:12
-MERGED from [androidx.emoji2:emoji2:1.2.0] /home/beluchi/.gradle/caches/9.1.0/transforms/48f8a38320d573d4253bdf695ef17701/transformed/emoji2-1.2.0/AndroidManifest.xml:17:1-35:12
-MERGED from [androidx.vectordrawable:vectordrawable-animated:1.1.0] /home/beluchi/.gradle/caches/9.1.0/transforms/2ab1092c1dfbda52392d5db4270e8718/transformed/vectordrawable-animated-1.1.0/AndroidManifest.xml:17:1-24:12
-MERGED from [androidx.vectordrawable:vectordrawable:1.1.0] /home/beluchi/.gradle/caches/9.1.0/transforms/cfdca20dca27be262fef889577719842/transformed/vectordrawable-1.1.0/AndroidManifest.xml:17:1-24:12
-MERGED from [androidx.viewpager:viewpager:1.0.0] /home/beluchi/.gradle/caches/9.1.0/transforms/39dca44a9fec29271d37ed5ce431f8f9/transformed/viewpager-1.0.0/AndroidManifest.xml:17:1-22:12
-MERGED from [androidx.customview:customview:1.0.0] /home/beluchi/.gradle/caches/9.1.0/transforms/9cc2850d7a6f9f8e07384f094e430810/transformed/customview-1.0.0/AndroidManifest.xml:17:1-22:12
-MERGED from [androidx.loader:loader:1.0.0] /home/beluchi/.gradle/caches/9.1.0/transforms/dc1ea7c968f11fbd53833065114a092a/transformed/loader-1.0.0/AndroidManifest.xml:17:1-22:12
-MERGED from [androidx.core:core:1.12.0] /home/beluchi/.gradle/caches/9.1.0/transforms/dd79b389327327bde9cc913c2207269d/transformed/core-1.12.0/AndroidManifest.xml:17:1-30:12
-MERGED from [androidx.lifecycle:lifecycle-viewmodel:2.5.1] /home/beluchi/.gradle/caches/9.1.0/transforms/c0b02de7e3aeb80a10e81dd6edee8859/transformed/lifecycle-viewmodel-2.5.1/AndroidManifest.xml:17:1-24:12
-MERGED from [androidx.lifecycle:lifecycle-viewmodel-savedstate:2.5.1] /home/beluchi/.gradle/caches/9.1.0/transforms/530d98aa6d029b013024beef1e5ffda6/transformed/lifecycle-viewmodel-savedstate-2.5.1/AndroidManifest.xml:17:1-24:12
-MERGED from [androidx.core:core-ktx:1.12.0] /home/beluchi/.gradle/caches/9.1.0/transforms/30ba48dc0729a349a90e8c4746c12df8/transformed/core-ktx-1.12.0/AndroidManifest.xml:2:1-7:12
-MERGED from [androidx.savedstate:savedstate:1.2.0] /home/beluchi/.gradle/caches/9.1.0/transforms/ecce6047dc5e56cd47cd59a6b4ebbc09/transformed/savedstate-1.2.0/AndroidManifest.xml:17:1-24:12
-MERGED from [androidx.annotation:annotation-experimental:1.3.0] /home/beluchi/.gradle/caches/9.1.0/transforms/8fd4a8777fe9460cddb621c457bcb4eb/transformed/annotation-experimental-1.3.0/AndroidManifest.xml:17:1-22:12
-MERGED from [androidx.cursoradapter:cursoradapter:1.0.0] /home/beluchi/.gradle/caches/9.1.0/transforms/fdbbd9c06db7f67922c34b1e6e0762f1/transformed/cursoradapter-1.0.0/AndroidManifest.xml:17:1-22:12
-MERGED from [androidx.lifecycle:lifecycle-process:2.4.1] /home/beluchi/.gradle/caches/9.1.0/transforms/40c21cfbb695b81ecf50a3a33470795d/transformed/lifecycle-process-2.4.1/AndroidManifest.xml:17:1-37:12
-MERGED from [androidx.lifecycle:lifecycle-runtime:2.5.1] /home/beluchi/.gradle/caches/9.1.0/transforms/8dab831092df95a6af307dec0ed0b616/transformed/lifecycle-runtime-2.5.1/AndroidManifest.xml:17:1-24:12
-MERGED from [androidx.interpolator:interpolator:1.0.0] /home/beluchi/.gradle/caches/9.1.0/transforms/1dbf4bcfa374057c05a9b4339b79d67b/transformed/interpolator-1.0.0/AndroidManifest.xml:17:1-22:12
-MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] /home/beluchi/.gradle/caches/9.1.0/transforms/f681d2f3b9b8e0c32f29107e7c33e210/transformed/versionedparcelable-1.1.1/AndroidManifest.xml:17:1-27:12
-MERGED from [androidx.startup:startup-runtime:1.1.1] /home/beluchi/.gradle/caches/9.1.0/transforms/dfcc4d97db5a0a35ae920e9f7aac3679/transformed/startup-runtime-1.1.1/AndroidManifest.xml:17:1-33:12
-MERGED from [androidx.tracing:tracing:1.0.0] /home/beluchi/.gradle/caches/9.1.0/transforms/1b70264fc15a9a13fad4ad69f21180b9/transformed/tracing-1.0.0/AndroidManifest.xml:17:1-24:12
-MERGED from [androidx.lifecycle:lifecycle-livedata:2.0.0] /home/beluchi/.gradle/caches/9.1.0/transforms/c38805c497d4abec5b57e39f4b7c63cc/transformed/lifecycle-livedata-2.0.0/AndroidManifest.xml:17:1-22:12
-MERGED from [androidx.lifecycle:lifecycle-livedata-core:2.5.1] /home/beluchi/.gradle/caches/9.1.0/transforms/dcc45a4c1c8b050231d1f5acc080e471/transformed/lifecycle-livedata-core-2.5.1/AndroidManifest.xml:17:1-24:12
-MERGED from [androidx.arch.core:core-runtime:2.1.0] /home/beluchi/.gradle/caches/9.1.0/transforms/afbcb250c6e372ebd54bb2f2a355c3a4/transformed/core-runtime-2.1.0/AndroidManifest.xml:17:1-24:12
-MERGED from [com.journeyapps:zxing-android-embedded:4.3.0] /home/beluchi/.gradle/caches/9.1.0/transforms/70484e8a363a9c79bc38b74e3e528802/transformed/zxing-android-embedded-4.3.0/AndroidManifest.xml:17:1-56:12
+MERGED from [androidx.databinding:viewbinding:8.9.1] /home/beluchi/.gradle/caches/8.11.1/transforms/9b99ffeb4bfbdb7053617117b244cb10/transformed/viewbinding-8.9.1/AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.constraintlayout:constraintlayout:2.1.4] /home/beluchi/.gradle/caches/8.11.1/transforms/c1e2143e7b675768114dffa0b363f97a/transformed/constraintlayout-2.1.4/AndroidManifest.xml:2:1-11:12
+MERGED from [androidx.appcompat:appcompat-resources:1.6.1] /home/beluchi/.gradle/caches/8.11.1/transforms/fe6bf27b6f183262d7c78a7dcfe334ed/transformed/appcompat-resources-1.6.1/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.appcompat:appcompat:1.6.1] /home/beluchi/.gradle/caches/8.11.1/transforms/04081599e67b0e3a5dc01e6121977aa6/transformed/appcompat-1.6.1/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.fragment:fragment:1.3.6] /home/beluchi/.gradle/caches/8.11.1/transforms/5b1671afa4076c6a69e4682abc240598/transformed/fragment-1.3.6/AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.activity:activity:1.6.0] /home/beluchi/.gradle/caches/8.11.1/transforms/530676787fc8ee3e6c17b63d83ab41b5/transformed/activity-1.6.0/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.drawerlayout:drawerlayout:1.0.0] /home/beluchi/.gradle/caches/8.11.1/transforms/a4397573e0903cc46992777e0412f81f/transformed/drawerlayout-1.0.0/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.emoji2:emoji2-views-helper:1.2.0] /home/beluchi/.gradle/caches/8.11.1/transforms/00672c85dbce013445f5ff54b2ad6ac4/transformed/emoji2-views-helper-1.2.0/AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.emoji2:emoji2:1.2.0] /home/beluchi/.gradle/caches/8.11.1/transforms/0515a007a72083475238ec964cce652c/transformed/emoji2-1.2.0/AndroidManifest.xml:17:1-35:12
+MERGED from [androidx.vectordrawable:vectordrawable-animated:1.1.0] /home/beluchi/.gradle/caches/8.11.1/transforms/eb09fe6a6ab06b43b1bd62a15da340af/transformed/vectordrawable-animated-1.1.0/AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.vectordrawable:vectordrawable:1.1.0] /home/beluchi/.gradle/caches/8.11.1/transforms/d8b75b7d5d52e21034a4317b12475a3f/transformed/vectordrawable-1.1.0/AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.viewpager:viewpager:1.0.0] /home/beluchi/.gradle/caches/8.11.1/transforms/62e4a66a9a0b6f80531a949d2a52367e/transformed/viewpager-1.0.0/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.customview:customview:1.0.0] /home/beluchi/.gradle/caches/8.11.1/transforms/0f780023965741cb27b540597f9e9b90/transformed/customview-1.0.0/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.loader:loader:1.0.0] /home/beluchi/.gradle/caches/8.11.1/transforms/17d47d649e4e5b521fde2af6c9fbab79/transformed/loader-1.0.0/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.core:core:1.12.0] /home/beluchi/.gradle/caches/8.11.1/transforms/7cb31a4bc6c2b6601fa95c04507e42ed/transformed/core-1.12.0/AndroidManifest.xml:17:1-30:12
+MERGED from [androidx.lifecycle:lifecycle-viewmodel:2.5.1] /home/beluchi/.gradle/caches/8.11.1/transforms/c8edaa30d8aec86aa0b3f334c8091137/transformed/lifecycle-viewmodel-2.5.1/AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.lifecycle:lifecycle-viewmodel-savedstate:2.5.1] /home/beluchi/.gradle/caches/8.11.1/transforms/4cb31f9544ce6f36e4b90cbc170a1edd/transformed/lifecycle-viewmodel-savedstate-2.5.1/AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.core:core-ktx:1.12.0] /home/beluchi/.gradle/caches/8.11.1/transforms/e4703cccf8bf78811e443cec20c08e21/transformed/core-ktx-1.12.0/AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.savedstate:savedstate:1.2.0] /home/beluchi/.gradle/caches/8.11.1/transforms/e28549d988d8710e7fc4ea159178b6c9/transformed/savedstate-1.2.0/AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.annotation:annotation-experimental:1.3.0] /home/beluchi/.gradle/caches/8.11.1/transforms/54e5786ebf6b5c23011fa918251daef0/transformed/annotation-experimental-1.3.0/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.cursoradapter:cursoradapter:1.0.0] /home/beluchi/.gradle/caches/8.11.1/transforms/e2e1a912ff61a590e53d56082c599d86/transformed/cursoradapter-1.0.0/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.lifecycle:lifecycle-process:2.4.1] /home/beluchi/.gradle/caches/8.11.1/transforms/dff15bd3c1ac56e80a3188394dd9f480/transformed/lifecycle-process-2.4.1/AndroidManifest.xml:17:1-37:12
+MERGED from [androidx.lifecycle:lifecycle-runtime:2.5.1] /home/beluchi/.gradle/caches/8.11.1/transforms/6986b9da6d73c60f922efdb93411369d/transformed/lifecycle-runtime-2.5.1/AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.interpolator:interpolator:1.0.0] /home/beluchi/.gradle/caches/8.11.1/transforms/edc9e798181e30d78b5dba1f8b1db692/transformed/interpolator-1.0.0/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] /home/beluchi/.gradle/caches/8.11.1/transforms/f61a2b5a389678dc8d9280f41d9f771e/transformed/versionedparcelable-1.1.1/AndroidManifest.xml:17:1-27:12
+MERGED from [androidx.startup:startup-runtime:1.1.1] /home/beluchi/.gradle/caches/8.11.1/transforms/cbf6e7bb5735bcd347ed3cee986d4c54/transformed/startup-runtime-1.1.1/AndroidManifest.xml:17:1-33:12
+MERGED from [androidx.tracing:tracing:1.0.0] /home/beluchi/.gradle/caches/8.11.1/transforms/2854d7e88cf64f5b2c350eb5e96f7619/transformed/tracing-1.0.0/AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.lifecycle:lifecycle-livedata:2.0.0] /home/beluchi/.gradle/caches/8.11.1/transforms/5a3b8f8c425ad47ef3391ba62a503ee8/transformed/lifecycle-livedata-2.0.0/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.lifecycle:lifecycle-livedata-core:2.5.1] /home/beluchi/.gradle/caches/8.11.1/transforms/d917b363c04d395701ad598db88fe9a5/transformed/lifecycle-livedata-core-2.5.1/AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.arch.core:core-runtime:2.1.0] /home/beluchi/.gradle/caches/8.11.1/transforms/88fec157bc76f0728db4c33e8c1bd164/transformed/core-runtime-2.1.0/AndroidManifest.xml:17:1-24:12
+MERGED from [com.journeyapps:zxing-android-embedded:4.3.0] /home/beluchi/.gradle/caches/8.11.1/transforms/6f7d89a9dccf7731ecc7d2981700f3e0/transformed/zxing-android-embedded-4.3.0/AndroidManifest.xml:17:1-56:12
 	package
 		INJECTED from /home/beluchi/android-gamepad-linux/android/app/src/main/AndroidManifest.xml
 	android:versionName
@@ -47,68 +47,68 @@ uses-sdk
 ADDED from /home/beluchi/android-gamepad-linux/android/app/src/main/AndroidManifest.xml:4:5-74
 INJECTED from /home/beluchi/android-gamepad-linux/android/app/src/main/AndroidManifest.xml:4:5-74
 INJECTED from /home/beluchi/android-gamepad-linux/android/app/src/main/AndroidManifest.xml:4:5-74
-MERGED from [androidx.databinding:viewbinding:8.9.1] /home/beluchi/.gradle/caches/9.1.0/transforms/e9db2407fb64bec3d3d3b7e58ce28a44/transformed/viewbinding-8.9.1/AndroidManifest.xml:5:5-44
-MERGED from [androidx.databinding:viewbinding:8.9.1] /home/beluchi/.gradle/caches/9.1.0/transforms/e9db2407fb64bec3d3d3b7e58ce28a44/transformed/viewbinding-8.9.1/AndroidManifest.xml:5:5-44
-MERGED from [androidx.constraintlayout:constraintlayout:2.1.4] /home/beluchi/.gradle/caches/9.1.0/transforms/9f3fa732e2bbacda2a7764258f788f15/transformed/constraintlayout-2.1.4/AndroidManifest.xml:5:5-7:41
-MERGED from [androidx.constraintlayout:constraintlayout:2.1.4] /home/beluchi/.gradle/caches/9.1.0/transforms/9f3fa732e2bbacda2a7764258f788f15/transformed/constraintlayout-2.1.4/AndroidManifest.xml:5:5-7:41
-MERGED from [androidx.appcompat:appcompat-resources:1.6.1] /home/beluchi/.gradle/caches/9.1.0/transforms/6cd3bd7968d28c9ec38cdecf4f19262f/transformed/appcompat-resources-1.6.1/AndroidManifest.xml:20:5-44
-MERGED from [androidx.appcompat:appcompat-resources:1.6.1] /home/beluchi/.gradle/caches/9.1.0/transforms/6cd3bd7968d28c9ec38cdecf4f19262f/transformed/appcompat-resources-1.6.1/AndroidManifest.xml:20:5-44
-MERGED from [androidx.appcompat:appcompat:1.6.1] /home/beluchi/.gradle/caches/9.1.0/transforms/970003d2577c7cbcfb2cd82c1bb4da5b/transformed/appcompat-1.6.1/AndroidManifest.xml:20:5-44
-MERGED from [androidx.appcompat:appcompat:1.6.1] /home/beluchi/.gradle/caches/9.1.0/transforms/970003d2577c7cbcfb2cd82c1bb4da5b/transformed/appcompat-1.6.1/AndroidManifest.xml:20:5-44
-MERGED from [androidx.fragment:fragment:1.3.6] /home/beluchi/.gradle/caches/9.1.0/transforms/7fc2ad61ade0242bd9c80041f3b77bad/transformed/fragment-1.3.6/AndroidManifest.xml:20:5-22:41
-MERGED from [androidx.fragment:fragment:1.3.6] /home/beluchi/.gradle/caches/9.1.0/transforms/7fc2ad61ade0242bd9c80041f3b77bad/transformed/fragment-1.3.6/AndroidManifest.xml:20:5-22:41
-MERGED from [androidx.activity:activity:1.6.0] /home/beluchi/.gradle/caches/9.1.0/transforms/c91dcba3f66084714f4e039b6b2cdfc8/transformed/activity-1.6.0/AndroidManifest.xml:20:5-44
-MERGED from [androidx.activity:activity:1.6.0] /home/beluchi/.gradle/caches/9.1.0/transforms/c91dcba3f66084714f4e039b6b2cdfc8/transformed/activity-1.6.0/AndroidManifest.xml:20:5-44
-MERGED from [androidx.drawerlayout:drawerlayout:1.0.0] /home/beluchi/.gradle/caches/9.1.0/transforms/e5c4ac633175dd05d550cc8a9d758033/transformed/drawerlayout-1.0.0/AndroidManifest.xml:20:5-44
-MERGED from [androidx.drawerlayout:drawerlayout:1.0.0] /home/beluchi/.gradle/caches/9.1.0/transforms/e5c4ac633175dd05d550cc8a9d758033/transformed/drawerlayout-1.0.0/AndroidManifest.xml:20:5-44
-MERGED from [androidx.emoji2:emoji2-views-helper:1.2.0] /home/beluchi/.gradle/caches/9.1.0/transforms/880570984b4bc5950b25d5a6f985b36a/transformed/emoji2-views-helper-1.2.0/AndroidManifest.xml:5:5-44
-MERGED from [androidx.emoji2:emoji2-views-helper:1.2.0] /home/beluchi/.gradle/caches/9.1.0/transforms/880570984b4bc5950b25d5a6f985b36a/transformed/emoji2-views-helper-1.2.0/AndroidManifest.xml:5:5-44
-MERGED from [androidx.emoji2:emoji2:1.2.0] /home/beluchi/.gradle/caches/9.1.0/transforms/48f8a38320d573d4253bdf695ef17701/transformed/emoji2-1.2.0/AndroidManifest.xml:21:5-44
-MERGED from [androidx.emoji2:emoji2:1.2.0] /home/beluchi/.gradle/caches/9.1.0/transforms/48f8a38320d573d4253bdf695ef17701/transformed/emoji2-1.2.0/AndroidManifest.xml:21:5-44
-MERGED from [androidx.vectordrawable:vectordrawable-animated:1.1.0] /home/beluchi/.gradle/caches/9.1.0/transforms/2ab1092c1dfbda52392d5db4270e8718/transformed/vectordrawable-animated-1.1.0/AndroidManifest.xml:20:5-22:41
-MERGED from [androidx.vectordrawable:vectordrawable-animated:1.1.0] /home/beluchi/.gradle/caches/9.1.0/transforms/2ab1092c1dfbda52392d5db4270e8718/transformed/vectordrawable-animated-1.1.0/AndroidManifest.xml:20:5-22:41
-MERGED from [androidx.vectordrawable:vectordrawable:1.1.0] /home/beluchi/.gradle/caches/9.1.0/transforms/cfdca20dca27be262fef889577719842/transformed/vectordrawable-1.1.0/AndroidManifest.xml:20:5-22:41
-MERGED from [androidx.vectordrawable:vectordrawable:1.1.0] /home/beluchi/.gradle/caches/9.1.0/transforms/cfdca20dca27be262fef889577719842/transformed/vectordrawable-1.1.0/AndroidManifest.xml:20:5-22:41
-MERGED from [androidx.viewpager:viewpager:1.0.0] /home/beluchi/.gradle/caches/9.1.0/transforms/39dca44a9fec29271d37ed5ce431f8f9/transformed/viewpager-1.0.0/AndroidManifest.xml:20:5-44
-MERGED from [androidx.viewpager:viewpager:1.0.0] /home/beluchi/.gradle/caches/9.1.0/transforms/39dca44a9fec29271d37ed5ce431f8f9/transformed/viewpager-1.0.0/AndroidManifest.xml:20:5-44
-MERGED from [androidx.customview:customview:1.0.0] /home/beluchi/.gradle/caches/9.1.0/transforms/9cc2850d7a6f9f8e07384f094e430810/transformed/customview-1.0.0/AndroidManifest.xml:20:5-44
-MERGED from [androidx.customview:customview:1.0.0] /home/beluchi/.gradle/caches/9.1.0/transforms/9cc2850d7a6f9f8e07384f094e430810/transformed/customview-1.0.0/AndroidManifest.xml:20:5-44
-MERGED from [androidx.loader:loader:1.0.0] /home/beluchi/.gradle/caches/9.1.0/transforms/dc1ea7c968f11fbd53833065114a092a/transformed/loader-1.0.0/AndroidManifest.xml:20:5-44
-MERGED from [androidx.loader:loader:1.0.0] /home/beluchi/.gradle/caches/9.1.0/transforms/dc1ea7c968f11fbd53833065114a092a/transformed/loader-1.0.0/AndroidManifest.xml:20:5-44
-MERGED from [androidx.core:core:1.12.0] /home/beluchi/.gradle/caches/9.1.0/transforms/dd79b389327327bde9cc913c2207269d/transformed/core-1.12.0/AndroidManifest.xml:20:5-44
-MERGED from [androidx.core:core:1.12.0] /home/beluchi/.gradle/caches/9.1.0/transforms/dd79b389327327bde9cc913c2207269d/transformed/core-1.12.0/AndroidManifest.xml:20:5-44
-MERGED from [androidx.lifecycle:lifecycle-viewmodel:2.5.1] /home/beluchi/.gradle/caches/9.1.0/transforms/c0b02de7e3aeb80a10e81dd6edee8859/transformed/lifecycle-viewmodel-2.5.1/AndroidManifest.xml:20:5-22:41
-MERGED from [androidx.lifecycle:lifecycle-viewmodel:2.5.1] /home/beluchi/.gradle/caches/9.1.0/transforms/c0b02de7e3aeb80a10e81dd6edee8859/transformed/lifecycle-viewmodel-2.5.1/AndroidManifest.xml:20:5-22:41
-MERGED from [androidx.lifecycle:lifecycle-viewmodel-savedstate:2.5.1] /home/beluchi/.gradle/caches/9.1.0/transforms/530d98aa6d029b013024beef1e5ffda6/transformed/lifecycle-viewmodel-savedstate-2.5.1/AndroidManifest.xml:20:5-22:41
-MERGED from [androidx.lifecycle:lifecycle-viewmodel-savedstate:2.5.1] /home/beluchi/.gradle/caches/9.1.0/transforms/530d98aa6d029b013024beef1e5ffda6/transformed/lifecycle-viewmodel-savedstate-2.5.1/AndroidManifest.xml:20:5-22:41
-MERGED from [androidx.core:core-ktx:1.12.0] /home/beluchi/.gradle/caches/9.1.0/transforms/30ba48dc0729a349a90e8c4746c12df8/transformed/core-ktx-1.12.0/AndroidManifest.xml:5:5-44
-MERGED from [androidx.core:core-ktx:1.12.0] /home/beluchi/.gradle/caches/9.1.0/transforms/30ba48dc0729a349a90e8c4746c12df8/transformed/core-ktx-1.12.0/AndroidManifest.xml:5:5-44
-MERGED from [androidx.savedstate:savedstate:1.2.0] /home/beluchi/.gradle/caches/9.1.0/transforms/ecce6047dc5e56cd47cd59a6b4ebbc09/transformed/savedstate-1.2.0/AndroidManifest.xml:20:5-22:41
-MERGED from [androidx.savedstate:savedstate:1.2.0] /home/beluchi/.gradle/caches/9.1.0/transforms/ecce6047dc5e56cd47cd59a6b4ebbc09/transformed/savedstate-1.2.0/AndroidManifest.xml:20:5-22:41
-MERGED from [androidx.annotation:annotation-experimental:1.3.0] /home/beluchi/.gradle/caches/9.1.0/transforms/8fd4a8777fe9460cddb621c457bcb4eb/transformed/annotation-experimental-1.3.0/AndroidManifest.xml:20:5-44
-MERGED from [androidx.annotation:annotation-experimental:1.3.0] /home/beluchi/.gradle/caches/9.1.0/transforms/8fd4a8777fe9460cddb621c457bcb4eb/transformed/annotation-experimental-1.3.0/AndroidManifest.xml:20:5-44
-MERGED from [androidx.cursoradapter:cursoradapter:1.0.0] /home/beluchi/.gradle/caches/9.1.0/transforms/fdbbd9c06db7f67922c34b1e6e0762f1/transformed/cursoradapter-1.0.0/AndroidManifest.xml:20:5-44
-MERGED from [androidx.cursoradapter:cursoradapter:1.0.0] /home/beluchi/.gradle/caches/9.1.0/transforms/fdbbd9c06db7f67922c34b1e6e0762f1/transformed/cursoradapter-1.0.0/AndroidManifest.xml:20:5-44
-MERGED from [androidx.lifecycle:lifecycle-process:2.4.1] /home/beluchi/.gradle/caches/9.1.0/transforms/40c21cfbb695b81ecf50a3a33470795d/transformed/lifecycle-process-2.4.1/AndroidManifest.xml:21:5-23:41
-MERGED from [androidx.lifecycle:lifecycle-process:2.4.1] /home/beluchi/.gradle/caches/9.1.0/transforms/40c21cfbb695b81ecf50a3a33470795d/transformed/lifecycle-process-2.4.1/AndroidManifest.xml:21:5-23:41
-MERGED from [androidx.lifecycle:lifecycle-runtime:2.5.1] /home/beluchi/.gradle/caches/9.1.0/transforms/8dab831092df95a6af307dec0ed0b616/transformed/lifecycle-runtime-2.5.1/AndroidManifest.xml:20:5-22:41
-MERGED from [androidx.lifecycle:lifecycle-runtime:2.5.1] /home/beluchi/.gradle/caches/9.1.0/transforms/8dab831092df95a6af307dec0ed0b616/transformed/lifecycle-runtime-2.5.1/AndroidManifest.xml:20:5-22:41
-MERGED from [androidx.interpolator:interpolator:1.0.0] /home/beluchi/.gradle/caches/9.1.0/transforms/1dbf4bcfa374057c05a9b4339b79d67b/transformed/interpolator-1.0.0/AndroidManifest.xml:20:5-44
-MERGED from [androidx.interpolator:interpolator:1.0.0] /home/beluchi/.gradle/caches/9.1.0/transforms/1dbf4bcfa374057c05a9b4339b79d67b/transformed/interpolator-1.0.0/AndroidManifest.xml:20:5-44
-MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] /home/beluchi/.gradle/caches/9.1.0/transforms/f681d2f3b9b8e0c32f29107e7c33e210/transformed/versionedparcelable-1.1.1/AndroidManifest.xml:20:5-22:41
-MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] /home/beluchi/.gradle/caches/9.1.0/transforms/f681d2f3b9b8e0c32f29107e7c33e210/transformed/versionedparcelable-1.1.1/AndroidManifest.xml:20:5-22:41
-MERGED from [androidx.startup:startup-runtime:1.1.1] /home/beluchi/.gradle/caches/9.1.0/transforms/dfcc4d97db5a0a35ae920e9f7aac3679/transformed/startup-runtime-1.1.1/AndroidManifest.xml:21:5-23:41
-MERGED from [androidx.startup:startup-runtime:1.1.1] /home/beluchi/.gradle/caches/9.1.0/transforms/dfcc4d97db5a0a35ae920e9f7aac3679/transformed/startup-runtime-1.1.1/AndroidManifest.xml:21:5-23:41
-MERGED from [androidx.tracing:tracing:1.0.0] /home/beluchi/.gradle/caches/9.1.0/transforms/1b70264fc15a9a13fad4ad69f21180b9/transformed/tracing-1.0.0/AndroidManifest.xml:20:5-22:41
-MERGED from [androidx.tracing:tracing:1.0.0] /home/beluchi/.gradle/caches/9.1.0/transforms/1b70264fc15a9a13fad4ad69f21180b9/transformed/tracing-1.0.0/AndroidManifest.xml:20:5-22:41
-MERGED from [androidx.lifecycle:lifecycle-livedata:2.0.0] /home/beluchi/.gradle/caches/9.1.0/transforms/c38805c497d4abec5b57e39f4b7c63cc/transformed/lifecycle-livedata-2.0.0/AndroidManifest.xml:20:5-44
-MERGED from [androidx.lifecycle:lifecycle-livedata:2.0.0] /home/beluchi/.gradle/caches/9.1.0/transforms/c38805c497d4abec5b57e39f4b7c63cc/transformed/lifecycle-livedata-2.0.0/AndroidManifest.xml:20:5-44
-MERGED from [androidx.lifecycle:lifecycle-livedata-core:2.5.1] /home/beluchi/.gradle/caches/9.1.0/transforms/dcc45a4c1c8b050231d1f5acc080e471/transformed/lifecycle-livedata-core-2.5.1/AndroidManifest.xml:20:5-22:41
-MERGED from [androidx.lifecycle:lifecycle-livedata-core:2.5.1] /home/beluchi/.gradle/caches/9.1.0/transforms/dcc45a4c1c8b050231d1f5acc080e471/transformed/lifecycle-livedata-core-2.5.1/AndroidManifest.xml:20:5-22:41
-MERGED from [androidx.arch.core:core-runtime:2.1.0] /home/beluchi/.gradle/caches/9.1.0/transforms/afbcb250c6e372ebd54bb2f2a355c3a4/transformed/core-runtime-2.1.0/AndroidManifest.xml:20:5-22:41
-MERGED from [androidx.arch.core:core-runtime:2.1.0] /home/beluchi/.gradle/caches/9.1.0/transforms/afbcb250c6e372ebd54bb2f2a355c3a4/transformed/core-runtime-2.1.0/AndroidManifest.xml:20:5-22:41
-MERGED from [com.journeyapps:zxing-android-embedded:4.3.0] /home/beluchi/.gradle/caches/9.1.0/transforms/70484e8a363a9c79bc38b74e3e528802/transformed/zxing-android-embedded-4.3.0/AndroidManifest.xml:20:5-44
-MERGED from [com.journeyapps:zxing-android-embedded:4.3.0] /home/beluchi/.gradle/caches/9.1.0/transforms/70484e8a363a9c79bc38b74e3e528802/transformed/zxing-android-embedded-4.3.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.databinding:viewbinding:8.9.1] /home/beluchi/.gradle/caches/8.11.1/transforms/9b99ffeb4bfbdb7053617117b244cb10/transformed/viewbinding-8.9.1/AndroidManifest.xml:5:5-44
+MERGED from [androidx.databinding:viewbinding:8.9.1] /home/beluchi/.gradle/caches/8.11.1/transforms/9b99ffeb4bfbdb7053617117b244cb10/transformed/viewbinding-8.9.1/AndroidManifest.xml:5:5-44
+MERGED from [androidx.constraintlayout:constraintlayout:2.1.4] /home/beluchi/.gradle/caches/8.11.1/transforms/c1e2143e7b675768114dffa0b363f97a/transformed/constraintlayout-2.1.4/AndroidManifest.xml:5:5-7:41
+MERGED from [androidx.constraintlayout:constraintlayout:2.1.4] /home/beluchi/.gradle/caches/8.11.1/transforms/c1e2143e7b675768114dffa0b363f97a/transformed/constraintlayout-2.1.4/AndroidManifest.xml:5:5-7:41
+MERGED from [androidx.appcompat:appcompat-resources:1.6.1] /home/beluchi/.gradle/caches/8.11.1/transforms/fe6bf27b6f183262d7c78a7dcfe334ed/transformed/appcompat-resources-1.6.1/AndroidManifest.xml:20:5-44
+MERGED from [androidx.appcompat:appcompat-resources:1.6.1] /home/beluchi/.gradle/caches/8.11.1/transforms/fe6bf27b6f183262d7c78a7dcfe334ed/transformed/appcompat-resources-1.6.1/AndroidManifest.xml:20:5-44
+MERGED from [androidx.appcompat:appcompat:1.6.1] /home/beluchi/.gradle/caches/8.11.1/transforms/04081599e67b0e3a5dc01e6121977aa6/transformed/appcompat-1.6.1/AndroidManifest.xml:20:5-44
+MERGED from [androidx.appcompat:appcompat:1.6.1] /home/beluchi/.gradle/caches/8.11.1/transforms/04081599e67b0e3a5dc01e6121977aa6/transformed/appcompat-1.6.1/AndroidManifest.xml:20:5-44
+MERGED from [androidx.fragment:fragment:1.3.6] /home/beluchi/.gradle/caches/8.11.1/transforms/5b1671afa4076c6a69e4682abc240598/transformed/fragment-1.3.6/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.fragment:fragment:1.3.6] /home/beluchi/.gradle/caches/8.11.1/transforms/5b1671afa4076c6a69e4682abc240598/transformed/fragment-1.3.6/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.activity:activity:1.6.0] /home/beluchi/.gradle/caches/8.11.1/transforms/530676787fc8ee3e6c17b63d83ab41b5/transformed/activity-1.6.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.activity:activity:1.6.0] /home/beluchi/.gradle/caches/8.11.1/transforms/530676787fc8ee3e6c17b63d83ab41b5/transformed/activity-1.6.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.drawerlayout:drawerlayout:1.0.0] /home/beluchi/.gradle/caches/8.11.1/transforms/a4397573e0903cc46992777e0412f81f/transformed/drawerlayout-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.drawerlayout:drawerlayout:1.0.0] /home/beluchi/.gradle/caches/8.11.1/transforms/a4397573e0903cc46992777e0412f81f/transformed/drawerlayout-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.emoji2:emoji2-views-helper:1.2.0] /home/beluchi/.gradle/caches/8.11.1/transforms/00672c85dbce013445f5ff54b2ad6ac4/transformed/emoji2-views-helper-1.2.0/AndroidManifest.xml:5:5-44
+MERGED from [androidx.emoji2:emoji2-views-helper:1.2.0] /home/beluchi/.gradle/caches/8.11.1/transforms/00672c85dbce013445f5ff54b2ad6ac4/transformed/emoji2-views-helper-1.2.0/AndroidManifest.xml:5:5-44
+MERGED from [androidx.emoji2:emoji2:1.2.0] /home/beluchi/.gradle/caches/8.11.1/transforms/0515a007a72083475238ec964cce652c/transformed/emoji2-1.2.0/AndroidManifest.xml:21:5-44
+MERGED from [androidx.emoji2:emoji2:1.2.0] /home/beluchi/.gradle/caches/8.11.1/transforms/0515a007a72083475238ec964cce652c/transformed/emoji2-1.2.0/AndroidManifest.xml:21:5-44
+MERGED from [androidx.vectordrawable:vectordrawable-animated:1.1.0] /home/beluchi/.gradle/caches/8.11.1/transforms/eb09fe6a6ab06b43b1bd62a15da340af/transformed/vectordrawable-animated-1.1.0/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.vectordrawable:vectordrawable-animated:1.1.0] /home/beluchi/.gradle/caches/8.11.1/transforms/eb09fe6a6ab06b43b1bd62a15da340af/transformed/vectordrawable-animated-1.1.0/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.vectordrawable:vectordrawable:1.1.0] /home/beluchi/.gradle/caches/8.11.1/transforms/d8b75b7d5d52e21034a4317b12475a3f/transformed/vectordrawable-1.1.0/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.vectordrawable:vectordrawable:1.1.0] /home/beluchi/.gradle/caches/8.11.1/transforms/d8b75b7d5d52e21034a4317b12475a3f/transformed/vectordrawable-1.1.0/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.viewpager:viewpager:1.0.0] /home/beluchi/.gradle/caches/8.11.1/transforms/62e4a66a9a0b6f80531a949d2a52367e/transformed/viewpager-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.viewpager:viewpager:1.0.0] /home/beluchi/.gradle/caches/8.11.1/transforms/62e4a66a9a0b6f80531a949d2a52367e/transformed/viewpager-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.customview:customview:1.0.0] /home/beluchi/.gradle/caches/8.11.1/transforms/0f780023965741cb27b540597f9e9b90/transformed/customview-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.customview:customview:1.0.0] /home/beluchi/.gradle/caches/8.11.1/transforms/0f780023965741cb27b540597f9e9b90/transformed/customview-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.loader:loader:1.0.0] /home/beluchi/.gradle/caches/8.11.1/transforms/17d47d649e4e5b521fde2af6c9fbab79/transformed/loader-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.loader:loader:1.0.0] /home/beluchi/.gradle/caches/8.11.1/transforms/17d47d649e4e5b521fde2af6c9fbab79/transformed/loader-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.core:core:1.12.0] /home/beluchi/.gradle/caches/8.11.1/transforms/7cb31a4bc6c2b6601fa95c04507e42ed/transformed/core-1.12.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.core:core:1.12.0] /home/beluchi/.gradle/caches/8.11.1/transforms/7cb31a4bc6c2b6601fa95c04507e42ed/transformed/core-1.12.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-viewmodel:2.5.1] /home/beluchi/.gradle/caches/8.11.1/transforms/c8edaa30d8aec86aa0b3f334c8091137/transformed/lifecycle-viewmodel-2.5.1/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.lifecycle:lifecycle-viewmodel:2.5.1] /home/beluchi/.gradle/caches/8.11.1/transforms/c8edaa30d8aec86aa0b3f334c8091137/transformed/lifecycle-viewmodel-2.5.1/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.lifecycle:lifecycle-viewmodel-savedstate:2.5.1] /home/beluchi/.gradle/caches/8.11.1/transforms/4cb31f9544ce6f36e4b90cbc170a1edd/transformed/lifecycle-viewmodel-savedstate-2.5.1/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.lifecycle:lifecycle-viewmodel-savedstate:2.5.1] /home/beluchi/.gradle/caches/8.11.1/transforms/4cb31f9544ce6f36e4b90cbc170a1edd/transformed/lifecycle-viewmodel-savedstate-2.5.1/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.core:core-ktx:1.12.0] /home/beluchi/.gradle/caches/8.11.1/transforms/e4703cccf8bf78811e443cec20c08e21/transformed/core-ktx-1.12.0/AndroidManifest.xml:5:5-44
+MERGED from [androidx.core:core-ktx:1.12.0] /home/beluchi/.gradle/caches/8.11.1/transforms/e4703cccf8bf78811e443cec20c08e21/transformed/core-ktx-1.12.0/AndroidManifest.xml:5:5-44
+MERGED from [androidx.savedstate:savedstate:1.2.0] /home/beluchi/.gradle/caches/8.11.1/transforms/e28549d988d8710e7fc4ea159178b6c9/transformed/savedstate-1.2.0/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.savedstate:savedstate:1.2.0] /home/beluchi/.gradle/caches/8.11.1/transforms/e28549d988d8710e7fc4ea159178b6c9/transformed/savedstate-1.2.0/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.annotation:annotation-experimental:1.3.0] /home/beluchi/.gradle/caches/8.11.1/transforms/54e5786ebf6b5c23011fa918251daef0/transformed/annotation-experimental-1.3.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.annotation:annotation-experimental:1.3.0] /home/beluchi/.gradle/caches/8.11.1/transforms/54e5786ebf6b5c23011fa918251daef0/transformed/annotation-experimental-1.3.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.cursoradapter:cursoradapter:1.0.0] /home/beluchi/.gradle/caches/8.11.1/transforms/e2e1a912ff61a590e53d56082c599d86/transformed/cursoradapter-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.cursoradapter:cursoradapter:1.0.0] /home/beluchi/.gradle/caches/8.11.1/transforms/e2e1a912ff61a590e53d56082c599d86/transformed/cursoradapter-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-process:2.4.1] /home/beluchi/.gradle/caches/8.11.1/transforms/dff15bd3c1ac56e80a3188394dd9f480/transformed/lifecycle-process-2.4.1/AndroidManifest.xml:21:5-23:41
+MERGED from [androidx.lifecycle:lifecycle-process:2.4.1] /home/beluchi/.gradle/caches/8.11.1/transforms/dff15bd3c1ac56e80a3188394dd9f480/transformed/lifecycle-process-2.4.1/AndroidManifest.xml:21:5-23:41
+MERGED from [androidx.lifecycle:lifecycle-runtime:2.5.1] /home/beluchi/.gradle/caches/8.11.1/transforms/6986b9da6d73c60f922efdb93411369d/transformed/lifecycle-runtime-2.5.1/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.lifecycle:lifecycle-runtime:2.5.1] /home/beluchi/.gradle/caches/8.11.1/transforms/6986b9da6d73c60f922efdb93411369d/transformed/lifecycle-runtime-2.5.1/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.interpolator:interpolator:1.0.0] /home/beluchi/.gradle/caches/8.11.1/transforms/edc9e798181e30d78b5dba1f8b1db692/transformed/interpolator-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.interpolator:interpolator:1.0.0] /home/beluchi/.gradle/caches/8.11.1/transforms/edc9e798181e30d78b5dba1f8b1db692/transformed/interpolator-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] /home/beluchi/.gradle/caches/8.11.1/transforms/f61a2b5a389678dc8d9280f41d9f771e/transformed/versionedparcelable-1.1.1/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] /home/beluchi/.gradle/caches/8.11.1/transforms/f61a2b5a389678dc8d9280f41d9f771e/transformed/versionedparcelable-1.1.1/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.startup:startup-runtime:1.1.1] /home/beluchi/.gradle/caches/8.11.1/transforms/cbf6e7bb5735bcd347ed3cee986d4c54/transformed/startup-runtime-1.1.1/AndroidManifest.xml:21:5-23:41
+MERGED from [androidx.startup:startup-runtime:1.1.1] /home/beluchi/.gradle/caches/8.11.1/transforms/cbf6e7bb5735bcd347ed3cee986d4c54/transformed/startup-runtime-1.1.1/AndroidManifest.xml:21:5-23:41
+MERGED from [androidx.tracing:tracing:1.0.0] /home/beluchi/.gradle/caches/8.11.1/transforms/2854d7e88cf64f5b2c350eb5e96f7619/transformed/tracing-1.0.0/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.tracing:tracing:1.0.0] /home/beluchi/.gradle/caches/8.11.1/transforms/2854d7e88cf64f5b2c350eb5e96f7619/transformed/tracing-1.0.0/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.lifecycle:lifecycle-livedata:2.0.0] /home/beluchi/.gradle/caches/8.11.1/transforms/5a3b8f8c425ad47ef3391ba62a503ee8/transformed/lifecycle-livedata-2.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-livedata:2.0.0] /home/beluchi/.gradle/caches/8.11.1/transforms/5a3b8f8c425ad47ef3391ba62a503ee8/transformed/lifecycle-livedata-2.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-livedata-core:2.5.1] /home/beluchi/.gradle/caches/8.11.1/transforms/d917b363c04d395701ad598db88fe9a5/transformed/lifecycle-livedata-core-2.5.1/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.lifecycle:lifecycle-livedata-core:2.5.1] /home/beluchi/.gradle/caches/8.11.1/transforms/d917b363c04d395701ad598db88fe9a5/transformed/lifecycle-livedata-core-2.5.1/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.arch.core:core-runtime:2.1.0] /home/beluchi/.gradle/caches/8.11.1/transforms/88fec157bc76f0728db4c33e8c1bd164/transformed/core-runtime-2.1.0/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.arch.core:core-runtime:2.1.0] /home/beluchi/.gradle/caches/8.11.1/transforms/88fec157bc76f0728db4c33e8c1bd164/transformed/core-runtime-2.1.0/AndroidManifest.xml:20:5-22:41
+MERGED from [com.journeyapps:zxing-android-embedded:4.3.0] /home/beluchi/.gradle/caches/8.11.1/transforms/6f7d89a9dccf7731ecc7d2981700f3e0/transformed/zxing-android-embedded-4.3.0/AndroidManifest.xml:20:5-44
+MERGED from [com.journeyapps:zxing-android-embedded:4.3.0] /home/beluchi/.gradle/caches/8.11.1/transforms/6f7d89a9dccf7731ecc7d2981700f3e0/transformed/zxing-android-embedded-4.3.0/AndroidManifest.xml:20:5-44
 	android:targetSdkVersion
 		ADDED from /home/beluchi/android-gamepad-linux/android/app/src/main/AndroidManifest.xml:4:42-71
 		INJECTED from /home/beluchi/android-gamepad-linux/android/app/src/main/AndroidManifest.xml
@@ -125,8 +125,8 @@ ADDED from /home/beluchi/android-gamepad-linux/android/app/src/main/AndroidManif
 		ADDED from /home/beluchi/android-gamepad-linux/android/app/src/main/AndroidManifest.xml:7:22-73
 uses-permission#android.permission.CAMERA
 ADDED from /home/beluchi/android-gamepad-linux/android/app/src/main/AndroidManifest.xml:8:5-65
-MERGED from [com.journeyapps:zxing-android-embedded:4.3.0] /home/beluchi/.gradle/caches/9.1.0/transforms/70484e8a363a9c79bc38b74e3e528802/transformed/zxing-android-embedded-4.3.0/AndroidManifest.xml:22:5-65
-MERGED from [com.journeyapps:zxing-android-embedded:4.3.0] /home/beluchi/.gradle/caches/9.1.0/transforms/70484e8a363a9c79bc38b74e3e528802/transformed/zxing-android-embedded-4.3.0/AndroidManifest.xml:22:5-65
+MERGED from [com.journeyapps:zxing-android-embedded:4.3.0] /home/beluchi/.gradle/caches/8.11.1/transforms/6f7d89a9dccf7731ecc7d2981700f3e0/transformed/zxing-android-embedded-4.3.0/AndroidManifest.xml:22:5-65
+MERGED from [com.journeyapps:zxing-android-embedded:4.3.0] /home/beluchi/.gradle/caches/8.11.1/transforms/6f7d89a9dccf7731ecc7d2981700f3e0/transformed/zxing-android-embedded-4.3.0/AndroidManifest.xml:22:5-65
 	android:name
 		ADDED from /home/beluchi/android-gamepad-linux/android/app/src/main/AndroidManifest.xml:8:22-62
 uses-permission#android.permission.FOREGROUND_SERVICE
@@ -149,40 +149,40 @@ ADDED from /home/beluchi/android-gamepad-linux/android/app/src/main/AndroidManif
 		ADDED from /home/beluchi/android-gamepad-linux/android/app/src/main/AndroidManifest.xml:13:19-58
 uses-feature#android.hardware.camera
 ADDED from /home/beluchi/android-gamepad-linux/android/app/src/main/AndroidManifest.xml:14:5-85
-MERGED from [com.journeyapps:zxing-android-embedded:4.3.0] /home/beluchi/.gradle/caches/9.1.0/transforms/70484e8a363a9c79bc38b74e3e528802/transformed/zxing-android-embedded-4.3.0/AndroidManifest.xml:25:5-27:36
-MERGED from [com.journeyapps:zxing-android-embedded:4.3.0] /home/beluchi/.gradle/caches/9.1.0/transforms/70484e8a363a9c79bc38b74e3e528802/transformed/zxing-android-embedded-4.3.0/AndroidManifest.xml:25:5-27:36
+MERGED from [com.journeyapps:zxing-android-embedded:4.3.0] /home/beluchi/.gradle/caches/8.11.1/transforms/6f7d89a9dccf7731ecc7d2981700f3e0/transformed/zxing-android-embedded-4.3.0/AndroidManifest.xml:25:5-27:36
+MERGED from [com.journeyapps:zxing-android-embedded:4.3.0] /home/beluchi/.gradle/caches/8.11.1/transforms/6f7d89a9dccf7731ecc7d2981700f3e0/transformed/zxing-android-embedded-4.3.0/AndroidManifest.xml:25:5-27:36
 	android:required
 		ADDED from /home/beluchi/android-gamepad-linux/android/app/src/main/AndroidManifest.xml:14:58-82
 	android:name
 		ADDED from /home/beluchi/android-gamepad-linux/android/app/src/main/AndroidManifest.xml:14:19-57
 uses-feature#android.hardware.camera.front
 ADDED from /home/beluchi/android-gamepad-linux/android/app/src/main/AndroidManifest.xml:15:5-91
-MERGED from [com.journeyapps:zxing-android-embedded:4.3.0] /home/beluchi/.gradle/caches/9.1.0/transforms/70484e8a363a9c79bc38b74e3e528802/transformed/zxing-android-embedded-4.3.0/AndroidManifest.xml:28:5-30:36
-MERGED from [com.journeyapps:zxing-android-embedded:4.3.0] /home/beluchi/.gradle/caches/9.1.0/transforms/70484e8a363a9c79bc38b74e3e528802/transformed/zxing-android-embedded-4.3.0/AndroidManifest.xml:28:5-30:36
+MERGED from [com.journeyapps:zxing-android-embedded:4.3.0] /home/beluchi/.gradle/caches/8.11.1/transforms/6f7d89a9dccf7731ecc7d2981700f3e0/transformed/zxing-android-embedded-4.3.0/AndroidManifest.xml:28:5-30:36
+MERGED from [com.journeyapps:zxing-android-embedded:4.3.0] /home/beluchi/.gradle/caches/8.11.1/transforms/6f7d89a9dccf7731ecc7d2981700f3e0/transformed/zxing-android-embedded-4.3.0/AndroidManifest.xml:28:5-30:36
 	android:required
 		ADDED from /home/beluchi/android-gamepad-linux/android/app/src/main/AndroidManifest.xml:15:64-88
 	android:name
 		ADDED from /home/beluchi/android-gamepad-linux/android/app/src/main/AndroidManifest.xml:15:19-63
 uses-feature#android.hardware.camera.autofocus
 ADDED from /home/beluchi/android-gamepad-linux/android/app/src/main/AndroidManifest.xml:16:5-95
-MERGED from [com.journeyapps:zxing-android-embedded:4.3.0] /home/beluchi/.gradle/caches/9.1.0/transforms/70484e8a363a9c79bc38b74e3e528802/transformed/zxing-android-embedded-4.3.0/AndroidManifest.xml:33:5-35:36
-MERGED from [com.journeyapps:zxing-android-embedded:4.3.0] /home/beluchi/.gradle/caches/9.1.0/transforms/70484e8a363a9c79bc38b74e3e528802/transformed/zxing-android-embedded-4.3.0/AndroidManifest.xml:33:5-35:36
+MERGED from [com.journeyapps:zxing-android-embedded:4.3.0] /home/beluchi/.gradle/caches/8.11.1/transforms/6f7d89a9dccf7731ecc7d2981700f3e0/transformed/zxing-android-embedded-4.3.0/AndroidManifest.xml:33:5-35:36
+MERGED from [com.journeyapps:zxing-android-embedded:4.3.0] /home/beluchi/.gradle/caches/8.11.1/transforms/6f7d89a9dccf7731ecc7d2981700f3e0/transformed/zxing-android-embedded-4.3.0/AndroidManifest.xml:33:5-35:36
 	android:required
 		ADDED from /home/beluchi/android-gamepad-linux/android/app/src/main/AndroidManifest.xml:16:68-92
 	android:name
 		ADDED from /home/beluchi/android-gamepad-linux/android/app/src/main/AndroidManifest.xml:16:19-67
 uses-feature#android.hardware.camera.flash
 ADDED from /home/beluchi/android-gamepad-linux/android/app/src/main/AndroidManifest.xml:17:5-91
-MERGED from [com.journeyapps:zxing-android-embedded:4.3.0] /home/beluchi/.gradle/caches/9.1.0/transforms/70484e8a363a9c79bc38b74e3e528802/transformed/zxing-android-embedded-4.3.0/AndroidManifest.xml:36:5-38:36
-MERGED from [com.journeyapps:zxing-android-embedded:4.3.0] /home/beluchi/.gradle/caches/9.1.0/transforms/70484e8a363a9c79bc38b74e3e528802/transformed/zxing-android-embedded-4.3.0/AndroidManifest.xml:36:5-38:36
+MERGED from [com.journeyapps:zxing-android-embedded:4.3.0] /home/beluchi/.gradle/caches/8.11.1/transforms/6f7d89a9dccf7731ecc7d2981700f3e0/transformed/zxing-android-embedded-4.3.0/AndroidManifest.xml:36:5-38:36
+MERGED from [com.journeyapps:zxing-android-embedded:4.3.0] /home/beluchi/.gradle/caches/8.11.1/transforms/6f7d89a9dccf7731ecc7d2981700f3e0/transformed/zxing-android-embedded-4.3.0/AndroidManifest.xml:36:5-38:36
 	android:required
 		ADDED from /home/beluchi/android-gamepad-linux/android/app/src/main/AndroidManifest.xml:17:64-88
 	android:name
 		ADDED from /home/beluchi/android-gamepad-linux/android/app/src/main/AndroidManifest.xml:17:19-63
 uses-feature#android.hardware.screen.landscape
 ADDED from /home/beluchi/android-gamepad-linux/android/app/src/main/AndroidManifest.xml:18:5-95
-MERGED from [com.journeyapps:zxing-android-embedded:4.3.0] /home/beluchi/.gradle/caches/9.1.0/transforms/70484e8a363a9c79bc38b74e3e528802/transformed/zxing-android-embedded-4.3.0/AndroidManifest.xml:39:5-41:36
-MERGED from [com.journeyapps:zxing-android-embedded:4.3.0] /home/beluchi/.gradle/caches/9.1.0/transforms/70484e8a363a9c79bc38b74e3e528802/transformed/zxing-android-embedded-4.3.0/AndroidManifest.xml:39:5-41:36
+MERGED from [com.journeyapps:zxing-android-embedded:4.3.0] /home/beluchi/.gradle/caches/8.11.1/transforms/6f7d89a9dccf7731ecc7d2981700f3e0/transformed/zxing-android-embedded-4.3.0/AndroidManifest.xml:39:5-41:36
+MERGED from [com.journeyapps:zxing-android-embedded:4.3.0] /home/beluchi/.gradle/caches/8.11.1/transforms/6f7d89a9dccf7731ecc7d2981700f3e0/transformed/zxing-android-embedded-4.3.0/AndroidManifest.xml:39:5-41:36
 	android:required
 		ADDED from /home/beluchi/android-gamepad-linux/android/app/src/main/AndroidManifest.xml:18:68-92
 	android:name
@@ -190,24 +190,24 @@ MERGED from [com.journeyapps:zxing-android-embedded:4.3.0] /home/beluchi/.gradle
 application
 ADDED from /home/beluchi/android-gamepad-linux/android/app/src/main/AndroidManifest.xml:20:5-51:19
 INJECTED from /home/beluchi/android-gamepad-linux/android/app/src/main/AndroidManifest.xml:20:5-51:19
-MERGED from [androidx.constraintlayout:constraintlayout:2.1.4] /home/beluchi/.gradle/caches/9.1.0/transforms/9f3fa732e2bbacda2a7764258f788f15/transformed/constraintlayout-2.1.4/AndroidManifest.xml:9:5-20
-MERGED from [androidx.constraintlayout:constraintlayout:2.1.4] /home/beluchi/.gradle/caches/9.1.0/transforms/9f3fa732e2bbacda2a7764258f788f15/transformed/constraintlayout-2.1.4/AndroidManifest.xml:9:5-20
-MERGED from [androidx.emoji2:emoji2:1.2.0] /home/beluchi/.gradle/caches/9.1.0/transforms/48f8a38320d573d4253bdf695ef17701/transformed/emoji2-1.2.0/AndroidManifest.xml:23:5-33:19
-MERGED from [androidx.emoji2:emoji2:1.2.0] /home/beluchi/.gradle/caches/9.1.0/transforms/48f8a38320d573d4253bdf695ef17701/transformed/emoji2-1.2.0/AndroidManifest.xml:23:5-33:19
-MERGED from [androidx.core:core:1.12.0] /home/beluchi/.gradle/caches/9.1.0/transforms/dd79b389327327bde9cc913c2207269d/transformed/core-1.12.0/AndroidManifest.xml:28:5-89
-MERGED from [androidx.core:core:1.12.0] /home/beluchi/.gradle/caches/9.1.0/transforms/dd79b389327327bde9cc913c2207269d/transformed/core-1.12.0/AndroidManifest.xml:28:5-89
-MERGED from [androidx.lifecycle:lifecycle-process:2.4.1] /home/beluchi/.gradle/caches/9.1.0/transforms/40c21cfbb695b81ecf50a3a33470795d/transformed/lifecycle-process-2.4.1/AndroidManifest.xml:25:5-35:19
-MERGED from [androidx.lifecycle:lifecycle-process:2.4.1] /home/beluchi/.gradle/caches/9.1.0/transforms/40c21cfbb695b81ecf50a3a33470795d/transformed/lifecycle-process-2.4.1/AndroidManifest.xml:25:5-35:19
-MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] /home/beluchi/.gradle/caches/9.1.0/transforms/f681d2f3b9b8e0c32f29107e7c33e210/transformed/versionedparcelable-1.1.1/AndroidManifest.xml:24:5-25:19
-MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] /home/beluchi/.gradle/caches/9.1.0/transforms/f681d2f3b9b8e0c32f29107e7c33e210/transformed/versionedparcelable-1.1.1/AndroidManifest.xml:24:5-25:19
-MERGED from [androidx.startup:startup-runtime:1.1.1] /home/beluchi/.gradle/caches/9.1.0/transforms/dfcc4d97db5a0a35ae920e9f7aac3679/transformed/startup-runtime-1.1.1/AndroidManifest.xml:25:5-31:19
-MERGED from [androidx.startup:startup-runtime:1.1.1] /home/beluchi/.gradle/caches/9.1.0/transforms/dfcc4d97db5a0a35ae920e9f7aac3679/transformed/startup-runtime-1.1.1/AndroidManifest.xml:25:5-31:19
-MERGED from [com.journeyapps:zxing-android-embedded:4.3.0] /home/beluchi/.gradle/caches/9.1.0/transforms/70484e8a363a9c79bc38b74e3e528802/transformed/zxing-android-embedded-4.3.0/AndroidManifest.xml:46:5-54:19
-MERGED from [com.journeyapps:zxing-android-embedded:4.3.0] /home/beluchi/.gradle/caches/9.1.0/transforms/70484e8a363a9c79bc38b74e3e528802/transformed/zxing-android-embedded-4.3.0/AndroidManifest.xml:46:5-54:19
+MERGED from [androidx.constraintlayout:constraintlayout:2.1.4] /home/beluchi/.gradle/caches/8.11.1/transforms/c1e2143e7b675768114dffa0b363f97a/transformed/constraintlayout-2.1.4/AndroidManifest.xml:9:5-20
+MERGED from [androidx.constraintlayout:constraintlayout:2.1.4] /home/beluchi/.gradle/caches/8.11.1/transforms/c1e2143e7b675768114dffa0b363f97a/transformed/constraintlayout-2.1.4/AndroidManifest.xml:9:5-20
+MERGED from [androidx.emoji2:emoji2:1.2.0] /home/beluchi/.gradle/caches/8.11.1/transforms/0515a007a72083475238ec964cce652c/transformed/emoji2-1.2.0/AndroidManifest.xml:23:5-33:19
+MERGED from [androidx.emoji2:emoji2:1.2.0] /home/beluchi/.gradle/caches/8.11.1/transforms/0515a007a72083475238ec964cce652c/transformed/emoji2-1.2.0/AndroidManifest.xml:23:5-33:19
+MERGED from [androidx.core:core:1.12.0] /home/beluchi/.gradle/caches/8.11.1/transforms/7cb31a4bc6c2b6601fa95c04507e42ed/transformed/core-1.12.0/AndroidManifest.xml:28:5-89
+MERGED from [androidx.core:core:1.12.0] /home/beluchi/.gradle/caches/8.11.1/transforms/7cb31a4bc6c2b6601fa95c04507e42ed/transformed/core-1.12.0/AndroidManifest.xml:28:5-89
+MERGED from [androidx.lifecycle:lifecycle-process:2.4.1] /home/beluchi/.gradle/caches/8.11.1/transforms/dff15bd3c1ac56e80a3188394dd9f480/transformed/lifecycle-process-2.4.1/AndroidManifest.xml:25:5-35:19
+MERGED from [androidx.lifecycle:lifecycle-process:2.4.1] /home/beluchi/.gradle/caches/8.11.1/transforms/dff15bd3c1ac56e80a3188394dd9f480/transformed/lifecycle-process-2.4.1/AndroidManifest.xml:25:5-35:19
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] /home/beluchi/.gradle/caches/8.11.1/transforms/f61a2b5a389678dc8d9280f41d9f771e/transformed/versionedparcelable-1.1.1/AndroidManifest.xml:24:5-25:19
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] /home/beluchi/.gradle/caches/8.11.1/transforms/f61a2b5a389678dc8d9280f41d9f771e/transformed/versionedparcelable-1.1.1/AndroidManifest.xml:24:5-25:19
+MERGED from [androidx.startup:startup-runtime:1.1.1] /home/beluchi/.gradle/caches/8.11.1/transforms/cbf6e7bb5735bcd347ed3cee986d4c54/transformed/startup-runtime-1.1.1/AndroidManifest.xml:25:5-31:19
+MERGED from [androidx.startup:startup-runtime:1.1.1] /home/beluchi/.gradle/caches/8.11.1/transforms/cbf6e7bb5735bcd347ed3cee986d4c54/transformed/startup-runtime-1.1.1/AndroidManifest.xml:25:5-31:19
+MERGED from [com.journeyapps:zxing-android-embedded:4.3.0] /home/beluchi/.gradle/caches/8.11.1/transforms/6f7d89a9dccf7731ecc7d2981700f3e0/transformed/zxing-android-embedded-4.3.0/AndroidManifest.xml:46:5-54:19
+MERGED from [com.journeyapps:zxing-android-embedded:4.3.0] /home/beluchi/.gradle/caches/8.11.1/transforms/6f7d89a9dccf7731ecc7d2981700f3e0/transformed/zxing-android-embedded-4.3.0/AndroidManifest.xml:46:5-54:19
 	android:extractNativeLibs
 		INJECTED from /home/beluchi/android-gamepad-linux/android/app/src/main/AndroidManifest.xml
 	android:appComponentFactory
-		ADDED from [androidx.core:core:1.12.0] /home/beluchi/.gradle/caches/9.1.0/transforms/dd79b389327327bde9cc913c2207269d/transformed/core-1.12.0/AndroidManifest.xml:28:18-86
+		ADDED from [androidx.core:core:1.12.0] /home/beluchi/.gradle/caches/8.11.1/transforms/7cb31a4bc6c2b6601fa95c04507e42ed/transformed/core-1.12.0/AndroidManifest.xml:28:18-86
 	android:supportsRtl
 		ADDED from /home/beluchi/android-gamepad-linux/android/app/src/main/AndroidManifest.xml:25:9-35
 	android:label
@@ -261,68 +261,68 @@ ADDED from /home/beluchi/android-gamepad-linux/android/app/src/main/AndroidManif
 	android:name
 		ADDED from /home/beluchi/android-gamepad-linux/android/app/src/main/AndroidManifest.xml:47:13-66
 provider#androidx.startup.InitializationProvider
-ADDED from [androidx.emoji2:emoji2:1.2.0] /home/beluchi/.gradle/caches/9.1.0/transforms/48f8a38320d573d4253bdf695ef17701/transformed/emoji2-1.2.0/AndroidManifest.xml:24:9-32:20
-MERGED from [androidx.lifecycle:lifecycle-process:2.4.1] /home/beluchi/.gradle/caches/9.1.0/transforms/40c21cfbb695b81ecf50a3a33470795d/transformed/lifecycle-process-2.4.1/AndroidManifest.xml:26:9-34:20
-MERGED from [androidx.lifecycle:lifecycle-process:2.4.1] /home/beluchi/.gradle/caches/9.1.0/transforms/40c21cfbb695b81ecf50a3a33470795d/transformed/lifecycle-process-2.4.1/AndroidManifest.xml:26:9-34:20
-MERGED from [androidx.startup:startup-runtime:1.1.1] /home/beluchi/.gradle/caches/9.1.0/transforms/dfcc4d97db5a0a35ae920e9f7aac3679/transformed/startup-runtime-1.1.1/AndroidManifest.xml:26:9-30:34
-MERGED from [androidx.startup:startup-runtime:1.1.1] /home/beluchi/.gradle/caches/9.1.0/transforms/dfcc4d97db5a0a35ae920e9f7aac3679/transformed/startup-runtime-1.1.1/AndroidManifest.xml:26:9-30:34
+ADDED from [androidx.emoji2:emoji2:1.2.0] /home/beluchi/.gradle/caches/8.11.1/transforms/0515a007a72083475238ec964cce652c/transformed/emoji2-1.2.0/AndroidManifest.xml:24:9-32:20
+MERGED from [androidx.lifecycle:lifecycle-process:2.4.1] /home/beluchi/.gradle/caches/8.11.1/transforms/dff15bd3c1ac56e80a3188394dd9f480/transformed/lifecycle-process-2.4.1/AndroidManifest.xml:26:9-34:20
+MERGED from [androidx.lifecycle:lifecycle-process:2.4.1] /home/beluchi/.gradle/caches/8.11.1/transforms/dff15bd3c1ac56e80a3188394dd9f480/transformed/lifecycle-process-2.4.1/AndroidManifest.xml:26:9-34:20
+MERGED from [androidx.startup:startup-runtime:1.1.1] /home/beluchi/.gradle/caches/8.11.1/transforms/cbf6e7bb5735bcd347ed3cee986d4c54/transformed/startup-runtime-1.1.1/AndroidManifest.xml:26:9-30:34
+MERGED from [androidx.startup:startup-runtime:1.1.1] /home/beluchi/.gradle/caches/8.11.1/transforms/cbf6e7bb5735bcd347ed3cee986d4c54/transformed/startup-runtime-1.1.1/AndroidManifest.xml:26:9-30:34
 	tools:node
-		ADDED from [androidx.emoji2:emoji2:1.2.0] /home/beluchi/.gradle/caches/9.1.0/transforms/48f8a38320d573d4253bdf695ef17701/transformed/emoji2-1.2.0/AndroidManifest.xml:28:13-31
+		ADDED from [androidx.emoji2:emoji2:1.2.0] /home/beluchi/.gradle/caches/8.11.1/transforms/0515a007a72083475238ec964cce652c/transformed/emoji2-1.2.0/AndroidManifest.xml:28:13-31
 	android:authorities
-		ADDED from [androidx.emoji2:emoji2:1.2.0] /home/beluchi/.gradle/caches/9.1.0/transforms/48f8a38320d573d4253bdf695ef17701/transformed/emoji2-1.2.0/AndroidManifest.xml:26:13-68
+		ADDED from [androidx.emoji2:emoji2:1.2.0] /home/beluchi/.gradle/caches/8.11.1/transforms/0515a007a72083475238ec964cce652c/transformed/emoji2-1.2.0/AndroidManifest.xml:26:13-68
 	android:exported
-		ADDED from [androidx.emoji2:emoji2:1.2.0] /home/beluchi/.gradle/caches/9.1.0/transforms/48f8a38320d573d4253bdf695ef17701/transformed/emoji2-1.2.0/AndroidManifest.xml:27:13-37
+		ADDED from [androidx.emoji2:emoji2:1.2.0] /home/beluchi/.gradle/caches/8.11.1/transforms/0515a007a72083475238ec964cce652c/transformed/emoji2-1.2.0/AndroidManifest.xml:27:13-37
 	android:name
-		ADDED from [androidx.emoji2:emoji2:1.2.0] /home/beluchi/.gradle/caches/9.1.0/transforms/48f8a38320d573d4253bdf695ef17701/transformed/emoji2-1.2.0/AndroidManifest.xml:25:13-67
+		ADDED from [androidx.emoji2:emoji2:1.2.0] /home/beluchi/.gradle/caches/8.11.1/transforms/0515a007a72083475238ec964cce652c/transformed/emoji2-1.2.0/AndroidManifest.xml:25:13-67
 meta-data#androidx.emoji2.text.EmojiCompatInitializer
-ADDED from [androidx.emoji2:emoji2:1.2.0] /home/beluchi/.gradle/caches/9.1.0/transforms/48f8a38320d573d4253bdf695ef17701/transformed/emoji2-1.2.0/AndroidManifest.xml:29:13-31:52
+ADDED from [androidx.emoji2:emoji2:1.2.0] /home/beluchi/.gradle/caches/8.11.1/transforms/0515a007a72083475238ec964cce652c/transformed/emoji2-1.2.0/AndroidManifest.xml:29:13-31:52
 	android:value
-		ADDED from [androidx.emoji2:emoji2:1.2.0] /home/beluchi/.gradle/caches/9.1.0/transforms/48f8a38320d573d4253bdf695ef17701/transformed/emoji2-1.2.0/AndroidManifest.xml:31:17-49
+		ADDED from [androidx.emoji2:emoji2:1.2.0] /home/beluchi/.gradle/caches/8.11.1/transforms/0515a007a72083475238ec964cce652c/transformed/emoji2-1.2.0/AndroidManifest.xml:31:17-49
 	android:name
-		ADDED from [androidx.emoji2:emoji2:1.2.0] /home/beluchi/.gradle/caches/9.1.0/transforms/48f8a38320d573d4253bdf695ef17701/transformed/emoji2-1.2.0/AndroidManifest.xml:30:17-75
+		ADDED from [androidx.emoji2:emoji2:1.2.0] /home/beluchi/.gradle/caches/8.11.1/transforms/0515a007a72083475238ec964cce652c/transformed/emoji2-1.2.0/AndroidManifest.xml:30:17-75
 permission#${applicationId}.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION
-ADDED from [androidx.core:core:1.12.0] /home/beluchi/.gradle/caches/9.1.0/transforms/dd79b389327327bde9cc913c2207269d/transformed/core-1.12.0/AndroidManifest.xml:22:5-24:47
+ADDED from [androidx.core:core:1.12.0] /home/beluchi/.gradle/caches/8.11.1/transforms/7cb31a4bc6c2b6601fa95c04507e42ed/transformed/core-1.12.0/AndroidManifest.xml:22:5-24:47
 	android:protectionLevel
-		ADDED from [androidx.core:core:1.12.0] /home/beluchi/.gradle/caches/9.1.0/transforms/dd79b389327327bde9cc913c2207269d/transformed/core-1.12.0/AndroidManifest.xml:24:9-44
+		ADDED from [androidx.core:core:1.12.0] /home/beluchi/.gradle/caches/8.11.1/transforms/7cb31a4bc6c2b6601fa95c04507e42ed/transformed/core-1.12.0/AndroidManifest.xml:24:9-44
 	android:name
-		ADDED from [androidx.core:core:1.12.0] /home/beluchi/.gradle/caches/9.1.0/transforms/dd79b389327327bde9cc913c2207269d/transformed/core-1.12.0/AndroidManifest.xml:23:9-81
+		ADDED from [androidx.core:core:1.12.0] /home/beluchi/.gradle/caches/8.11.1/transforms/7cb31a4bc6c2b6601fa95c04507e42ed/transformed/core-1.12.0/AndroidManifest.xml:23:9-81
 permission#com.gamepadbridge.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION
-ADDED from [androidx.core:core:1.12.0] /home/beluchi/.gradle/caches/9.1.0/transforms/dd79b389327327bde9cc913c2207269d/transformed/core-1.12.0/AndroidManifest.xml:22:5-24:47
+ADDED from [androidx.core:core:1.12.0] /home/beluchi/.gradle/caches/8.11.1/transforms/7cb31a4bc6c2b6601fa95c04507e42ed/transformed/core-1.12.0/AndroidManifest.xml:22:5-24:47
 	android:protectionLevel
-		ADDED from [androidx.core:core:1.12.0] /home/beluchi/.gradle/caches/9.1.0/transforms/dd79b389327327bde9cc913c2207269d/transformed/core-1.12.0/AndroidManifest.xml:24:9-44
+		ADDED from [androidx.core:core:1.12.0] /home/beluchi/.gradle/caches/8.11.1/transforms/7cb31a4bc6c2b6601fa95c04507e42ed/transformed/core-1.12.0/AndroidManifest.xml:24:9-44
 	android:name
-		ADDED from [androidx.core:core:1.12.0] /home/beluchi/.gradle/caches/9.1.0/transforms/dd79b389327327bde9cc913c2207269d/transformed/core-1.12.0/AndroidManifest.xml:23:9-81
+		ADDED from [androidx.core:core:1.12.0] /home/beluchi/.gradle/caches/8.11.1/transforms/7cb31a4bc6c2b6601fa95c04507e42ed/transformed/core-1.12.0/AndroidManifest.xml:23:9-81
 uses-permission#${applicationId}.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION
-ADDED from [androidx.core:core:1.12.0] /home/beluchi/.gradle/caches/9.1.0/transforms/dd79b389327327bde9cc913c2207269d/transformed/core-1.12.0/AndroidManifest.xml:26:5-97
+ADDED from [androidx.core:core:1.12.0] /home/beluchi/.gradle/caches/8.11.1/transforms/7cb31a4bc6c2b6601fa95c04507e42ed/transformed/core-1.12.0/AndroidManifest.xml:26:5-97
 	android:name
-		ADDED from [androidx.core:core:1.12.0] /home/beluchi/.gradle/caches/9.1.0/transforms/dd79b389327327bde9cc913c2207269d/transformed/core-1.12.0/AndroidManifest.xml:26:22-94
+		ADDED from [androidx.core:core:1.12.0] /home/beluchi/.gradle/caches/8.11.1/transforms/7cb31a4bc6c2b6601fa95c04507e42ed/transformed/core-1.12.0/AndroidManifest.xml:26:22-94
 uses-permission#com.gamepadbridge.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION
-ADDED from [androidx.core:core:1.12.0] /home/beluchi/.gradle/caches/9.1.0/transforms/dd79b389327327bde9cc913c2207269d/transformed/core-1.12.0/AndroidManifest.xml:26:5-97
+ADDED from [androidx.core:core:1.12.0] /home/beluchi/.gradle/caches/8.11.1/transforms/7cb31a4bc6c2b6601fa95c04507e42ed/transformed/core-1.12.0/AndroidManifest.xml:26:5-97
 	android:name
-		ADDED from [androidx.core:core:1.12.0] /home/beluchi/.gradle/caches/9.1.0/transforms/dd79b389327327bde9cc913c2207269d/transformed/core-1.12.0/AndroidManifest.xml:26:22-94
+		ADDED from [androidx.core:core:1.12.0] /home/beluchi/.gradle/caches/8.11.1/transforms/7cb31a4bc6c2b6601fa95c04507e42ed/transformed/core-1.12.0/AndroidManifest.xml:26:22-94
 meta-data#androidx.lifecycle.ProcessLifecycleInitializer
-ADDED from [androidx.lifecycle:lifecycle-process:2.4.1] /home/beluchi/.gradle/caches/9.1.0/transforms/40c21cfbb695b81ecf50a3a33470795d/transformed/lifecycle-process-2.4.1/AndroidManifest.xml:31:13-33:52
+ADDED from [androidx.lifecycle:lifecycle-process:2.4.1] /home/beluchi/.gradle/caches/8.11.1/transforms/dff15bd3c1ac56e80a3188394dd9f480/transformed/lifecycle-process-2.4.1/AndroidManifest.xml:31:13-33:52
 	android:value
-		ADDED from [androidx.lifecycle:lifecycle-process:2.4.1] /home/beluchi/.gradle/caches/9.1.0/transforms/40c21cfbb695b81ecf50a3a33470795d/transformed/lifecycle-process-2.4.1/AndroidManifest.xml:33:17-49
+		ADDED from [androidx.lifecycle:lifecycle-process:2.4.1] /home/beluchi/.gradle/caches/8.11.1/transforms/dff15bd3c1ac56e80a3188394dd9f480/transformed/lifecycle-process-2.4.1/AndroidManifest.xml:33:17-49
 	android:name
-		ADDED from [androidx.lifecycle:lifecycle-process:2.4.1] /home/beluchi/.gradle/caches/9.1.0/transforms/40c21cfbb695b81ecf50a3a33470795d/transformed/lifecycle-process-2.4.1/AndroidManifest.xml:32:17-78
+		ADDED from [androidx.lifecycle:lifecycle-process:2.4.1] /home/beluchi/.gradle/caches/8.11.1/transforms/dff15bd3c1ac56e80a3188394dd9f480/transformed/lifecycle-process-2.4.1/AndroidManifest.xml:32:17-78
 uses-feature#android.hardware.wifi
-ADDED from [com.journeyapps:zxing-android-embedded:4.3.0] /home/beluchi/.gradle/caches/9.1.0/transforms/70484e8a363a9c79bc38b74e3e528802/transformed/zxing-android-embedded-4.3.0/AndroidManifest.xml:42:5-44:36
+ADDED from [com.journeyapps:zxing-android-embedded:4.3.0] /home/beluchi/.gradle/caches/8.11.1/transforms/6f7d89a9dccf7731ecc7d2981700f3e0/transformed/zxing-android-embedded-4.3.0/AndroidManifest.xml:42:5-44:36
 	android:required
-		ADDED from [com.journeyapps:zxing-android-embedded:4.3.0] /home/beluchi/.gradle/caches/9.1.0/transforms/70484e8a363a9c79bc38b74e3e528802/transformed/zxing-android-embedded-4.3.0/AndroidManifest.xml:44:9-33
+		ADDED from [com.journeyapps:zxing-android-embedded:4.3.0] /home/beluchi/.gradle/caches/8.11.1/transforms/6f7d89a9dccf7731ecc7d2981700f3e0/transformed/zxing-android-embedded-4.3.0/AndroidManifest.xml:44:9-33
 	android:name
-		ADDED from [com.journeyapps:zxing-android-embedded:4.3.0] /home/beluchi/.gradle/caches/9.1.0/transforms/70484e8a363a9c79bc38b74e3e528802/transformed/zxing-android-embedded-4.3.0/AndroidManifest.xml:43:9-45
+		ADDED from [com.journeyapps:zxing-android-embedded:4.3.0] /home/beluchi/.gradle/caches/8.11.1/transforms/6f7d89a9dccf7731ecc7d2981700f3e0/transformed/zxing-android-embedded-4.3.0/AndroidManifest.xml:43:9-45
 activity#com.journeyapps.barcodescanner.CaptureActivity
-ADDED from [com.journeyapps:zxing-android-embedded:4.3.0] /home/beluchi/.gradle/caches/9.1.0/transforms/70484e8a363a9c79bc38b74e3e528802/transformed/zxing-android-embedded-4.3.0/AndroidManifest.xml:47:9-53:63
+ADDED from [com.journeyapps:zxing-android-embedded:4.3.0] /home/beluchi/.gradle/caches/8.11.1/transforms/6f7d89a9dccf7731ecc7d2981700f3e0/transformed/zxing-android-embedded-4.3.0/AndroidManifest.xml:47:9-53:63
 	android:screenOrientation
-		ADDED from [com.journeyapps:zxing-android-embedded:4.3.0] /home/beluchi/.gradle/caches/9.1.0/transforms/70484e8a363a9c79bc38b74e3e528802/transformed/zxing-android-embedded-4.3.0/AndroidManifest.xml:50:13-56
+		ADDED from [com.journeyapps:zxing-android-embedded:4.3.0] /home/beluchi/.gradle/caches/8.11.1/transforms/6f7d89a9dccf7731ecc7d2981700f3e0/transformed/zxing-android-embedded-4.3.0/AndroidManifest.xml:50:13-56
 	android:clearTaskOnLaunch
-		ADDED from [com.journeyapps:zxing-android-embedded:4.3.0] /home/beluchi/.gradle/caches/9.1.0/transforms/70484e8a363a9c79bc38b74e3e528802/transformed/zxing-android-embedded-4.3.0/AndroidManifest.xml:49:13-45
+		ADDED from [com.journeyapps:zxing-android-embedded:4.3.0] /home/beluchi/.gradle/caches/8.11.1/transforms/6f7d89a9dccf7731ecc7d2981700f3e0/transformed/zxing-android-embedded-4.3.0/AndroidManifest.xml:49:13-45
 	android:stateNotNeeded
-		ADDED from [com.journeyapps:zxing-android-embedded:4.3.0] /home/beluchi/.gradle/caches/9.1.0/transforms/70484e8a363a9c79bc38b74e3e528802/transformed/zxing-android-embedded-4.3.0/AndroidManifest.xml:51:13-42
+		ADDED from [com.journeyapps:zxing-android-embedded:4.3.0] /home/beluchi/.gradle/caches/8.11.1/transforms/6f7d89a9dccf7731ecc7d2981700f3e0/transformed/zxing-android-embedded-4.3.0/AndroidManifest.xml:51:13-42
 	android:windowSoftInputMode
-		ADDED from [com.journeyapps:zxing-android-embedded:4.3.0] /home/beluchi/.gradle/caches/9.1.0/transforms/70484e8a363a9c79bc38b74e3e528802/transformed/zxing-android-embedded-4.3.0/AndroidManifest.xml:53:13-60
+		ADDED from [com.journeyapps:zxing-android-embedded:4.3.0] /home/beluchi/.gradle/caches/8.11.1/transforms/6f7d89a9dccf7731ecc7d2981700f3e0/transformed/zxing-android-embedded-4.3.0/AndroidManifest.xml:53:13-60
 	android:theme
-		ADDED from [com.journeyapps:zxing-android-embedded:4.3.0] /home/beluchi/.gradle/caches/9.1.0/transforms/70484e8a363a9c79bc38b74e3e528802/transformed/zxing-android-embedded-4.3.0/AndroidManifest.xml:52:13-54
+		ADDED from [com.journeyapps:zxing-android-embedded:4.3.0] /home/beluchi/.gradle/caches/8.11.1/transforms/6f7d89a9dccf7731ecc7d2981700f3e0/transformed/zxing-android-embedded-4.3.0/AndroidManifest.xml:52:13-54
 	android:name
-		ADDED from [com.journeyapps:zxing-android-embedded:4.3.0] /home/beluchi/.gradle/caches/9.1.0/transforms/70484e8a363a9c79bc38b74e3e528802/transformed/zxing-android-embedded-4.3.0/AndroidManifest.xml:48:13-74
+		ADDED from [com.journeyapps:zxing-android-embedded:4.3.0] /home/beluchi/.gradle/caches/8.11.1/transforms/6f7d89a9dccf7731ecc7d2981700f3e0/transformed/zxing-android-embedded-4.3.0/AndroidManifest.xml:48:13-74

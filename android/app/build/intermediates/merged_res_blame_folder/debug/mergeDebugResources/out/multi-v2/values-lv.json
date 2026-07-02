@@ -4,7 +4,7 @@
             "outputFile": "com.gamepadbridge.app-mergeDebugResources-20:/values-lv/values-lv.xml",
             "map": [
                 {
-                    "source": "/home/beluchi/.gradle/caches/9.1.0/transforms/970003d2577c7cbcfb2cd82c1bb4da5b/transformed/appcompat-1.6.1/res/values-lv/values-lv.xml",
+                    "source": "/home/beluchi/.gradle/caches/8.11.1/transforms/04081599e67b0e3a5dc01e6121977aa6/transformed/appcompat-1.6.1/res/values-lv/values-lv.xml",
                     "from": {
                         "startLines": "2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29",
                         "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4",
@@ -21,7 +21,7 @@
                     }
                 },
                 {
-                    "source": "/home/beluchi/.gradle/caches/9.1.0/transforms/dd79b389327327bde9cc913c2207269d/transformed/core-1.12.0/res/values-lv/values-lv.xml",
+                    "source": "/home/beluchi/.gradle/caches/8.11.1/transforms/7cb31a4bc6c2b6601fa95c04507e42ed/transformed/core-1.12.0/res/values-lv/values-lv.xml",
                     "from": {
                         "startLines": "2,3,4,5,6,7,8,9",
                         "startColumns": "4,4,4,4,4,4,4,4",

@@ -61,6 +61,7 @@ class MainActivity : AppCompatActivity(), InputManager.InputDeviceListener {
     private var service: GamepadBridgeService? = null
     private var bound = false
     private var pendingConnect: Pair<String, Int>? = null
+    private var connecting = false
     private var logVisible = false
     private var optionsVisible = false
     private var screenOff = false
@@ -87,17 +88,21 @@ class MainActivity : AppCompatActivity(), InputManager.InputDeviceListener {
             service = (binder as GamepadBridgeService.LocalBinder).getService()
             bound = true
             log("Service bound")
+            service?.onConnectionStateChanged = { runOnUiThread { updateUI() } }
             pendingConnect?.let { (h, p) ->
                 log("Pending connect to $h:$p")
                 service?.connect(h, p)
                 pendingConnect = null
+                connecting = false
             }
             updateUI()
         }
 
         override fun onServiceDisconnected(name: ComponentName?) {
+            service?.onConnectionStateChanged = null
             service = null
             bound = false
+            connecting = false
             log("Service unbound")
             updateUI()
         }
@@ -214,18 +219,28 @@ class MainActivity : AppCompatActivity(), InputManager.InputDeviceListener {
         super.onResume()
         hideSystemUI()
         inputManager.registerInputDeviceListener(this, null)
-        if (!bound) {
-            bindService(Intent(this, GamepadBridgeService::class.java), connection, BIND_AUTO_CREATE)
-        }
         val savedHost = prefs.getString("host", "") ?: ""
+        val savedPort = prefs.getInt("port", 60001)
         val autoDone = prefs.getBoolean("auto_connect_done", false)
-        if (savedHost.isNotEmpty() &&
-            (service?.connected != true) &&
-            pendingConnect == null &&
-            !autoDone
-        ) {
+        val isConn = service?.connected == true || service?.connecting == true || connecting
+
+        if (savedHost.isNotEmpty() && !isConn && !autoDone) {
             prefs.edit().putBoolean("auto_connect_done", true).apply()
-            etHost.postDelayed({ doConnect() }, 300)
+            etHost.setText(savedHost)
+            etPort.setText(savedPort.toString())
+            connecting = true
+            updateUI()
+            log("Auto-connecting to $savedHost:$savedPort...")
+            startService(Intent(this, GamepadBridgeService::class.java))
+            pendingConnect = Pair(savedHost, savedPort)
+            if (!bound) {
+                bindService(Intent(this, GamepadBridgeService::class.java), connection, BIND_AUTO_CREATE)
+            } else {
+                service?.connect(savedHost, savedPort)
+                pendingConnect = null
+            }
+        } else if (!bound) {
+            bindService(Intent(this, GamepadBridgeService::class.java), connection, BIND_AUTO_CREATE)
         }
     }
 
@@ -363,7 +378,9 @@ class MainActivity : AppCompatActivity(), InputManager.InputDeviceListener {
             return
         }
         prefs.edit().putString("host", host).putInt("port", port).apply()
+        connecting = true
         log("Connecting to $host:$port...")
+        updateUI()
         startService(Intent(this, GamepadBridgeService::class.java))
         pendingConnect = Pair(host, port)
         if (!bound) {
@@ -372,12 +389,12 @@ class MainActivity : AppCompatActivity(), InputManager.InputDeviceListener {
             service?.connect(host, port)
             pendingConnect = null
         }
-        updateUI()
     }
 
     private fun doDisconnect() {
         log("Disconnecting...")
         pendingConnect = null
+        connecting = false
         screenOff = false
         swScreenOff.isChecked = false
         logVisible = false
@@ -399,23 +416,36 @@ class MainActivity : AppCompatActivity(), InputManager.InputDeviceListener {
         qrLauncher.launch(Intent(this, QRScannerActivity::class.java))
     }
 
-    private fun updateUI() {
-        val srv = service
-        val isConnected = srv?.connected == true
+    private fun isConnecting(): Boolean {
+        return if (bound) service?.connecting == true else connecting
+    }
 
+    private fun isConnected(): Boolean {
+        return service?.connected == true
+    }
+
+    private fun updateUI() {
         if (screenOff) {
             applyScreenOff()
             return
         }
 
-        btnConnect.isEnabled = !isConnected
-        btnScanQR.isEnabled = !isConnected
-        connectPanel.visibility = if (isConnected) View.GONE else View.VISIBLE
-        tvOptions.visibility = if (isConnected) View.VISIBLE else View.GONE
-        tvLog.visibility = if (isConnected && logVisible) View.VISIBLE else View.GONE
+        val connected = isConnected()
+        val connecting = isConnecting()
 
-        if (isConnected) {
+        btnConnect.isEnabled = !connected && !connecting
+        btnScanQR.isEnabled = !connected && !connecting
+        btnConnect.text = if (connecting) "..." else "Connect"
+        connectPanel.visibility = if (connected) View.GONE else View.VISIBLE
+        tvOptions.visibility = if (connected) View.VISIBLE else View.GONE
+        tvLog.visibility = if (connected && logVisible) View.VISIBLE else View.GONE
+
+        if (connected) {
             tvPlayerNumber.text = "PLAYER 1"
+            tvPlayerNumber.visibility = View.VISIBLE
+            tvPlayerNumber.bringToFront()
+        } else if (connecting) {
+            tvPlayerNumber.text = "CONNECTING..."
             tvPlayerNumber.visibility = View.VISIBLE
             tvPlayerNumber.bringToFront()
         } else {

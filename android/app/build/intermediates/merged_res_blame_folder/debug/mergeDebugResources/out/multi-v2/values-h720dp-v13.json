@@ -4,7 +4,7 @@
             "outputFile": "com.gamepadbridge.app-mergeDebugResources-20:/values-h720dp-v13/values-h720dp-v13.xml",
             "map": [
                 {
-                    "source": "/home/beluchi/.gradle/caches/9.1.0/transforms/970003d2577c7cbcfb2cd82c1bb4da5b/transformed/appcompat-1.6.1/res/values-h720dp-v13/values-h720dp-v13.xml",
+                    "source": "/home/beluchi/.gradle/caches/8.11.1/transforms/04081599e67b0e3a5dc01e6121977aa6/transformed/appcompat-1.6.1/res/values-h720dp-v13/values-h720dp-v13.xml",
                     "from": {
                         "startLines": "2",
                         "startColumns": "4",
