@@ -269,7 +269,21 @@ class GamepadBridgeServer:
         qr_b64 = base64.b64encode(buf.getvalue()).decode()
         qr_data_uri = f'data:image/png;base64,{qr_b64}'
 
-        body = DASHBOARD_HTML.replace('{qr_data_uri}', qr_data_uri).replace('{qr_text}', qr_text).encode('utf-8')
+        import subprocess
+        wifi_ssid = ''
+        try:
+            wifi_ssid = subprocess.check_output(['iwgetid', '-r'], timeout=3).decode('utf-8', errors='replace').strip()
+        except Exception:
+            try:
+                out = subprocess.check_output(['nmcli', '-t', '-f', 'active,ssid', 'dev', 'wifi'], timeout=3).decode()
+                for line in out.splitlines():
+                    if line.startswith('yes:'):
+                        wifi_ssid = line.split(':', 1)[1]
+                        break
+            except Exception:
+                pass
+
+        body = DASHBOARD_HTML.replace('{qr_data_uri}', qr_data_uri).replace('{qr_text}', qr_text).replace('{wifi_ssid}', wifi_ssid).encode('utf-8')
         resp = (
             'HTTP/1.1 200 OK\r\n'
             'Content-Type: text/html; charset=utf-8\r\n'
@@ -443,7 +457,8 @@ h1{font-size:1.2rem;color:#ff69b4;text-align:center;margin-bottom:8px;text-shado
   <div id="qrOver">
     <button id="qrTog">✕</button>
     <img src="{qr_data_uri}" alt="QR">
-    <div class="l" id="ql">{qr_text}</div>
+     <div class="l" id="ql">{qr_text}</div>
+     <div class="l" id="wifi" style="margin-top:2px;font-size:.45rem">{wifi_ssid}</div>
     <div class="sg" style="margin-top:4px"><div><div class="sl">Lat</div><div class="sv" id="lat">--</div></div><div><div class="sl">Act</div><div class="sv" id="ac">0/4</div></div></div>
   </div>
 </div>
