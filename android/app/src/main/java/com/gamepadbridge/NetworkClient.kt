@@ -1,6 +1,7 @@
 package com.gamepadbridge
 
 import android.util.Log
+import java.io.InputStream
 import java.io.OutputStream
 import java.net.InetSocketAddress
 import java.net.Socket
@@ -9,11 +10,12 @@ import java.util.concurrent.ConcurrentLinkedQueue
 class NetworkClient(
     private val host: String,
     private val port: Int,
-    private val onConnected: () -> Unit,
+    private val onConnected: (Int) -> Unit,
     private val onDisconnected: (Exception?) -> Unit
 ) {
     private var socket: Socket? = null
     private var outputStream: OutputStream? = null
+    private var inputStream: InputStream? = null
     private var connectThread: Thread? = null
     private var sendThread: Thread? = null
     @Volatile
@@ -30,8 +32,11 @@ class NetworkClient(
                 sock.tcpNoDelay = true
                 socket = sock
                 outputStream = sock.getOutputStream()
-                Log.i(TAG, "Connected to $host:$port")
-                onConnected()
+                inputStream = sock.getInputStream()
+                val playerByte = inputStream?.read() ?: 1
+                val playerNum = playerByte.coerceIn(1, 4)
+                Log.i(TAG, "Connected to $host:$port as player $playerNum")
+                onConnected(playerNum)
                 sendLoop()
             } catch (e: Exception) {
                 Log.e(TAG, "Connection failed: ${e.message}")

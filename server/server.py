@@ -222,6 +222,9 @@ class GamepadBridgeServer:
             writer.close()
             return
         print(f'[tcp] Assigned slot {slot} to {addr_key}')
+        player_num = slot + 1
+        writer.write(bytes([player_num]))
+        await writer.drain()
         loop = asyncio.get_running_loop()
         try:
             while True:

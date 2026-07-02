@@ -441,7 +441,8 @@ class MainActivity : AppCompatActivity(), InputManager.InputDeviceListener {
         tvLog.visibility = if (connected && logVisible) View.VISIBLE else View.GONE
 
         if (connected) {
-            tvPlayerNumber.text = "PLAYER 1"
+            val playerNum = service?.playerNumber ?: 1
+            tvPlayerNumber.text = "PLAYER $playerNum"
             tvPlayerNumber.visibility = View.VISIBLE
             tvPlayerNumber.bringToFront()
         } else if (connecting) {

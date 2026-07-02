@@ -28,6 +28,10 @@ class GamepadBridgeService : Service() {
         private set
 
     @Volatile
+    var playerNumber: Int = 1
+        private set
+
+    @Volatile
     var connectionError: String? = null
         private set
 
@@ -48,15 +52,17 @@ class GamepadBridgeService : Service() {
         startForeground(NOTIF_ID, buildNotification())
         connected = false
         connecting = true
+        playerNumber = 1
         connectionError = null
         onConnectionStateChanged?.invoke()
         networkClient = NetworkClient(
             host = host,
             port = port,
-            onConnected = {
-                Log.i(TAG, "Network connected, starting state sender")
+            onConnected = { playerNum ->
+                Log.i(TAG, "Network connected as player $playerNum, starting state sender")
                 connected = true
                 connecting = false
+                playerNumber = playerNum
                 connectionError = null
                 onConnectionStateChanged?.invoke()
                 startStateSender()
@@ -96,6 +102,7 @@ class GamepadBridgeService : Service() {
         Log.i(TAG, "Disconnecting")
         connected = false
         connecting = false
+        playerNumber = 1
         networkClient?.stop()
         networkClient = null
         senderThread?.interrupt()
