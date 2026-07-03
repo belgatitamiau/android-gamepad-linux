@@ -1,3 +1,5 @@
+idk opencode made 95% of it. DON'T HACK MY MOM PLZ i just wanna play w my friends
+
 # GamepadBridge
 
 Forward physical gamepad input from Android to Linux over your local network.
