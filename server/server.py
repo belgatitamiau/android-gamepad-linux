@@ -9,9 +9,97 @@ import base64
 import hashlib
 import threading
 import os
+import sys
+import platform
+import subprocess
 from collections import defaultdict
 
-import uinput
+SYSTEM = platform.system()
+
+def check_vigembus_installed() -> bool:
+    if SYSTEM != "Windows":
+        return True
+    try:
+        import winreg
+        key = winreg.OpenKey(winreg.HKEY_LOCAL_MACHINE, r"System\CurrentControlSet\Services\ViGEmBus")
+        winreg.CloseKey(key)
+        return True
+    except FileNotFoundError:
+        return False
+
+def install_vigembus_driver():
+    import urllib.request
+    import tempfile
+    import ctypes
+    
+    url = "https://github.com/nefarius/ViGEmBus/releases/download/v1.22.0/ViGEmBus_Setup_1.22.0.exe"
+    temp_dir = tempfile.gettempdir()
+    installer_path = os.path.join(temp_dir, "ViGEmBus_Setup_1.22.0.exe")
+    
+    print("[*] ViGEmBus driver not found. Downloading installer...")
+    try:
+        urllib.request.urlretrieve(url, installer_path)
+        print(f"[*] Downloaded installer to {installer_path}")
+        print("[*] Launching installer with Admin privileges. Please approve the UAC prompt...")
+        
+        ret = ctypes.windll.shell32.ShellExecuteW(
+            None, "runas", installer_path, "/passive /norestart", None, 1
+        )
+        if ret <= 32:
+            print("[!] UAC elevation failed or was denied by the user. ViGEmBus driver is required on Windows.")
+            sys.exit(1)
+        else:
+            print("[*] ViGEmBus installer launched. Please complete the installation.")
+            print("[*] Once installed, restart this server script.")
+            sys.exit(0)
+    except Exception as e:
+        print(f"[!] Error downloading or installing ViGEmBus: {e}")
+        sys.exit(1)
+
+def auto_install_dependencies():
+    required = ["qrcode"]
+    if SYSTEM == "Linux":
+        required.append("python-uinput")
+    elif SYSTEM == "Windows":
+        required.append("vgamepad")
+    
+    missing = []
+    for pkg in required:
+        import_name = pkg
+        if pkg == "python-uinput":
+            import_name = "uinput"
+        elif pkg == "vgamepad":
+            import_name = "vgamepad"
+        
+        try:
+            __import__(import_name)
+        except ImportError:
+            missing.append(pkg)
+            
+    if missing:
+        print(f"[*] Missing dependencies for {SYSTEM}: {missing}. Installing...")
+        try:
+            subprocess.check_call([sys.executable, "-m", "pip", "install"] + missing)
+            print("[*] Successfully installed dependencies.")
+        except Exception as e:
+            print(f"[!] Error installing dependencies: {e}. Trying with --user...")
+            try:
+                subprocess.check_call([sys.executable, "-m", "pip", "install", "--user"] + missing)
+                print("[*] Successfully installed dependencies with --user.")
+            except Exception as e2:
+                print(f"[!] Error installing dependencies with --user: {e2}")
+                sys.exit(1)
+
+auto_install_dependencies()
+
+if SYSTEM == "Windows" and not check_vigembus_installed():
+    install_vigembus_driver()
+
+if SYSTEM == "Linux":
+    import uinput
+elif SYSTEM == "Windows":
+    import vgamepad
+
 
 # -------------------------------------------------------------------
 # Button bit definitions
@@ -36,21 +124,23 @@ BIT_MAP = {
     'HOME':   1 << 16,
 }
 
-XBOX_EVENTS = [
-    uinput.BTN_A, uinput.BTN_B, uinput.BTN_X, uinput.BTN_Y,
-    uinput.BTN_TL, uinput.BTN_TR,
-    uinput.BTN_SELECT, uinput.BTN_START, uinput.BTN_MODE,
-    uinput.BTN_THUMBL, uinput.BTN_THUMBR,
-    uinput.ABS_X + (-32768, 32767, 0, 0),
-    uinput.ABS_Y + (-32768, 32767, 0, 0),
-    uinput.ABS_RX + (-32768, 32767, 0, 0),
-    uinput.ABS_RY + (-32768, 32767, 0, 0),
-    uinput.ABS_Z + (0, 255, 0, 0),
-    uinput.ABS_RZ + (0, 255, 0, 0),
-    uinput.ABS_HAT0X + (-1, 1, 0, 0),
-    uinput.ABS_HAT0Y + (-1, 1, 0, 0),
-
-]
+if SYSTEM == "Linux":
+    XBOX_EVENTS = [
+        uinput.BTN_A, uinput.BTN_B, uinput.BTN_X, uinput.BTN_Y,
+        uinput.BTN_TL, uinput.BTN_TR,
+        uinput.BTN_SELECT, uinput.BTN_START, uinput.BTN_MODE,
+        uinput.BTN_THUMBL, uinput.BTN_THUMBR,
+        uinput.ABS_X + (-32768, 32767, 0, 0),
+        uinput.ABS_Y + (-32768, 32767, 0, 0),
+        uinput.ABS_RX + (-32768, 32767, 0, 0),
+        uinput.ABS_RY + (-32768, 32767, 0, 0),
+        uinput.ABS_Z + (0, 255, 0, 0),
+        uinput.ABS_RZ + (0, 255, 0, 0),
+        uinput.ABS_HAT0X + (-1, 1, 0, 0),
+        uinput.ABS_HAT0Y + (-1, 1, 0, 0),
+    ]
+else:
+    XBOX_EVENTS = []
 
 
 class GamepadState:
@@ -127,49 +217,90 @@ class VirtualGamepad:
 
     def _create(self):
         try:
-            self.device = uinput.Device(
-                XBOX_EVENTS,
-                name=f'GamepadBridge Gamepad {self.gamepad_id}',
-                vendor=0x045e, product=0x028e, version=0x110,
-            )
-            print(f'[uinput] Created virtual gamepad #{self.gamepad_id}')
+            if SYSTEM == "Linux":
+                self.device = uinput.Device(
+                    XBOX_EVENTS,
+                    name=f'GamepadBridge Gamepad {self.gamepad_id}',
+                    vendor=0x045e, product=0x028e, version=0x110,
+                )
+                print(f'[uinput] Created virtual gamepad #{self.gamepad_id}')
+            elif SYSTEM == "Windows":
+                self.device = vgamepad.VX360Gamepad()
+                print(f'[vgamepad] Created virtual gamepad #{self.gamepad_id}')
         except Exception as e:
-            print(f'[uinput] Failed to create gamepad #{self.gamepad_id}: {e}')
+            tag = "uinput" if SYSTEM == "Linux" else "vgamepad"
+            print(f'[{tag}] Failed to create gamepad #{self.gamepad_id}: {e}')
             self.device = None
 
     def update(self, state: GamepadState):
         if self.device is None:
             return
         with self._lock:
-            d = self.device
             try:
-                d.emit(uinput.BTN_A, 1 if state.buttons & BIT_MAP['A'] else 0)
-                d.emit(uinput.BTN_B, 1 if state.buttons & BIT_MAP['B'] else 0)
-                d.emit(uinput.BTN_X, 1 if state.buttons & BIT_MAP['X'] else 0)
-                d.emit(uinput.BTN_Y, 1 if state.buttons & BIT_MAP['Y'] else 0)
-                d.emit(uinput.BTN_TL, 1 if state.buttons & BIT_MAP['LB'] else 0)
-                d.emit(uinput.BTN_TR, 1 if state.buttons & BIT_MAP['RB'] else 0)
-                d.emit(uinput.BTN_SELECT, 1 if state.buttons & BIT_MAP['SELECT'] else 0)
-                d.emit(uinput.BTN_START, 1 if state.buttons & BIT_MAP['START'] else 0)
-                d.emit(uinput.BTN_MODE, 1 if state.buttons & BIT_MAP['HOME'] else 0)
-                d.emit(uinput.BTN_THUMBL, 1 if state.buttons & BIT_MAP['L3'] else 0)
-                d.emit(uinput.BTN_THUMBR, 1 if state.buttons & BIT_MAP['R3'] else 0)
-                d.emit(uinput.ABS_X, state.lx)
-                d.emit(uinput.ABS_Y, state.ly)
-                d.emit(uinput.ABS_RX, state.rx)
-                d.emit(uinput.ABS_RY, state.ry)
-                d.emit(uinput.ABS_Z, state.lt)
-                d.emit(uinput.ABS_RZ, state.rt)
-                hx, hy = 0, 0
-                if state.buttons & BIT_MAP['DPAD_LEFT']: hx = -1
-                elif state.buttons & BIT_MAP['DPAD_RIGHT']: hx = 1
-                if state.buttons & BIT_MAP['DPAD_UP']: hy = -1
-                elif state.buttons & BIT_MAP['DPAD_DOWN']: hy = 1
-                d.emit(uinput.ABS_HAT0X, hx)
-                d.emit(uinput.ABS_HAT0Y, hy)
-                d.syn()
+                if SYSTEM == "Linux":
+                    d = self.device
+                    d.emit(uinput.BTN_A, 1 if state.buttons & BIT_MAP['A'] else 0)
+                    d.emit(uinput.BTN_B, 1 if state.buttons & BIT_MAP['B'] else 0)
+                    d.emit(uinput.BTN_X, 1 if state.buttons & BIT_MAP['X'] else 0)
+                    d.emit(uinput.BTN_Y, 1 if state.buttons & BIT_MAP['Y'] else 0)
+                    d.emit(uinput.BTN_TL, 1 if state.buttons & BIT_MAP['LB'] else 0)
+                    d.emit(uinput.BTN_TR, 1 if state.buttons & BIT_MAP['RB'] else 0)
+                    d.emit(uinput.BTN_SELECT, 1 if state.buttons & BIT_MAP['SELECT'] else 0)
+                    d.emit(uinput.BTN_START, 1 if state.buttons & BIT_MAP['START'] else 0)
+                    d.emit(uinput.BTN_MODE, 1 if state.buttons & BIT_MAP['HOME'] else 0)
+                    d.emit(uinput.BTN_THUMBL, 1 if state.buttons & BIT_MAP['L3'] else 0)
+                    d.emit(uinput.BTN_THUMBR, 1 if state.buttons & BIT_MAP['R3'] else 0)
+                    d.emit(uinput.ABS_X, state.lx)
+                    d.emit(uinput.ABS_Y, state.ly)
+                    d.emit(uinput.ABS_RX, state.rx)
+                    d.emit(uinput.ABS_RY, state.ry)
+                    d.emit(uinput.ABS_Z, state.lt)
+                    d.emit(uinput.ABS_RZ, state.rt)
+                    hx, hy = 0, 0
+                    if state.buttons & BIT_MAP['DPAD_LEFT']: hx = -1
+                    elif state.buttons & BIT_MAP['DPAD_RIGHT']: hx = 1
+                    if state.buttons & BIT_MAP['DPAD_UP']: hy = -1
+                    elif state.buttons & BIT_MAP['DPAD_DOWN']: hy = 1
+                    d.emit(uinput.ABS_HAT0X, hx)
+                    d.emit(uinput.ABS_HAT0Y, hy)
+                    d.syn()
+                elif SYSTEM == "Windows":
+                    d = self.device
+                    
+                    mapping = {
+                        'A': vgamepad.XUSB_BUTTON.XUSB_GAMEPAD_A,
+                        'B': vgamepad.XUSB_BUTTON.XUSB_GAMEPAD_B,
+                        'X': vgamepad.XUSB_BUTTON.XUSB_GAMEPAD_X,
+                        'Y': vgamepad.XUSB_BUTTON.XUSB_GAMEPAD_Y,
+                        'LB': vgamepad.XUSB_BUTTON.XUSB_GAMEPAD_LEFT_SHOULDER,
+                        'RB': vgamepad.XUSB_BUTTON.XUSB_GAMEPAD_RIGHT_SHOULDER,
+                        'SELECT': vgamepad.XUSB_BUTTON.XUSB_GAMEPAD_BACK,
+                        'START': vgamepad.XUSB_BUTTON.XUSB_GAMEPAD_START,
+                        'HOME': vgamepad.XUSB_BUTTON.XUSB_GAMEPAD_GUIDE,
+                        'L3': vgamepad.XUSB_BUTTON.XUSB_GAMEPAD_LEFT_THUMB,
+                        'R3': vgamepad.XUSB_BUTTON.XUSB_GAMEPAD_RIGHT_THUMB,
+                        'DPAD_UP': vgamepad.XUSB_BUTTON.XUSB_GAMEPAD_DPAD_UP,
+                        'DPAD_DOWN': vgamepad.XUSB_BUTTON.XUSB_GAMEPAD_DPAD_DOWN,
+                        'DPAD_LEFT': vgamepad.XUSB_BUTTON.XUSB_GAMEPAD_DPAD_LEFT,
+                        'DPAD_RIGHT': vgamepad.XUSB_BUTTON.XUSB_GAMEPAD_DPAD_RIGHT,
+                    }
+                    
+                    for name, button_val in mapping.items():
+                        if state.buttons & BIT_MAP[name]:
+                            d.press_button(button=button_val)
+                        else:
+                            d.release_button(button=button_val)
+                    
+                    d.left_joystick(x_value=state.lx, y_value=-state.ly)
+                    d.right_joystick(x_value=state.rx, y_value=-state.ry)
+                    
+                    d.left_trigger(value=state.lt)
+                    d.right_trigger(value=state.rt)
+                    
+                    d.update()
             except Exception:
                 pass
+
 
 
 # -------------------------------------------------------------------
@@ -555,8 +686,9 @@ qb.onclick=function(){qo.style.display='block';qb.style.display='none'};
 
 async def main():
     srv = GamepadBridgeServer()
-    tcp_server = await asyncio.start_server(srv.handle_gamepad_client, '0.0.0.0', 60001, reuse_port=True)
-    http_server = await asyncio.start_server(srv.handle_http, '0.0.0.0', 8080, reuse_port=True)
+    reuse_port_opt = (SYSTEM == 'Linux')
+    tcp_server = await asyncio.start_server(srv.handle_gamepad_client, '0.0.0.0', 60001, reuse_port=reuse_port_opt)
+    http_server = await asyncio.start_server(srv.handle_http, '0.0.0.0', 8080, reuse_port=reuse_port_opt)
     print('[server] TCP gamepad listener on :60001')
     print('[server] HTTP dashboard on :8080')
 
