@@ -7,6 +7,7 @@ PORTFILE="/tmp/gamepad-bridge-port"
 VENV_DIR="$SCRIPT_DIR/.venv"
 SERVER_PY="$SCRIPT_DIR/server.py"
 SERVER_PID=""
+PYTHON=""
 
 cleanup() {
   local ret=$?
@@ -31,23 +32,41 @@ kill_prev() {
   fi
 }
 
-check_deps() {
-  local missing=0
-  for cmd in python3; do
-    if ! command -v "$cmd" &>/dev/null; then
-      echo "ERROR: $cmd not found. Install Python 3 first." >&2
-      missing=1
+# Find a Python that can dlopen libudev (needed by uinput)
+find_python() {
+  local candidates=(
+    "/usr/bin/python3.14" "/usr/bin/python3.13" "/usr/bin/python3.12"
+    "/usr/bin/python3.11" "/usr/bin/python3.10" "/usr/bin/python3"
+    "/usr/local/bin/python3.14" "/usr/local/bin/python3.13"
+    "/usr/local/bin/python3.12" "/usr/local/bin/python3.11"
+    "/usr/local/bin/python3.10" "/usr/local/bin/python3"
+    "python3.14" "python3.13" "python3.12" "python3.11" "python3.10" "python3"
+  )
+  for c in "${candidates[@]}"; do
+    local path
+    if [[ "$c" == */* ]]; then
+      path="$c"
+      [[ -x "$path" ]] || continue
+    else
+      path=$(command -v "$c" 2>/dev/null || true)
+      [[ -n "$path" ]] || continue
+    fi
+    if "$path" -c "import ctypes; ctypes.CDLL('libudev.so.1', use_errno=True)" 2>/dev/null; then
+      PYTHON="$path"
+      return 0
     fi
   done
-  if [[ $missing -ne 0 ]]; then
-    echo "Press Enter to exit."; read -r; exit 1
-  fi
+  echo "ERROR: Could not find Python with libudev support."
+  echo "Install dependencies:"
+  echo "  Debian/Ubuntu: sudo apt install python3 python3-pip python3-venv"
+  echo "  Fedora:        sudo dnf install python3 python3-pip"
+  echo "Press Enter to exit."; read -r; exit 1
 }
 
 setup_venv() {
   if [[ ! -d "$VENV_DIR" ]]; then
     echo "Creating virtual environment..."
-    python3 -m venv "$VENV_DIR"
+    "$PYTHON" -m venv "$VENV_DIR"
   fi
   local py="$VENV_DIR/bin/python3"
 
@@ -99,7 +118,7 @@ echo "========================================"
 echo ""
 
 kill_prev
-check_deps
+find_python
 setup_venv
 check_uinput
 
