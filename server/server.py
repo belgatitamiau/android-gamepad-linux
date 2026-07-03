@@ -73,7 +73,7 @@ def auto_install_dependencies():
             import_name = "vgamepad"
         
         try:
-            __import__(import_name)
+            globals()[import_name] = __import__(import_name)
         except ImportError:
             missing.append(pkg)
             
@@ -93,15 +93,8 @@ def auto_install_dependencies():
 
 auto_install_dependencies()
 
-if SYSTEM == "Windows" and not check_vigembus_installed():
-    install_vigembus_driver()
-
-if SYSTEM == "Linux":
-    import uinput
-elif SYSTEM == "Windows":
-    import vgamepad
-
-
+# -------------------------------------------------------------------
+# Button bit definitions
 # -------------------------------------------------------------------
 # Button bit definitions
 # -------------------------------------------------------------------

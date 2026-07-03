@@ -138,7 +138,7 @@
 
     <!-- Gamepad status text (shown below PLAYER X when no gamepad detected) -->
     <TextView
-        android:textSize="12sp"
+        android:textSize="14sp"
         android:id="@+id/tvGamepadStatus"
         android:fontFamily="@font/press_start_2p"
         android:layout_width="wrap_content"
@@ -266,8 +266,9 @@
         android:padding="10dp"
         android:scrollbars="vertical"
         android:visibility="gone"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="150dp"
+        app:layout_constraintWidth_percent="0.8"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"/>
