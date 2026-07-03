@@ -23,11 +23,11 @@ cleanup() {
 trap cleanup SIGINT SIGTERM EXIT
 
 kill_prev() {
-  local prev_pid
-  prev_pid=$(pgrep -f "python3.*$SERVER_PY" 2>/dev/null || true)
-  if [[ -n "$prev_pid" ]]; then
-    echo "Stopping existing server (PID $prev_pid)..."
-    kill "$prev_pid" 2>/dev/null || true
+  local pids
+  pids=$(pgrep -f "[p]ython3.*$(basename "$SERVER_PY")" 2>/dev/null || true)
+  if [[ -n "$pids" ]]; then
+    echo "Stopping existing server (PID $pids)..."
+    kill $pids 2>/dev/null || true
     sleep 1
   fi
 }
