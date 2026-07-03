@@ -1,74 +1,72 @@
-idk opencode made 95% of it. DON'T HACK MY MOM PLZ i just wanna play w my friends
-
 # GamepadBridge
 
-Convierte tu teléfono Android en un **mando Xbox 360** para tu PC con Linux.
-Conectá tu celu por WiFi y jugá como si tuvieras un joystick USB. Hasta 4 jugadores.
+Turn your Android phone into a **virtual Xbox 360 controller** for Linux.
+Connect over WiFi and use it like a USB gamepad. Up to 4 players.
 
-No necesitas instalar drivers ni programas raros. Solo descargar, descomprimir y hacer doble click.
+No drivers or weird programs needed. Just download, extract, double-click.
 
 ---
 
-## Instalación
+## Installation
 
-### 1. Descargar
+### 1. Download
 
-Andá a https://github.com/belgatitamiau/android-gamepad-linux/releases
-Bajá el **Source code (zip)** de la última versión.
-Descomprimilo donde quieras (Escritorio, Descargas, etc).
+Go to https://github.com/belgatitamiau/android-gamepad-linux/releases
+Get the **Source code (zip)** of the latest Linux release.
+Extract it anywhere (Desktop, Downloads, etc).
 
-### 2. Ejecutar (elegí una opción)
+### 2. Run (pick one)
 
-**Opción A — Doble click (recomendado)**
-Hacé doble click en `GamepadBridge.desktop`.
-La primera vez el sistema te va a preguntar "¿Confiar y ejecutar?" — decí que sí.
-Se abre una terminal, se instala todo solo, y se abre el navegador en el dashboard.
+**Option A — Double-click (recommended)**
+Double-click `GamepadBridge.desktop`.
+The first time your file manager will ask "Trust and Launch?" — say yes.
+A terminal opens, everything installs automatically, and the dashboard opens in your browser.
 
-**Opción B — Terminal (si sabés usar una)**
-Abrí una terminal en la carpeta y escribí:
+**Option B — Terminal (if you know your way around)**
+Open a terminal in the folder and type:
 ```bash
 bash server/start.sh
 ```
 
-Las dos opciones hacen lo mismo: instalan lo que falta (una sola vez), arrancan el servidor y abren el navegador.
+Both do the same thing: install what's missing (once), start the server, and open the browser.
 
-### 3. Una sola vez — permiso para el mando virtual
+### 3. One-time — permission for the virtual controller
 
-El servidor necesita escribir en `/dev/uinput` para crear el mando virtual.
-Si al ejecutar ves un cartel de aviso, copiá y pegá este comando en una terminal:
+The server needs to write to `/dev/uinput` to create the virtual controller.
+If you see a warning, copy and paste this command into a terminal:
 
 ```bash
 echo 'KERNEL=="uinput", MODE="0666"' | sudo tee /etc/udev/rules.d/99-uinput.rules
 sudo udevadm control --reload-rules && sudo udevadm trigger
 ```
 
-Pedirá tu contraseña de administrador. Se hace **una sola vez** en la vida de la PC.
+It will ask for your admin password. You only need to do this **once** per machine.
 
 ---
 
-## Cómo se usa
+## How to use
 
-1. En el celu: abrí la app **GamepadBridge**, escaneá el QR que aparece en el dashboard
-2. El celu se conecta automáticamente al server
-3. Conectá un mando Bluetooth/USB al celu y usalo como si estuviera en la PC
-4. Todo se ve en vivo en el dashboard del navegador
+1. On your phone: open the **GamepadBridge** app, scan the QR shown on the dashboard
+2. The phone connects to the server automatically
+3. Connect a Bluetooth/USB gamepad to your phone and use it like it's plugged into your PC
+4. Everything is visible in real-time on the web dashboard
 
-### Puerto
+### Ports
 
-| Puerto | Para qué |
-|--------|----------|
-| 60001  | Conexión del teléfono al server |
-| 8080*  | Dashboard web (se abre solo en el navegador) |
+| Port  | Purpose |
+|-------|---------|
+| 60001 | Phone-to-server gamepad data |
+| 8080* | Web dashboard (opens automatically) |
 
-*Si el 8080 está ocupado, usa otro puerto libre.
+*If 8080 is busy, a free port is used instead.
 
 ---
 
-## Preguntas frecuentes
+## FAQ
 
-**¿Necesito instalar Python?**
-El script lo instala solo si hace falta (con permisos de administrador).
-Si no, puede bajarlo de python.org o con el gestor de paquetes:
+**Do I need to install Python?**
+The script installs it if needed (with admin permissions).
+Or get it from python.org or your package manager:
 ```bash
 # Debian/Ubuntu
 sudo apt install python3 python3-pip python3-venv
@@ -77,15 +75,15 @@ sudo apt install python3 python3-pip python3-venv
 sudo dnf install python3 python3-pip
 ```
 
-**¿Funciona con cualquier mando?**
-Sí, si tu celu lo reconoce (Bluetooth, USB-OTG, o mando incorporado como el Razer Kishi), el server lo ve.
+**Does it work with any gamepad?**
+Yes — if your phone recognizes it (Bluetooth, USB-OTG, or built-in like Razer Kishi), the server will see it.
 
-**¿Y en Windows?**
-Este repo es para Linux. Si querés Windows, necesitás ViGEmBus — hay instrucciones en `WINDOWS_SUPPORT.md`.
+**What about Windows?**
+This repo is for Linux. For Windows you need ViGEmBus — see `WINDOWS_SUPPORT.md`.
 
 ---
 
-## Desarrollo (solo si querés compilar la app)
+## Development (building the app yourself)
 
 ```bash
 cd android
@@ -93,6 +91,6 @@ cd android
 adb install app/build/outputs/apk/debug/app-debug.apk
 ```
 
-**Requerimientos**: JDK 17, Android SDK 34, Gradle 8.11
+**Requirements**: JDK 17, Android SDK 34, Gradle 8.11
 
-Licencia MIT
+MIT License
