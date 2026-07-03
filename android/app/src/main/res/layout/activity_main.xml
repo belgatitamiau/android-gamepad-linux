@@ -42,9 +42,9 @@
                 android:layout_weight="1">
                 <EditText
                     android:textColor="#ffffff"
-                    android:textColorHint="#88ffffff"
+                    android:textColorHint="#aaffffff"
                     android:id="@+id/etHost"
-                    android:background="#33000000"
+                    android:background="#88222222"
                     android:padding="12dp"
                     android:layout_width="match_parent"
                     android:layout_height="48dp"
@@ -52,9 +52,9 @@
                     android:inputType="phone"/>
                 <EditText
                     android:textColor="#ffffff"
-                    android:textColorHint="#88ffffff"
+                    android:textColorHint="#aaffffff"
                     android:id="@+id/etPort"
-                    android:background="#33000000"
+                    android:background="#88222222"
                     android:padding="12dp"
                     android:layout_width="match_parent"
                     android:layout_height="48dp"
@@ -69,11 +69,11 @@
                 android:background="#44000000"
                 android:contentDescription="Scan QR"
                 android:scaleType="fitCenter"
-                android:padding="12dp"
-                android:layout_width="80dp"
-                android:layout_height="80dp"
+                android:padding="4dp"
+                android:layout_width="96dp"
+                android:layout_height="96dp"
                 android:layout_gravity="center_vertical"
-                android:layout_marginStart="8dp"/>
+                android:layout_marginStart="12dp"/>
         </LinearLayout>
         <Button
             android:id="@+id/btnConnect"
@@ -91,7 +91,7 @@
             android:layout_marginTop="12dp">
             <TextView
                 android:textSize="10sp"
-                android:textColor="#88ffffff"
+                android:textColor="#aaffffff"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Skins"
@@ -110,7 +110,7 @@
             android:layout_marginBottom="8dp"/>
         <TextView
             android:textSize="11sp"
-            android:textColor="#88ffffff"
+            android:textColor="#aaffffff"
             android:gravity="center"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -138,7 +138,7 @@
 
     <!-- Gamepad status text (shown below PLAYER X when no gamepad detected) -->
     <TextView
-        android:textSize="20sp"
+        android:textSize="12sp"
         android:id="@+id/tvGamepadStatus"
         android:fontFamily="@font/press_start_2p"
         android:layout_width="wrap_content"
@@ -146,6 +146,7 @@
         android:gravity="center"
         android:visibility="gone"
         android:includeFontPadding="false"
+        android:singleLine="true"
         android:text="(gamepad not detected, press a button?)"
         app:layout_constraintTop_toBottomOf="@id/tvPlayerNumber"
         app:layout_constraintStart_toStartOf="parent"
@@ -154,20 +155,21 @@
 
     <!-- Options button (bottom-right, shown when connected) -->
     <TextView
-        android:textSize="14sp"
+        android:textSize="12sp"
         android:textColor="#ffffff"
         android:id="@+id/tvOptions"
         android:background="@drawable/options_bg"
-        android:paddingHorizontal="14dp"
-        android:paddingVertical="6dp"
+        android:paddingHorizontal="16dp"
+        android:paddingVertical="10dp"
         android:gravity="center"
         android:visibility="gone"
-        android:text="options"
+        android:text="OPTIONS"
+        android:textStyle="bold"
         android:clickable="true"
         android:focusable="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="12dp"
+        android:layout_margin="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 
@@ -176,7 +178,7 @@
         android:orientation="vertical"
         android:id="@+id/optionsPanel"
         android:background="#cc000000"
-        android:padding="12dp"
+        android:padding="16dp"
         android:visibility="gone"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -202,36 +204,36 @@
             android:gravity="center"
             android:layout_marginBottom="8dp">
             <TextView
-                android:textSize="10sp"
-                android:textColor="#88ffffff"
+                android:textSize="14sp"
+                android:textColor="#ffffff"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Skins"
                 android:layout_marginEnd="8dp"/>
-            <View android:id="@+id/themeBlackO" android:layout_width="28dp" android:layout_height="28dp" android:background="@drawable/circle_black" android:layout_marginHorizontal="3dp" android:clickable="true" android:focusable="true"/>
-            <View android:id="@+id/themePinkO" android:layout_width="28dp" android:layout_height="28dp" android:background="@drawable/circle_pink" android:layout_marginHorizontal="3dp" android:clickable="true" android:focusable="true"/>
-            <View android:id="@+id/themeBlueO" android:layout_width="28dp" android:layout_height="28dp" android:background="@drawable/circle_blue" android:layout_marginHorizontal="3dp" android:clickable="true" android:focusable="true"/>
-            <View android:id="@+id/themeYellowO" android:layout_width="28dp" android:layout_height="28dp" android:background="@drawable/circle_yellow" android:layout_marginHorizontal="3dp" android:clickable="true" android:focusable="true"/>
-            <View android:id="@+id/themeGreenO" android:layout_width="28dp" android:layout_height="28dp" android:background="@drawable/circle_green" android:layout_marginHorizontal="3dp" android:clickable="true" android:focusable="true"/>
+            <View android:id="@+id/themeBlackO" android:layout_width="34dp" android:layout_height="34dp" android:background="@drawable/circle_black" android:layout_marginHorizontal="3dp" android:clickable="true" android:focusable="true"/>
+            <View android:id="@+id/themePinkO" android:layout_width="34dp" android:layout_height="34dp" android:background="@drawable/circle_pink" android:layout_marginHorizontal="3dp" android:clickable="true" android:focusable="true"/>
+            <View android:id="@+id/themeBlueO" android:layout_width="34dp" android:layout_height="34dp" android:background="@drawable/circle_blue" android:layout_marginHorizontal="3dp" android:clickable="true" android:focusable="true"/>
+            <View android:id="@+id/themeYellowO" android:layout_width="34dp" android:layout_height="34dp" android:background="@drawable/circle_yellow" android:layout_marginHorizontal="3dp" android:clickable="true" android:focusable="true"/>
+            <View android:id="@+id/themeGreenO" android:layout_width="34dp" android:layout_height="34dp" android:background="@drawable/circle_green" android:layout_marginHorizontal="3dp" android:clickable="true" android:focusable="true"/>
         </LinearLayout>
         <!-- Log toggle -->
         <Button
             android:id="@+id/btnToggleLog"
             android:layout_width="match_parent"
-            android:layout_height="36dp"
+            android:layout_height="44dp"
             android:text="Log"
             android:textAllCaps="false"
-            android:textSize="10sp"
-            android:layout_marginBottom="4dp"/>
+            android:textSize="14sp"
+            android:layout_marginBottom="6dp"/>
         <!-- Disconnect -->
         <Button
             android:id="@+id/btnDisconnect"
             android:layout_width="match_parent"
-            android:layout_height="36dp"
+            android:layout_height="44dp"
             android:text="Disconnect"
             android:textAllCaps="false"
-            android:textSize="10sp"
-            android:layout_marginBottom="4dp"/>
+            android:textSize="14sp"
+            android:layout_marginBottom="6dp"/>
         <!-- Screen-off toggle -->
         <LinearLayout
             android:orientation="horizontal"
@@ -239,8 +241,8 @@
             android:layout_height="wrap_content"
             android:gravity="center">
             <TextView
-                android:textSize="10sp"
-                android:textColor="#88ffffff"
+                android:textSize="14sp"
+                android:textColor="#ffffff"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Screen Off"
@@ -256,12 +258,12 @@
 
     <!-- Log panel -->
     <TextView
-        android:textSize="10sp"
+        android:textSize="12sp"
         android:typeface="monospace"
-        android:textColor="#88ffffff"
+        android:textColor="#ffffff"
         android:id="@+id/tvLog"
         android:background="#88000000"
-        android:padding="8dp"
+        android:padding="10dp"
         android:scrollbars="vertical"
         android:visibility="gone"
         android:layout_width="match_parent"

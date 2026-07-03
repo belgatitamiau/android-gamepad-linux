@@ -12,6 +12,7 @@ import os
 import sys
 import platform
 import subprocess
+import signal
 from collections import defaultdict
 
 SYSTEM = platform.system()
@@ -412,8 +413,11 @@ class GamepadBridgeServer:
 
     async def _serve_dashboard(self, writer):
         s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        # get local IP without contacting external servers
+        s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        s.settimeout(0.1)
         try:
-            s.connect(('8.8.8.8', 80))
+            s.connect(('10.0.0.1', 9))
             ip = s.getsockname()[0]
         except:
             ip = 'localhost'
@@ -421,27 +425,16 @@ class GamepadBridgeServer:
         qr_text = f'{ip}:60001'
 
         import qrcode
-        qr_img = qrcode.make(qr_text)
+        qr = qrcode.QRCode(border=1)
+        qr.add_data(qr_text)
+        qr.make(fit=True)
+        qr_img = qr.make_image()
         buf = io.BytesIO()
         qr_img.save(buf, format='PNG')
         qr_b64 = base64.b64encode(buf.getvalue()).decode()
         qr_data_uri = f'data:image/png;base64,{qr_b64}'
 
-        import subprocess
-        wifi_ssid = ''
-        try:
-            wifi_ssid = subprocess.check_output(['iwgetid', '-r'], timeout=3).decode('utf-8', errors='replace').strip()
-        except Exception:
-            try:
-                out = subprocess.check_output(['nmcli', '-t', '-f', 'active,ssid', 'dev', 'wifi'], timeout=3).decode()
-                for line in out.splitlines():
-                    if line.startswith('yes:'):
-                        wifi_ssid = line.split(':', 1)[1]
-                        break
-            except Exception:
-                pass
-
-        body = DASHBOARD_HTML.replace('{qr_data_uri}', qr_data_uri).replace('{qr_text}', qr_text).replace('{wifi_ssid}', wifi_ssid).encode('utf-8')
+        body = DASHBOARD_HTML.replace('{qr_data_uri}', qr_data_uri).replace('{qr_text}', qr_text).encode('utf-8')
         resp = (
             'HTTP/1.1 200 OK\r\n'
             'Content-Type: text/html; charset=utf-8\r\n'
@@ -566,33 +559,37 @@ DASHBOARD_HTML = r'''<!DOCTYPE html>
 *{margin:0;padding:0;box-sizing:border-box}
 body{background:#3d2028;color:#e8c8d0;font-family:'Segoe UI',sans-serif;padding:10px;min-height:100vh}
 @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
-h1{font-size:.9rem;color:#ff85b4;text-align:center;margin-bottom:8px;font-family:'Press Start 2P',monospace;letter-spacing:1px}
+h1{font-size:1.4rem;color:#ff85b4;text-align:center;margin-bottom:10px;font-family:'Press Start 2P',monospace;letter-spacing:1px}
 .gw{position:relative;margin-bottom:8px}
 .g2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-#qrOver{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);z-index:10;background:#4d2832ec;border-radius:12px;padding:10px;border:1px solid #ff85b455;text-align:center;backdrop-filter:blur(4px);transition:opacity .3s}
-#qrOver img{width:300px;height:300px;background:#fff;border-radius:6px;display:block}
-#qrOver .l{font-size:.5rem;color:#c09098;margin-top:2px}
+#qrOver{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);z-index:10;background:#4d2832ec;border-radius:12px;padding:4px;border:1px solid #ff85b455;text-align:center;backdrop-filter:blur(4px);transition:opacity .3s}
+#qrOver img{width:260px;height:260px;background:#fff;border-radius:6px;display:block}
+#qrOver .l{font-size:1rem;color:#c09098;margin-top:2px}
 #qrTog{position:absolute;top:4px;right:4px;background:none;border:none;color:#ff85b4;font-size:.9rem;cursor:pointer;z-index:12;line-height:1;padding:2px 6px;border-radius:4px}
 #qrTog:hover{background:#ff85b422}
 #qrBtn{display:none;position:fixed;bottom:12px;right:12px;z-index:20;background:#ff85b4;color:#1a0a12;border:none;border-radius:8px;padding:8px 12px;font-size:.7rem;font-weight:600;cursor:pointer}
 #qrBtn:hover{background:#e86a98}
-.gc{background:#4d2832;border-radius:10px;padding:8px;border:1px solid #ff85b433;min-height:360px;display:flex;flex-direction:column}
+.gc{background:#4d2832;border-radius:10px;padding:8px;border:1px solid #ff85b433;display:flex;flex-direction:column;min-height:340px}
 .gc .nc{font-size:1rem;color:#c09098;margin:auto;text-align:center}
 .gp{display:flex;flex-direction:column;flex:1}
 .gp-h{font-size:.65rem;color:#ff85b4;text-align:center;letter-spacing:1px;margin-bottom:4px}
-.gp-row{display:flex;justify-content:space-between;align-items:center;gap:4px;flex:1}
-.gp-st{position:relative;width:100px;height:100px;flex-shrink:0}
-.gp-st canvas{width:100px;height:100px;display:block}
+.gp-row{display:flex;justify-content:space-between;align-items:center;gap:4px}
+.gp-st{position:relative;width:95px;height:95px;flex-shrink:0}
+.gp-st canvas{width:95px;height:95px;display:block}
 .gp-mb{display:flex;gap:4px;flex-wrap:wrap;justify-content:center}
 .gp-mb>div{padding:3px 8px;border-radius:4px;font-size:.6rem;background:#3d2028;color:#b08890;font-weight:600}
 .gp-mb>div.on{background:#ff85b4;color:#2a1018}
 .gp-tg{flex:1;height:8px;background:#3d2028;border-radius:4px;overflow:hidden}
 .gp-tg>div{height:100%;background:linear-gradient(90deg,#ff85b4,#e86a98);border-radius:4px}
-.gp-dp{display:grid;grid-template-columns:repeat(3,28px);gap:2px;justify-content:center}
-.gp-dp>div{width:28px;height:28px;border-radius:4px;background:#3d2028;display:flex;align-items:center;justify-content:center;font-size:.55rem;color:#b08890}
+.gp-dp{display:grid;grid-template-columns:repeat(3,26px);gap:2px;justify-content:center}
+.gp-dp>div{width:26px;height:26px;border-radius:4px;background:#3d2028;display:flex;align-items:center;justify-content:center;font-size:.5rem;color:#b08890}
 .gp-dp>div.on{background:#ff85b4;color:#2a1018}
-.gp-ab{display:grid;grid-template-columns:36px 36px;gap:3px;justify-content:center}
-.gp-ab>div{width:36px;height:36px;border-radius:50%;background:#3d2028;display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:700;color:#b08890}
+.gp-ab{display:grid;grid-template-columns:32px 32px 32px;grid-template-rows:32px 32px 32px;gap:2px;justify-content:center;align-items:center}
+.gp-ab>div{width:32px;height:32px;border-radius:50%;background:#3d2028;display:flex;align-items:center;justify-content:center;font-size:.65rem;font-weight:700;color:#b08890}
+.gp-ab>.y{grid-column:2;grid-row:1}
+.gp-ab>.x{grid-column:1;grid-row:2}
+.gp-ab>.b{grid-column:3;grid-row:2}
+.gp-ab>.a{grid-column:2;grid-row:3}
 .gp-ab>div.on{color:#fff}
 .gp-ab .a{background:#1a5a2a}
 .gp-ab .a.on{background:#3aff5a}
@@ -602,6 +599,9 @@ h1{font-size:.9rem;color:#ff85b4;text-align:center;margin-bottom:8px;font-family
 .gp-ab .x.on{background:#3a3aff}
 .gp-ab .y{background:#5a5a1a}
 .gp-ab .y.on{background:#ffff3a}
+.gp-c{display:flex;flex-direction:column;align-items:center;gap:6px}
+.gp-cbtn{padding:4px 12px;border-radius:4px;font-size:.6rem;background:#3d2028;color:#b08890;font-weight:600;text-align:center}
+.gp-cbtn.on{background:#ff85b4;color:#2a1018}
 
 .sg{display:grid;grid-template-columns:1fr 1fr;gap:2px}
 .sl{font-size:.5rem;color:#c09098}
@@ -610,14 +610,13 @@ h1{font-size:.9rem;color:#ff85b4;text-align:center;margin-bottom:8px;font-family
 </style>
 </head>
 <body>
-<h1>=｀ω´= Gamepad Bridge</h1>
+<h1>───୨ৎ──── GamepadBridge ───୨ৎ────</h1>
 <div class="gw">
   <div class="g2" id="gpGrid"></div>
   <div id="qrOver">
     <button id="qrTog">✕</button>
     <img src="{qr_data_uri}" alt="QR">
      <div class="l" id="ql">{qr_text}</div>
-     <div class="l" id="wifi" style="margin-top:2px;font-size:.45rem">{wifi_ssid}</div>
     <div class="sg" style="margin-top:4px"><div><div class="sl">Lat</div><div class="sv" id="lat">--</div></div><div><div class="sl">Act</div><div class="sv" id="ac">0/4</div></div></div>
   </div>
 </div>
@@ -626,18 +625,44 @@ h1{font-size:.9rem;color:#ff85b4;text-align:center;margin-bottom:8px;font-family
 const gpGrid=document.getElementById('gpGrid');
 for(let i=0;i<4;i++){
   const c=document.createElement('div');c.className='gc';c.id='gc'+i;
-  c.innerHTML='<div class="nc" id="nc'+i+'">not connected</div><div class="gp" id="gp'+i+'" style="display:none"><div class="gp-h">GP'+(i+1)+'</div><div class="gp-row"><div class="gp-mb"><div id="lb'+i+'">LB</div><div id="rb'+i+'">RB</div></div></div><div class="gp-row"><div class="gp-tg"><div id="ltf'+i+'" style="width:0%"></div></div><div class="gp-tg"><div id="rtf'+i+'" style="width:0%"></div></div></div><div class="gp-row" style="justify-content:center;gap:8px"><div class="gp-st"><canvas id="lc'+i+'" width="100" height="100"></canvas></div><div class="gp-mb" style="flex-direction:column;gap:2px"><div id="sel'+i+'" style="font-size:.5rem">SEL</div><div id="sta'+i+'" style="font-size:.5rem">STA</div></div><div class="gp-st"><canvas id="rc'+i+'" width="100" height="100"></canvas></div></div><div class="gp-row" style="justify-content:center;gap:16px;margin-top:2px"><div class="gp-dp"><div></div><div data-d="up" id="dup'+i+'">↑</div><div></div><div data-d="left" id="dl'+i+'">←</div><div data-d="neutral" id="dn'+i+'">·</div><div data-d="right" id="dr'+i+'">→</div><div></div><div data-d="down" id="dd'+i+'">↓</div><div></div></div><div class="gp-ab"><div id="y'+i+'" class="y">Y</div><div id="x'+i+'" class="x">X</div><div id="b'+i+'" class="b">B</div><div id="a'+i+'" class="a">A</div></div></div><div class="gp-row" style="justify-content:center;margin-top:2px"><div class="gp-mb"><div id="hm'+i+'">HOME</div></div></div></div>';
+  const si=i;
+  c.innerHTML='<div class="nc" id="nc'+i+'">not connected</div><div class="gp" id="gp'+i+'" style="display:none">'
+    +'<div class="gp-h">GP'+(i+1)+'</div>'
+    +'<div class="gp-row" style="justify-content:space-between;padding:0 6px">'
+      +'<div class="gp-mb"><div id="lb'+i+'">LB</div></div>'
+      +'<div class="gp-mb"><div id="rb'+i+'">RB</div></div>'
+    +'</div>'
+    +'<div class="gp-row" style="gap:8px">'
+      +'<div class="gp-tg"><div id="ltf'+i+'" style="width:0%"></div></div>'
+      +'<div class="gp-tg"><div id="rtf'+i+'" style="width:0%"></div></div>'
+    +'</div>'
+    +'<div class="gp-row" style="justify-content:space-around;align-items:flex-start;margin-top:4px">'
+      +'<div class="gp-c">'
+        +'<div class="gp-st"><canvas id="lc'+i+'" width="95" height="95"></canvas></div>'
+        +'<div class="gp-dp"><div></div><div data-d="up" id="dup'+i+'">↑</div><div></div><div data-d="left" id="dl'+i+'">←</div><div data-d="neutral" id="dn'+i+'">·</div><div data-d="right" id="dr'+i+'">→</div><div></div><div data-d="down" id="dd'+i+'">↓</div><div></div></div>'
+      +'</div>'
+      +'<div class="gp-c" style="padding-top:12px;gap:8px">'
+        +'<div id="sel'+i+'" class="gp-cbtn">SEL</div>'
+        +'<div id="sta'+i+'" class="gp-cbtn">STA</div>'
+        +'<div id="hm'+i+'" class="gp-cbtn" style="margin-top:6px">HOME</div>'
+      +'</div>'
+      +'<div class="gp-c">'
+        +'<div class="gp-st"><canvas id="rc'+i+'" width="95" height="95"></canvas></div>'
+        +'<div class="gp-ab"><div id="y'+i+'" class="y">Y</div><div id="x'+i+'" class="x">X</div><div id="b'+i+'" class="b">B</div><div id="a'+i+'" class="a">A</div></div>'
+      +'</div>'
+    +'</div>'
+  +'</div>';
   gpGrid.appendChild(c);
   // init stick canvases
-  ['l','r'].forEach(sd=>{const cx=document.getElementById(sd+'c'+i).getContext('2d');cx.fillStyle='#3d2028';cx.fillRect(0,0,100,100)});
+  ['l','r'].forEach(sd=>{const cx=document.getElementById(sd+'c'+i).getContext('2d');cx.fillStyle='#3d2028';cx.fillRect(0,0,95,95)});
 }
 function ds(cx,x,y,m,a){
-  const ox=50,oy=50,r=40;
-  cx.clearRect(0,0,100,100);
+  const ox=47.5,oy=47.5,r=38;
+  cx.clearRect(0,0,95,95);
   cx.beginPath();cx.arc(ox,oy,r,0,Math.PI*2);cx.fillStyle='#3d2028';cx.fill();cx.strokeStyle='#5a3842';cx.lineWidth=2;cx.stroke();
-  cx.beginPath();cx.moveTo(ox-24,oy);cx.lineTo(ox+24,oy);cx.moveTo(ox,oy-24);cx.lineTo(ox,oy+24);cx.strokeStyle='#5a3842';cx.lineWidth=1.5;cx.stroke();
+  cx.beginPath();cx.moveTo(ox-22,oy);cx.lineTo(ox+22,oy);cx.moveTo(ox,oy-22);cx.lineTo(ox,oy+22);cx.strokeStyle='#5a3842';cx.lineWidth=1.5;cx.stroke();
   if(m>0.01){const rad=a*Math.PI/180,dx=Math.cos(rad)*m*r,dy=-Math.sin(rad)*m*r;
-    cx.beginPath();cx.arc(ox+dx,oy+dy,6,0,Math.PI*2);cx.fillStyle='#ff85b4';cx.fill()}
+    cx.beginPath();cx.arc(ox+dx,oy+dy,5,0,Math.PI*2);cx.fillStyle='#ff85b4';cx.fill()}
   cx.beginPath();cx.arc(ox,oy,3,0,Math.PI*2);cx.fillStyle='#e86a98';cx.fill()}
 function ui(d){
   const g=d.gamepads||[d];
@@ -685,17 +710,72 @@ qb.onclick=function(){qo.style.display='block';qb.style.display='none'};
 # -------------------------------------------------------------------
 
 async def main():
+    import socket as _socket
+    import time as _time
+    # try 8080, fall back to random free port
+    with _socket.socket(_socket.AF_INET, _socket.SOCK_STREAM) as stmp:
+        try:
+            stmp.bind(('0.0.0.0', 8080))
+            http_port = 8080
+        except OSError:
+            stmp.bind(('0.0.0.0', 0))
+            http_port = stmp.getsockname()[1]
+
+    # ensure port 60001 is free before binding (blocking, no asyncio)
+    for _ in range(30):
+        try:
+            with _socket.socket(_socket.AF_INET, _socket.SOCK_STREAM) as s:
+                s.setsockopt(_socket.SOL_SOCKET, _socket.SO_REUSEADDR, 1)
+                s.bind(('0.0.0.0', 60001))
+            break
+        except OSError:
+            if _ == 0:
+                print('[server] Port 60001 busy, waiting for it to free up...')
+            _time.sleep(1)
+    else:
+        print('[server] ERROR: could not bind port 60001 after 30s')
+        return
+
     srv = GamepadBridgeServer()
     reuse_port_opt = (SYSTEM == 'Linux')
     tcp_server = await asyncio.start_server(srv.handle_gamepad_client, '0.0.0.0', 60001, reuse_port=reuse_port_opt)
-    http_server = await asyncio.start_server(srv.handle_http, '0.0.0.0', 8080, reuse_port=reuse_port_opt)
-    print('[server] TCP gamepad listener on :60001')
-    print('[server] HTTP dashboard on :8080')
+    http_server = await asyncio.start_server(srv.handle_http, '0.0.0.0', http_port, reuse_port=reuse_port_opt)
+    print(f'[server] TCP gamepad listener on :60001')
+    print(f'[server] HTTP dashboard on :{http_port}')
+    print(f'[server] Open http://192.168.1.65:{http_port}/ in a browser')
+    try:
+        with open('/tmp/gamepad-bridge-port', 'w') as f:
+            f.write(str(http_port))
+    except OSError:
+        pass
 
-    async with asyncio.TaskGroup() as tg:
-        tg.create_task(tcp_server.serve_forever())
-        tg.create_task(http_server.serve_forever())
-        tg.create_task(srv._broadcast_loop())
+    shutdown_event = asyncio.Event()
+
+    def _signal_handler():
+        print(f'[server] Shutting down...')
+        shutdown_event.set()
+
+    loop = asyncio.get_running_loop()
+    for sig in (signal.SIGINT, signal.SIGTERM):
+        try:
+            loop.add_signal_handler(sig, _signal_handler)
+        except NotImplementedError:
+            pass
+
+    async def _waiter():
+        await shutdown_event.wait()
+        tcp_server.close()
+        http_server.close()
+
+    try:
+        async with asyncio.TaskGroup() as tg:
+            tg.create_task(tcp_server.serve_forever())
+            tg.create_task(http_server.serve_forever())
+            tg.create_task(srv._broadcast_loop())
+            tg.create_task(_waiter())
+    except BaseException:
+        pass
+    print(f'[server] Goodbye')
 
 
 if __name__ == '__main__':

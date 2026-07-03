@@ -11,10 +11,12 @@ import android.graphics.Color
 import android.graphics.Typeface
 import android.graphics.drawable.GradientDrawable
 import android.hardware.input.InputManager
+import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.IBinder
 import android.os.Looper
+import android.text.method.ScrollingMovementMethod
 import android.util.Log
 import android.view.GestureDetector
 import android.view.InputDevice
@@ -92,7 +94,7 @@ class MainActivity : AppCompatActivity(), InputManager.InputDeviceListener {
     )
 
     private val themes = listOf(
-        ThemeColors(0xFF000000.toInt(), 0xFF000000.toInt(), 0xFF666666.toInt(), 0xFF444444.toInt(), 0xFF888888.toInt(), 0xFF555555.toInt(), "OLED Black"),
+        ThemeColors(0xFF000000.toInt(), 0xFF000000.toInt(), 0xFF999999.toInt(), 0xFF666666.toInt(), 0xFFDDDDDD.toInt(), 0xFFAAAAAA.toInt(), "OLED Black"),
         ThemeColors(0xFF1A0A12.toInt(), 0xFF2A0A1A.toInt(), 0xFFFF69B4.toInt(), 0xFFFF1493.toInt(), 0xFFF0D0D8.toInt(), 0xFFB06080.toInt(), "My Melody"),
         ThemeColors(0xFF0A1220.toInt(), 0xFF0A1A2A.toInt(), 0xFF69C4FF.toInt(), 0xFF1493FF.toInt(), 0xFFD0E0F0.toInt(), 0xFF6080B0.toInt(), "Cinnamoroll"),
         ThemeColors(0xFF1A140A.toInt(), 0xFF2A1A0A.toInt(), 0xFFFFD700.toInt(), 0xFFDAA520.toInt(), 0xFFF0E8D0.toInt(), 0xFFB09860.toInt(), "Sugarbunnies"),
@@ -123,6 +125,9 @@ class MainActivity : AppCompatActivity(), InputManager.InputDeviceListener {
                             }
                         }, 500)
                     }
+                } else {
+                    connectionError = null
+                    updateUI()
                 }
             } }
             service?.onSoundTrigger = { playerNum -> runOnUiThread { soundManager.playConnectedSequence(playerNum) } }
@@ -157,12 +162,22 @@ class MainActivity : AppCompatActivity(), InputManager.InputDeviceListener {
             }
         } else {
             log("QR scan cancelled")
+            stopConnecting()
+            if (bound) {
+                service?.disconnect()
+            } else {
+                pendingConnect = null
+            }
+            updateUI()
         }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            window.attributes.layoutInDisplayCutoutMode = WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_SHORT_EDGES
+        }
 
         inputManager = getSystemService(Context.INPUT_SERVICE) as InputManager
         prefs = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
@@ -177,6 +192,7 @@ class MainActivity : AppCompatActivity(), InputManager.InputDeviceListener {
         btnCloseOptions = findViewById(R.id.btnCloseOptions)
         tvOptions = findViewById(R.id.tvOptions)
         tvLog = findViewById(R.id.tvLog)
+        tvLog.movementMethod = ScrollingMovementMethod()
         tvPlayerNumber = findViewById(R.id.tvPlayerNumber)
         tvGamepadStatus = findViewById(R.id.tvGamepadStatus)
         rootLayout = findViewById(R.id.rootLayout)
@@ -345,7 +361,7 @@ class MainActivity : AppCompatActivity(), InputManager.InputDeviceListener {
             cornerRadius = 8f
         }
         btnConnect.background = btnStyle
-        btnConnect.setTextColor(t.bg)
+        btnConnect.setTextColor(0xFFFFFFFF.toInt())
         val qrStyle = GradientDrawable().apply {
             setColor(t.bg2)
             setStroke(1, t.accent)
@@ -354,7 +370,7 @@ class MainActivity : AppCompatActivity(), InputManager.InputDeviceListener {
         btnScanQR.background = qrStyle
         btnScanQR.setColorFilter(t.text)
         btnDisconnect.background = btnStyle
-        btnDisconnect.setTextColor(t.bg)
+        btnDisconnect.setTextColor(0xFFFFFFFF.toInt())
         val logBtnStyle = GradientDrawable().apply {
             setColor(t.bg2)
             setStroke(1, t.accent)
@@ -366,7 +382,13 @@ class MainActivity : AppCompatActivity(), InputManager.InputDeviceListener {
         tvLog.setTextColor(t.text2)
         tvPlayerNumber.setTextColor(t.accent)
         tvGamepadStatus.setTextColor(t.text2)
-        tvOptions.setTextColor((t.accent and 0x00FFFFFF) or 0x55000000.toInt())
+        tvOptions.setTextColor(0xFFFFFFFF.toInt())
+        val optStyle = GradientDrawable().apply {
+            setColor(t.accent2)
+            setStroke(1, t.accent)
+            cornerRadius = 8f
+        }
+        tvOptions.background = optStyle
 
         allThemeViews.forEachIndexed { i, v ->
             val themeIdx = i % 5
@@ -559,7 +581,7 @@ class MainActivity : AppCompatActivity(), InputManager.InputDeviceListener {
         } else if (connectionError != null) {
             tvPlayerNumber.text = connectionError
             tvPlayerNumber.typeface = Typeface.DEFAULT
-            tvPlayerNumber.textSize = 20f
+            tvPlayerNumber.textSize = 28f
             tvPlayerNumber.visibility = View.VISIBLE
             tvPlayerNumber.bringToFront()
             tvGamepadStatus.visibility = View.GONE
