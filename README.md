@@ -15,20 +15,16 @@ Go to https://github.com/belgatitamiau/android-gamepad-linux/releases
 Get the **Source code (zip)** of the latest Linux release.
 Extract it anywhere (Desktop, Downloads, etc).
 
-### 2. Run (pick one)
+### 2. Run
 
-**Option A — Double-click (recommended)**
-Double-click `GamepadBridge.desktop`.
-The first time your file manager will ask "Trust and Launch?" — say yes.
-A terminal opens, everything installs automatically, and the dashboard opens in your browser.
+**Double-click** `server/start.sh`.
+Your file manager will ask **"Run in terminal"** or **"Execute"** — click yes.
+A terminal opens, everything installs automatically (first time only), and the dashboard opens in your browser.
 
-**Option B — Terminal (if you know your way around)**
-Open a terminal in the folder and type:
+Alternatively, open a terminal in the folder and type:
 ```bash
 bash server/start.sh
 ```
-
-Both do the same thing: install what's missing (once), start the server, and open the browser.
 
 ### 3. One-time — permission for the virtual controller
 
