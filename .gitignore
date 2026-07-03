@@ -1,0 +1,21 @@
+## Android / Gradle
+android/.gradle/
+android/build/
+android/app/build/
+android/local.properties
+android/*.iml
+android/.idea/
+*.apk
+*.aab
+
+## Python
+server/__pycache__/
+server/*.pyc
+server/server.log
+
+## OS
+.DS_Store
+Thumbs.db
+
+## Server
+server/.venv/
