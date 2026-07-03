@@ -2,48 +2,90 @@ idk opencode made 95% of it. DON'T HACK MY MOM PLZ i just wanna play w my friend
 
 # GamepadBridge
 
-Convierte tu teléfono Android en un mando **Xbox 360 virtual** para Linux.
-Conéctalo por WiFi y úsalo como si fuera un gamepad conectado por USB.
-Hasta **4 jugadores** a la vez con dashboard web en vivo.
+Convierte tu teléfono Android en un **mando Xbox 360** para tu PC con Linux.
+Conectá tu celu por WiFi y jugá como si tuvieras un joystick USB. Hasta 4 jugadores.
 
-## Quick Start
+No necesitas instalar drivers ni programas raros. Solo descargar, descomprimir y hacer doble click.
 
-### Server (Linux)
+---
 
-1. **Doble click** en `GamepadBridge.desktop` (o en `server/start.sh`)
-2. Se abre una terminal, instala lo necesario (solo la primera vez)
-3. Se abre el navegador con el dashboard
-4. **Cerrar la terminal → el server se detiene**
+## Instalación
 
-O manualmente:
+### 1. Descargar
 
+Andá a https://github.com/belgatitamiau/android-gamepad-linux/releases
+Bajá el **Source code (zip)** de la última versión.
+Descomprimilo donde quieras (Escritorio, Descargas, etc).
+
+### 2. Ejecutar (elegí una opción)
+
+**Opción A — Doble click (recomendado)**
+Hacé doble click en `GamepadBridge.desktop`.
+La primera vez el sistema te va a preguntar "¿Confiar y ejecutar?" — decí que sí.
+Se abre una terminal, se instala todo solo, y se abre el navegador en el dashboard.
+
+**Opción B — Terminal (si sabés usar una)**
+Abrí una terminal en la carpeta y escribí:
 ```bash
-python3 server/server.py
+bash server/start.sh
 ```
 
-Luego abre `http://localhost:8080/` (el dashboard muestra la IP real y un QR).
+Las dos opciones hacen lo mismo: instalan lo que falta (una sola vez), arrancan el servidor y abren el navegador.
 
-### Android App
+### 3. Una sola vez — permiso para el mando virtual
 
-Opción A — **Escanea el QR** en el dashboard desde la app.
-Opción B — Ingresa manualmente la IP del PC y el puerto `60001`.
+El servidor necesita escribir en `/dev/uinput` para crear el mando virtual.
+Si al ejecutar ves un cartel de aviso, copiá y pegá este comando en una terminal:
 
-## Cómo funciona
+```bash
+echo 'KERNEL=="uinput", MODE="0666"' | sudo tee /etc/udev/rules.d/99-uinput.rules
+sudo udevadm control --reload-rules && sudo udevadm trigger
+```
 
-El teléfono envía el estado del mando (sticks, botones, gatillos) por TCP al servidor Linux.
-El servidor crea un `/dev/uinput` virtual que el sistema reconoce como un Xbox 360 gamepad.
-El dashboard web muestra todo en tiempo real y genera un QR para conectar el teléfono.
+Pedirá tu contraseña de administrador. Se hace **una sola vez** en la vida de la PC.
 
-## Puertos
+---
 
-| Puerto | Protocolo | Propósito |
-|--------|-----------|-----------|
-| 60001  | TCP       | Datos del mando desde el teléfono |
-| 8080*  | HTTP+WS   | Dashboard web + actualizaciones en vivo |
+## Cómo se usa
+
+1. En el celu: abrí la app **GamepadBridge**, escaneá el QR que aparece en el dashboard
+2. El celu se conecta automáticamente al server
+3. Conectá un mando Bluetooth/USB al celu y usalo como si estuviera en la PC
+4. Todo se ve en vivo en el dashboard del navegador
+
+### Puerto
+
+| Puerto | Para qué |
+|--------|----------|
+| 60001  | Conexión del teléfono al server |
+| 8080*  | Dashboard web (se abre solo en el navegador) |
 
 *Si el 8080 está ocupado, usa otro puerto libre.
 
-## Build (solo para desarrollo)
+---
+
+## Preguntas frecuentes
+
+**¿Necesito instalar Python?**
+El script lo instala solo si hace falta (con permisos de administrador).
+Si no, puede bajarlo de python.org o con el gestor de paquetes:
+```bash
+# Debian/Ubuntu
+sudo apt install python3 python3-pip python3-venv
+
+# Fedora
+sudo dnf install python3 python3-pip
+```
+
+**¿Funciona con cualquier mando?**
+Sí, si tu celu lo reconoce (Bluetooth, USB-OTG, o mando incorporado como el Razer Kishi), el server lo ve.
+
+**¿Y en Windows?**
+Este repo es para Linux. Si querés Windows, necesitás ViGEmBus — hay instrucciones en `WINDOWS_SUPPORT.md`.
+
+---
+
+## Desarrollo (solo si querés compilar la app)
 
 ```bash
 cd android
@@ -51,9 +93,6 @@ cd android
 adb install app/build/outputs/apk/debug/app-debug.apk
 ```
 
-**Server**: Python 3.11+, `python-uinput`, `qrcode[pil]`
-**Android**: JDK 17, Android SDK 34, Gradle 8.11
+**Requerimientos**: JDK 17, Android SDK 34, Gradle 8.11
 
-## Licencia
-
-MIT
+Licencia MIT
