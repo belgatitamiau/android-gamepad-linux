@@ -8,6 +8,7 @@ import android.content.SharedPreferences
 import android.animation.Animator
 import android.animation.ObjectAnimator
 import android.graphics.Color
+import android.graphics.Typeface
 import android.graphics.drawable.GradientDrawable
 import android.hardware.input.InputManager
 import android.os.Bundle
@@ -506,6 +507,7 @@ class MainActivity : AppCompatActivity(), InputManager.InputDeviceListener {
 
         if (connected) {
             connectionError = null
+            tvPlayerNumber.typeface = null
             val playerNum = service?.playerNumber ?: 1
             tvPlayerNumber.text = "PLAYER $playerNum"
             tvPlayerNumber.visibility = View.VISIBLE
@@ -527,8 +529,9 @@ class MainActivity : AppCompatActivity(), InputManager.InputDeviceListener {
                 }
             }
         } else if (connectionError != null) {
-            tvPlayerNumber.text = "Failed: $connectionError"
-            tvPlayerNumber.textSize = 36f
+            tvPlayerNumber.text = connectionError
+            tvPlayerNumber.typeface = Typeface.DEFAULT
+            tvPlayerNumber.textSize = 20f
             tvPlayerNumber.visibility = View.VISIBLE
             tvPlayerNumber.bringToFront()
             tvGamepadStatus.visibility = View.GONE
@@ -538,6 +541,7 @@ class MainActivity : AppCompatActivity(), InputManager.InputDeviceListener {
                 updateUI()
             }, 3000)
         } else if (connecting) {
+            tvPlayerNumber.typeface = null
             tvPlayerNumber.text = "CONNECTING..."
             tvPlayerNumber.textSize = 36f
             tvPlayerNumber.visibility = View.VISIBLE
