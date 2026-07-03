@@ -413,19 +413,16 @@ class GamepadBridgeServer:
 
     async def _serve_dashboard(self, writer):
         s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        # get local IP without contacting external servers
-        s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        s.settimeout(0.1)
+        s.settimeout(0.5)
         try:
             s.connect(('10.0.0.1', 9))
-            ip = s.getsockname()[0]
-        except:
-            ip = 'localhost'
-        s.close()
-        qr_text = f'{ip}:60001'
-
-        import qrcode
-        qr = qrcode.QRCode(border=1)
+            local_ip = s.getsockname()[0] if s.getsockname()[0] != '0.0.0.0' else '127.0.0.1'
+        except Exception:
+            local_ip = '127.0.0.1'
+        finally:
+            s.close()
+        qr_text = f'{local_ip}:60001'
+        qr = qrcode.QRCode(border=1, box_size=10)
         qr.add_data(qr_text)
         qr.make(fit=True)
         qr_img = qr.make_image()
@@ -434,11 +431,13 @@ class GamepadBridgeServer:
         qr_b64 = base64.b64encode(buf.getvalue()).decode()
         qr_data_uri = f'data:image/png;base64,{qr_b64}'
 
-        body = DASHBOARD_HTML.replace('{qr_data_uri}', qr_data_uri).replace('{qr_text}', qr_text).encode('utf-8')
+        html = _dashboard_html().replace('{qr_data_uri}', qr_data_uri).replace('{qr_text}', qr_text)
+        body = html.encode('utf-8')
         resp = (
             'HTTP/1.1 200 OK\r\n'
             'Content-Type: text/html; charset=utf-8\r\n'
             f'Content-Length: {len(body)}\r\n'
+            'Cache-Control: no-cache, no-store, must-revalidate\r\n'
             '\r\n'
         ).encode() + body
         writer.write(resp)
@@ -549,161 +548,66 @@ class GamepadBridgeServer:
 # DASHBOARD HTML
 # -------------------------------------------------------------------
 
-DASHBOARD_HTML = r'''<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
+# -------------------------------------------------------------------
+# DASHBOARD HTML – loaded from dashboard.html on disk, fallback inline
+# -------------------------------------------------------------------
+
+_INLINE_HTML = r'''<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Gamepad Bridge</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-body{background:#3d2028;color:#e8c8d0;font-family:'Segoe UI',sans-serif;padding:10px;min-height:100vh}
-@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
-h1{font-size:1.4rem;color:#ff85b4;text-align:center;margin-bottom:10px;font-family:'Press Start 2P',monospace;letter-spacing:1px}
-.gw{position:relative;margin-bottom:8px}
+body{background:#3d2028;color:#e8c8d0;font-family:'Segoe UI',sans-serif;padding:10px}
+h1{font-size:1.4rem;color:#ff85b4;text-align:center;margin-bottom:10px;font-family:'Press Start 2P',monospace}
 .g2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-#qrOver{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);z-index:10;background:#4d2832ec;border-radius:12px;padding:4px;border:1px solid #ff85b455;text-align:center;backdrop-filter:blur(4px);transition:opacity .3s}
-#qrOver img{width:260px;height:260px;background:#fff;border-radius:6px;display:block}
-#qrOver .l{font-size:1rem;color:#c09098;margin-top:2px}
-#qrTog{position:absolute;top:4px;right:4px;background:none;border:none;color:#ff85b4;font-size:.9rem;cursor:pointer;z-index:12;line-height:1;padding:2px 6px;border-radius:4px}
-#qrTog:hover{background:#ff85b422}
-#qrBtn{display:none;position:fixed;bottom:12px;right:12px;z-index:20;background:#ff85b4;color:#1a0a12;border:none;border-radius:8px;padding:8px 12px;font-size:.7rem;font-weight:600;cursor:pointer}
-#qrBtn:hover{background:#e86a98}
-.gc{background:#4d2832;border-radius:10px;padding:8px;border:1px solid #ff85b433;display:flex;flex-direction:column;min-height:340px}
-.gc .nc{font-size:1rem;color:#c09098;margin:auto;text-align:center}
+.gc{background:#4d2832;border-radius:10px;padding:8px;min-height:340px;display:flex;flex-direction:column;border:1px solid #ff85b433}
+.gc .nc{font-size:1rem;color:#c09098;margin:auto}
 .gp{display:flex;flex-direction:column;flex:1}
-.gp-h{font-size:.65rem;color:#ff85b4;text-align:center;letter-spacing:1px;margin-bottom:4px}
+.gp-h{font-size:.65rem;color:#ff85b4;text-align:center;margin-bottom:4px}
 .gp-row{display:flex;justify-content:space-between;align-items:center;gap:4px}
-.gp-st{position:relative;width:95px;height:95px;flex-shrink:0}
-.gp-st canvas{width:95px;height:95px;display:block}
-.gp-mb{display:flex;gap:4px;flex-wrap:wrap;justify-content:center}
-.gp-mb>div{padding:3px 8px;border-radius:4px;font-size:.6rem;background:#3d2028;color:#b08890;font-weight:600}
-.gp-mb>div.on{background:#ff85b4;color:#2a1018}
+.gp-st{width:95px;height:95px;flex-shrink:0}
+.gp-st canvas{width:95px;height:95px}
+.gp-mb>div,.gp-cbtn{padding:4px 10px;border-radius:4px;font-size:.6rem;background:#3d2028;color:#b08890;font-weight:600;text-align:center}
+.gp-mb>div.on,.gp-cbtn.on{background:#ff85b4;color:#2a1018}
 .gp-tg{flex:1;height:8px;background:#3d2028;border-radius:4px;overflow:hidden}
-.gp-tg>div{height:100%;background:linear-gradient(90deg,#ff85b4,#e86a98);border-radius:4px}
+.gp-tg>div{height:100%;background:linear-gradient(90deg,#ff85b4,#e86a98)}
 .gp-dp{display:grid;grid-template-columns:repeat(3,26px);gap:2px;justify-content:center}
 .gp-dp>div{width:26px;height:26px;border-radius:4px;background:#3d2028;display:flex;align-items:center;justify-content:center;font-size:.5rem;color:#b08890}
 .gp-dp>div.on{background:#ff85b4;color:#2a1018}
-.gp-ab{display:grid;grid-template-columns:32px 32px 32px;grid-template-rows:32px 32px 32px;gap:2px;justify-content:center;align-items:center}
-.gp-ab>div{width:32px;height:32px;border-radius:50%;background:#3d2028;display:flex;align-items:center;justify-content:center;font-size:.65rem;font-weight:700;color:#b08890}
-.gp-ab>.y{grid-column:2;grid-row:1}
-.gp-ab>.x{grid-column:1;grid-row:2}
-.gp-ab>.b{grid-column:3;grid-row:2}
-.gp-ab>.a{grid-column:2;grid-row:3}
+.gp-ab{display:grid;grid-template-columns:32px 32px 32px;grid-gap:2px;justify-content:center}
+.gp-ab>div{width:32px;height:32px;border-radius:50%;background:#3d2028;display:flex;align-items:center;justify-content:center;font-size:.6rem;font-weight:700;color:#b08890}
 .gp-ab>div.on{color:#fff}
-.gp-ab .a{background:#1a5a2a}
-.gp-ab .a.on{background:#3aff5a}
-.gp-ab .b{background:#5a1a1a}
-.gp-ab .b.on{background:#ff3a3a}
-.gp-ab .x{background:#1a1a5a}
-.gp-ab .x.on{background:#3a3aff}
-.gp-ab .y{background:#5a5a1a}
-.gp-ab .y.on{background:#ffff3a}
+.gp-ab .a{background:#1a5a2a}.gp-ab .a.on{background:#3aff5a}
+.gp-ab .b{background:#5a1a1a}.gp-ab .b.on{background:#ff3a3a}
+.gp-ab .x{background:#1a1a5a}.gp-ab .x.on{background:#3a3aff}
+.gp-ab .y{background:#5a5a1a}.gp-ab .y.on{background:#ffff3a}
 .gp-c{display:flex;flex-direction:column;align-items:center;gap:6px}
-.gp-cbtn{padding:4px 12px;border-radius:4px;font-size:.6rem;background:#3d2028;color:#b08890;font-weight:600;text-align:center}
-.gp-cbtn.on{background:#ff85b4;color:#2a1018}
-
-.sg{display:grid;grid-template-columns:1fr 1fr;gap:2px}
-.sl{font-size:.5rem;color:#c09098}
-.sv{font-size:.6rem;font-weight:600;color:#e8c8d0}
-#lat{color:#ff85b4;font-family:monospace;font-size:.7rem}
-</style>
-</head>
-<body>
-<h1>───୨ৎ──── GamepadBridge ───୨ৎ────</h1>
-<div class="gw">
-  <div class="g2" id="gpGrid"></div>
-  <div id="qrOver">
-    <button id="qrTog">✕</button>
-    <img src="{qr_data_uri}" alt="QR">
-     <div class="l" id="ql">{qr_text}</div>
-    <div class="sg" style="margin-top:4px"><div><div class="sl">Lat</div><div class="sv" id="lat">--</div></div><div><div class="sl">Act</div><div class="sv" id="ac">0/4</div></div></div>
-  </div>
-</div>
-<button id="qrBtn">📱 QR</button>
+</style></head>
+<body><h1>GamepadBridge</h1>
+<div class="g2" id="gpGrid"></div>
 <script>
 const gpGrid=document.getElementById('gpGrid');
-for(let i=0;i<4;i++){
-  const c=document.createElement('div');c.className='gc';c.id='gc'+i;
-  const si=i;
-  c.innerHTML='<div class="nc" id="nc'+i+'">not connected</div><div class="gp" id="gp'+i+'" style="display:none">'
-    +'<div class="gp-h">GP'+(i+1)+'</div>'
-    +'<div class="gp-row" style="justify-content:space-between;padding:0 6px">'
-      +'<div class="gp-mb"><div id="lb'+i+'">LB</div></div>'
-      +'<div class="gp-mb"><div id="rb'+i+'">RB</div></div>'
-    +'</div>'
-    +'<div class="gp-row" style="gap:8px">'
-      +'<div class="gp-tg"><div id="ltf'+i+'" style="width:0%"></div></div>'
-      +'<div class="gp-tg"><div id="rtf'+i+'" style="width:0%"></div></div>'
-    +'</div>'
-    +'<div class="gp-row" style="justify-content:space-around;align-items:flex-start;margin-top:4px">'
-      +'<div class="gp-c">'
-        +'<div class="gp-st"><canvas id="lc'+i+'" width="95" height="95"></canvas></div>'
-        +'<div class="gp-dp"><div></div><div data-d="up" id="dup'+i+'">↑</div><div></div><div data-d="left" id="dl'+i+'">←</div><div data-d="neutral" id="dn'+i+'">·</div><div data-d="right" id="dr'+i+'">→</div><div></div><div data-d="down" id="dd'+i+'">↓</div><div></div></div>'
-      +'</div>'
-      +'<div class="gp-c" style="padding-top:12px;gap:8px">'
-        +'<div id="sel'+i+'" class="gp-cbtn">SEL</div>'
-        +'<div id="sta'+i+'" class="gp-cbtn">STA</div>'
-        +'<div id="hm'+i+'" class="gp-cbtn" style="margin-top:6px">HOME</div>'
-      +'</div>'
-      +'<div class="gp-c">'
-        +'<div class="gp-st"><canvas id="rc'+i+'" width="95" height="95"></canvas></div>'
-        +'<div class="gp-ab"><div id="y'+i+'" class="y">Y</div><div id="x'+i+'" class="x">X</div><div id="b'+i+'" class="b">B</div><div id="a'+i+'" class="a">A</div></div>'
-      +'</div>'
-    +'</div>'
-  +'</div>';
-  gpGrid.appendChild(c);
-  // init stick canvases
-  ['l','r'].forEach(sd=>{const cx=document.getElementById(sd+'c'+i).getContext('2d');cx.fillStyle='#3d2028';cx.fillRect(0,0,95,95)});
-}
-function ds(cx,x,y,m,a){
-  const ox=47.5,oy=47.5,r=38;
-  cx.clearRect(0,0,95,95);
-  cx.beginPath();cx.arc(ox,oy,r,0,Math.PI*2);cx.fillStyle='#3d2028';cx.fill();cx.strokeStyle='#5a3842';cx.lineWidth=2;cx.stroke();
-  cx.beginPath();cx.moveTo(ox-22,oy);cx.lineTo(ox+22,oy);cx.moveTo(ox,oy-22);cx.lineTo(ox,oy+22);cx.strokeStyle='#5a3842';cx.lineWidth=1.5;cx.stroke();
-  if(m>0.01){const rad=a*Math.PI/180,dx=Math.cos(rad)*m*r,dy=-Math.sin(rad)*m*r;
-    cx.beginPath();cx.arc(ox+dx,oy+dy,5,0,Math.PI*2);cx.fillStyle='#ff85b4';cx.fill()}
-  cx.beginPath();cx.arc(ox,oy,3,0,Math.PI*2);cx.fillStyle='#e86a98';cx.fill()}
-function ui(d){
-  const g=d.gamepads||[d];
-  for(let i=0;i<4;i++){
-    const s=g[i]||{};
-    const conn=s.connected;
-    document.getElementById('nc'+i).style.display=conn?'none':'block';
-    document.getElementById('gp'+i).style.display=conn?'flex':'none';
-    if(conn){
-      const bt=new Set(s.buttons||[]);
-      const bp=n=>bt.has(n);
-      ['A','B','X','Y'].forEach(n=>document.getElementById(n.toLowerCase()+i).classList.toggle('on',bp(n)));
-      ['LB','RB'].forEach(n=>document.getElementById(n.toLowerCase()+i).classList.toggle('on',bp(n)));
-      document.getElementById('sel'+i).classList.toggle('on',bp('SELECT'));
-      document.getElementById('sta'+i).classList.toggle('on',bp('START'));
-      document.getElementById('hm'+i).classList.toggle('on',bp('HOME'));
-      document.getElementById('ltf'+i).style.width=Math.min(100,(s.lt||0)/2.55)+'%';
-      document.getElementById('rtf'+i).style.width=Math.min(100,(s.rt||0)/2.55)+'%';
-      const lcx=document.getElementById('lc'+i).getContext('2d');
-      const rcx=document.getElementById('rc'+i).getContext('2d');
-      ds(lcx,s.lx||0,s.ly||0,s.left_mag||0,s.left_angle||0);
-      ds(rcx,s.rx||0,s.ry||0,s.right_mag||0,s.right_angle||0);
-      const dpa=s.dpad||'neutral';
-      const dmap={up:'dup'+i,down:'dd'+i,left:'dl'+i,right:'dr'+i,neutral:'dn'+i};
-      Object.keys(dmap).forEach(d=>document.getElementById(dmap[d]).classList.toggle('on',d===dpa));
-    }
-  }
-  document.getElementById('ac').textContent=g.filter(x=>x.connected).length+'/4'}
-function poll(){
-  var x=new XMLHttpRequest();
-  x.open('GET','/api/state',true);
-  x.onload=function(){try{ui(JSON.parse(x.responseText))}catch(_){}}
-  x.send();
-}
-setInterval(poll,50);
-const qo=document.getElementById('qrOver'),qb=document.getElementById('qrBtn'),qt=document.getElementById('qrTog');
-qt.onclick=function(){qo.style.display='none';qb.style.display='block'};
-qb.onclick=function(){qo.style.display='block';qb.style.display='none'};
-</script>
-</body>
-</html>'''
+for(let i=0;i<4;i++){const c=document.createElement('div');c.className='gc';c.id='gc'+i;
+c.innerHTML='nc'+i+' gp'+i;gpGrid.appendChild(c)}
+</script></body></html>'''
+
+_dash_mtime = 0
+_dash_cache = ''
+
+def _dashboard_html():
+    global _dash_mtime, _dash_cache
+    path = os.path.join(os.path.dirname(__file__), 'dashboard.html')
+    try:
+        st = os.stat(path)
+        if st.st_mtime != _dash_mtime:
+            with open(path, 'r', encoding='utf-8') as f:
+                _dash_cache = f.read()
+            _dash_mtime = st.st_mtime
+            print(f'[server] Reloaded dashboard.html from disk')
+        return _dash_cache
+    except (FileNotFoundError, OSError):
+        return _INLINE_HTML
 
 # -------------------------------------------------------------------
 # MAIN
@@ -766,6 +670,8 @@ async def main():
         await shutdown_event.wait()
         tcp_server.close()
         http_server.close()
+        await tcp_server.wait_closed()
+        await http_server.wait_closed()
 
     try:
         async with asyncio.TaskGroup() as tg:
