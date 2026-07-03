@@ -30,47 +30,68 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
             android:text="GamepadBridge"/>
-        <EditText
-            android:textColor="#ffffff"
-            android:textColorHint="#88ffffff"
-            android:id="@+id/etHost"
-            android:background="#33000000"
-            android:padding="12dp"
+        <!-- Row: IP + QR -->
+        <LinearLayout
+            android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:hint="PC IP Address"
-            android:inputType="phone"/>
-        <EditText
-            android:textColor="#ffffff"
-            android:textColorHint="#88ffffff"
-            android:id="@+id/etPort"
-            android:background="#33000000"
-            android:padding="12dp"
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:layout_marginTop="8dp"
-            android:text="60001"
-            android:hint="Port (default: 60001)"
-            android:inputType="number"/>
+            android:layout_height="wrap_content">
+            <EditText
+                android:textColor="#ffffff"
+                android:textColorHint="#88ffffff"
+                android:id="@+id/etHost"
+                android:background="#33000000"
+                android:padding="12dp"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:hint="PC IP Address"
+                android:inputType="phone"/>
+            <ImageButton
+                android:id="@+id/btnScanQR"
+                android:src="@drawable/ic_qr"
+                android:background="#44000000"
+                android:contentDescription="Scan QR"
+                android:scaleType="center"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_marginStart="8dp"/>
+        </LinearLayout>
+        <!-- Row: Port + QR -->
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp">
-            <Button
-                android:id="@+id/btnConnect"
+            android:layout_marginTop="8dp">
+            <EditText
+                android:textColor="#ffffff"
+                android:textColorHint="#88ffffff"
+                android:id="@+id/etPort"
+                android:background="#33000000"
+                android:padding="12dp"
                 android:layout_width="0dp"
                 android:layout_height="48dp"
-                android:text="Connect"
                 android:layout_weight="1"
-                android:textAllCaps="false"/>
-            <Button
-                android:id="@+id/btnScanQR"
+                android:text="60001"
+                android:hint="Port (default: 60001)"
+                android:inputType="number"/>
+            <ImageButton
+                android:src="@drawable/ic_qr"
+                android:background="#44000000"
+                android:contentDescription="Scan QR"
+                android:scaleType="center"
+                android:clickable="false"
+                android:focusable="false"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
-                android:text="QR"
                 android:layout_marginStart="8dp"/>
         </LinearLayout>
+        <Button
+            android:id="@+id/btnConnect"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:text="Connect"
+            android:layout_marginTop="12dp"
+            android:textAllCaps="false"/>
         <!-- Skin selector in connect panel -->
         <LinearLayout
             android:orientation="horizontal"

@@ -72,7 +72,7 @@ class GamepadBridgeService : Service() {
             onDisconnected = { ex ->
                 connected = false
                 connecting = false
-                connectionError = ex?.message ?: "Unknown error"
+                connectionError = simplifyError(ex)
                 onConnectionStateChanged?.invoke()
                 Log.e(TAG, "Network disconnected: $connectionError")
             }
@@ -148,6 +148,21 @@ class GamepadBridgeService : Service() {
                 }
             }
             .build()
+    }
+
+    private fun simplifyError(ex: Exception?): String {
+        val msg = ex?.message ?: return "Unknown error"
+        val lower = msg.lowercase()
+        return when {
+            lower.contains("network is unreachable") -> "No connection (WiFi off?)"
+            lower.contains("no route to host") -> "PC not on this network"
+            lower.contains("connection refused") -> "Server not running on PC"
+            lower.contains("failed to connect to") -> "PC not responding (timeout)"
+            lower.contains("permission denied") -> "Permission denied"
+            lower.contains("reset") || lower.contains("broken pipe") -> "Connection lost"
+            lower.contains("eof") || lower.contains("end of file") -> "Server disconnected"
+            else -> msg
+        }
     }
 
     companion object {

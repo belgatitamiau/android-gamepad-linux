@@ -40,7 +40,7 @@ class MainActivity : AppCompatActivity(), InputManager.InputDeviceListener {
     private lateinit var etHost: EditText
     private lateinit var etPort: EditText
     private lateinit var btnConnect: Button
-    private lateinit var btnScanQR: Button
+    private lateinit var btnScanQR: ImageButton
     private lateinit var btnDisconnect: Button
     private lateinit var btnToggleLog: Button
     private lateinit var btnCloseOptions: TextView
@@ -154,6 +154,7 @@ class MainActivity : AppCompatActivity(), InputManager.InputDeviceListener {
         etPort = findViewById(R.id.etPort)
         btnConnect = findViewById(R.id.btnConnect)
         btnScanQR = findViewById(R.id.btnScanQR)
+        btnScanQR.setColorFilter(Color.WHITE)
         btnDisconnect = findViewById(R.id.btnDisconnect)
         btnToggleLog = findViewById(R.id.btnToggleLog)
         btnCloseOptions = findViewById(R.id.btnCloseOptions)
@@ -328,7 +329,7 @@ class MainActivity : AppCompatActivity(), InputManager.InputDeviceListener {
         btnConnect.background = btnStyle
         btnConnect.setTextColor(t.bg)
         btnScanQR.background = btnStyle
-        btnScanQR.setTextColor(t.bg)
+        btnScanQR.setColorFilter(t.accent)
         btnDisconnect.background = btnStyle
         btnDisconnect.setTextColor(t.bg)
         val logBtnStyle = GradientDrawable().apply {
