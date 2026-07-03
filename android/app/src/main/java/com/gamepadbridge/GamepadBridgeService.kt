@@ -50,6 +50,8 @@ class GamepadBridgeService : Service() {
 
     fun connect(host: String, port: Int) {
         Log.i(TAG, "Connecting to $host:$port")
+        networkClient?.stop()
+        networkClient = null
         startForeground(NOTIF_ID, buildNotification())
         connected = false
         connecting = true

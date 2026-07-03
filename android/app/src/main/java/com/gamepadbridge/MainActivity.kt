@@ -26,6 +26,7 @@ import android.widget.*
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.res.ResourcesCompat
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -75,6 +76,9 @@ class MainActivity : AppCompatActivity(), InputManager.InputDeviceListener {
     private var optionsVisible = false
     private var screenOff = false
     private var connectionError: String? = null
+    private var retryHost: String? = null
+    private var retryPort: Int = 0
+    private var pixelTypeface: Typeface? = null
     private val sbLog = StringBuilder()
     private val GAMEPAD_SOURCES = InputDevice.SOURCE_GAMEPAD or InputDevice.SOURCE_JOYSTICK
     private var currentTheme = 0
@@ -108,7 +112,17 @@ class MainActivity : AppCompatActivity(), InputManager.InputDeviceListener {
                     updateUI()
                 } else if (srv?.connectionError != null) {
                     connectionError = srv.connectionError
-                    // don't updateUI — let timeout handler fire after 3s
+                    // retry if still within the 3s window (retryHost cleared by timeout handler)
+                    val h = retryHost
+                    val p = retryPort
+                    if (h != null && p > 0) {
+                        connectTimeoutHandler.postDelayed({
+                            if (!isConnected() && retryHost != null) {
+                                log("Retrying $h:$p...")
+                                service?.connect(h, p)
+                            }
+                        }, 500)
+                    }
                 }
             } }
             service?.onSoundTrigger = { playerNum -> runOnUiThread { soundManager.playConnectedSequence(playerNum) } }
@@ -158,7 +172,6 @@ class MainActivity : AppCompatActivity(), InputManager.InputDeviceListener {
         etPort = findViewById(R.id.etPort)
         btnConnect = findViewById(R.id.btnConnect)
         btnScanQR = findViewById(R.id.btnScanQR)
-        btnScanQR.setColorFilter(Color.WHITE)
         btnDisconnect = findViewById(R.id.btnDisconnect)
         btnToggleLog = findViewById(R.id.btnToggleLog)
         btnCloseOptions = findViewById(R.id.btnCloseOptions)
@@ -219,6 +232,7 @@ class MainActivity : AppCompatActivity(), InputManager.InputDeviceListener {
         currentTheme = prefs.getInt("theme", 0).coerceIn(0, 4)
         logVisible = false
         tvLog.visibility = View.GONE
+        pixelTypeface = ResourcesCompat.getFont(this, R.font.press_start_2p)
         applyTheme()
 
         themeBlack.setOnClickListener { selectTheme(0) }
@@ -332,8 +346,13 @@ class MainActivity : AppCompatActivity(), InputManager.InputDeviceListener {
         }
         btnConnect.background = btnStyle
         btnConnect.setTextColor(t.bg)
-        btnScanQR.background = btnStyle
-        btnScanQR.setColorFilter(t.accent)
+        val qrStyle = GradientDrawable().apply {
+            setColor(t.bg2)
+            setStroke(1, t.accent)
+            cornerRadius = 8f
+        }
+        btnScanQR.background = qrStyle
+        btnScanQR.setColorFilter(t.text)
         btnDisconnect.background = btnStyle
         btnDisconnect.setTextColor(t.bg)
         val logBtnStyle = GradientDrawable().apply {
@@ -427,13 +446,16 @@ class MainActivity : AppCompatActivity(), InputManager.InputDeviceListener {
     private fun startConnecting() {
         connecting = true
         connectionError = null
+        retryHost = etHost.text.toString().trim()
+        retryPort = etPort.text.toString().trim().toIntOrNull() ?: 60001
         log("Connecting...")
         updateUI()
         connectTimeoutHandler.removeCallbacksAndMessages(null)
-        val targetHost = etHost.text.toString().trim()
-        val targetPort = etPort.text.toString().trim()
+        val targetHost = retryHost ?: ""
+        val targetPort = retryPort.toString()
         connectTimeoutHandler.postDelayed({
             if (isConnected()) return@postDelayed
+            retryHost = null
             val existing = connectionError
             val reason = existing ?: when {
                 targetHost.isEmpty() -> "no IP entered"
@@ -454,6 +476,7 @@ class MainActivity : AppCompatActivity(), InputManager.InputDeviceListener {
 
     private fun stopConnecting() {
         connecting = false
+        retryHost = null
         connectTimeoutHandler.removeCallbacksAndMessages(null)
     }
 
@@ -512,7 +535,7 @@ class MainActivity : AppCompatActivity(), InputManager.InputDeviceListener {
 
         if (connected) {
             connectionError = null
-            tvPlayerNumber.typeface = null
+            tvPlayerNumber.typeface = pixelTypeface
             val playerNum = service?.playerNumber ?: 1
             tvPlayerNumber.text = "PLAYER $playerNum"
             tvPlayerNumber.visibility = View.VISIBLE
@@ -546,7 +569,7 @@ class MainActivity : AppCompatActivity(), InputManager.InputDeviceListener {
                 updateUI()
             }, 3000)
         } else if (connecting) {
-            tvPlayerNumber.typeface = null
+            tvPlayerNumber.typeface = pixelTypeface
             tvPlayerNumber.text = "CONNECTING..."
             tvPlayerNumber.textSize = 36f
             tvPlayerNumber.visibility = View.VISIBLE

@@ -68,9 +68,11 @@
                 android:src="@drawable/ic_qr"
                 android:background="#44000000"
                 android:contentDescription="Scan QR"
-                android:scaleType="center"
-                android:layout_width="48dp"
-                android:layout_height="match_parent"
+                android:scaleType="fitCenter"
+                android:padding="12dp"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_gravity="center_vertical"
                 android:layout_marginStart="8dp"/>
         </LinearLayout>
         <Button
