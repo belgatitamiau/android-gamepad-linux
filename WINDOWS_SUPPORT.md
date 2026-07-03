@@ -1,6 +1,6 @@
 # Windows Support (ViGEmBus)
 
-> Instrucciones para que otro opencode entienda el proyecto e implemente
+> Instrucciones para que otra ia entienda el proyecto e implemente
 > soporte nativo para Windows usando vgamepad (ViGEmBus).
 
 ## Visión general del proyecto
@@ -95,12 +95,12 @@ GamepadState = namedtuple('GamepadState', [
 
 ## Lo que cambia en Windows
 
-### 1. Dependencias (ya existen)
+### 1. Dependencias
 
 - `requirements-linux.txt`: `qrcode[pil]`, `python-uinput`
 - `requirements-windows.txt`: `qrcode[pil]`, `vgamepad`
 
-### 2. Detección automática de SO (ya implementado)
+### 2. Detección automática de SO
 
 ```python
 import platform
@@ -177,7 +177,7 @@ def _ensure_vigem():
         subprocess.run(['msiexec', '/passive', '/i', f.name], check=True)
 ```
 
-### 5. Configuración `reuse_port` (ya resuelto)
+### 5. Configuración `reuse_port`
 
 Windows no soporta `SO_REUSEPORT`. Usar `reuse_port=platform.system() == 'Linux'`.
 
@@ -204,14 +204,10 @@ http_server = await asyncio.start_server(..., reuse_port=reuse_port_opt)
 
 ## Resumen de cambios necesarios para Windows
 
-1. Importar `platform` y `sys` al inicio de `server.py` ✓ (ya hecho)
-2. Agregar `SYSTEM = platform.system()` ✓ (ya hecho)
+1. Importar `platform` y `sys` al inicio de `server.py`
+2. Agregar `SYSTEM = platform.system()`
 3. Crear `VirtualGamepad` con rama `if SYSTEM == 'Windows'` usando `vgamepad`
 4. Implementar `_ensure_vigem()` para instalar ViGEmBus automáticamente
-5. Condicionar `reuse_port` a Linux ✓ (ya hecho)
-6. Crear `requirements-windows.txt` con `qrcode[pil]` y `vgamepad` ✓ (ya hecho)
+5. Condicionar `reuse_port` a Linux
+6. Crear `requirements-windows.txt` con `qrcode[pil]` y `vgamepad`
 7. Ajustar ruta del archivo de puerto en Windows
-
-> El PR #1 de orlinefoster ya implementó la mayoría de estos cambios.
-> Esta guía documenta la arquitectura para que otro opencode pueda
-> reconstruir o modificar el soporte Windows desde cero si es necesario.
