@@ -102,10 +102,14 @@ class MainActivity : AppCompatActivity(), InputManager.InputDeviceListener {
             log("Service bound")
             service?.onConnectionStateChanged = { runOnUiThread {
                 val srv = service
-                if (srv?.connected == false && srv?.connectionError != null) {
+                if (srv?.connected == true) {
+                    connectionError = null
+                    connectTimeoutHandler.removeCallbacksAndMessages(null)
+                    updateUI()
+                } else if (srv?.connectionError != null) {
                     connectionError = srv.connectionError
+                    // don't updateUI — let timeout handler fire after 3s
                 }
-                updateUI()
             } }
             service?.onSoundTrigger = { playerNum -> runOnUiThread { soundManager.playConnectedSequence(playerNum) } }
             pendingConnect?.let { (h, p) ->
@@ -429,22 +433,22 @@ class MainActivity : AppCompatActivity(), InputManager.InputDeviceListener {
         val targetHost = etHost.text.toString().trim()
         val targetPort = etPort.text.toString().trim()
         connectTimeoutHandler.postDelayed({
-            if (isConnecting()) {
-                val reason = when {
-                    targetHost.isEmpty() -> "no IP entered"
-                    targetPort.isEmpty() -> "no port entered"
-                    else -> "could not reach $targetHost:$targetPort"
-                }
-                connectionError = reason
-                log("ERROR: $reason")
-                stopConnecting()
-                if (bound) {
-                    service?.disconnect()
-                } else {
-                    pendingConnect = null
-                }
-                updateUI()
+            if (isConnected()) return@postDelayed
+            val existing = connectionError
+            val reason = existing ?: when {
+                targetHost.isEmpty() -> "no IP entered"
+                targetPort.isEmpty() -> "no port entered"
+                else -> "could not reach $targetHost:$targetPort"
             }
+            connectionError = reason
+            log("ERROR: $reason")
+            stopConnecting()
+            if (bound) {
+                service?.disconnect()
+            } else {
+                pendingConnect = null
+            }
+            updateUI()
         }, CONNECT_TIMEOUT_MS)
     }
 
