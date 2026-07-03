@@ -16,3 +16,6 @@ server/server.log
 ## OS
 .DS_Store
 Thumbs.db
+
+## Server
+server/.venv/

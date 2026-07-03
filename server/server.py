@@ -13,7 +13,6 @@ import sys
 import platform
 import subprocess
 import signal
-from collections import defaultdict
 
 SYSTEM = platform.system()
 
@@ -93,8 +92,6 @@ def auto_install_dependencies():
 
 auto_install_dependencies()
 
-# -------------------------------------------------------------------
-# Button bit definitions
 # -------------------------------------------------------------------
 # Button bit definitions
 # -------------------------------------------------------------------
@@ -405,15 +402,7 @@ class GamepadBridgeServer:
                 pass
 
     async def _serve_dashboard(self, writer):
-        s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        s.settimeout(0.5)
-        try:
-            s.connect(('10.0.0.1', 9))
-            local_ip = s.getsockname()[0] if s.getsockname()[0] != '0.0.0.0' else '127.0.0.1'
-        except Exception:
-            local_ip = '127.0.0.1'
-        finally:
-            s.close()
+        local_ip = _detect_local_ip()
         qr_text = f'{local_ip}:60001'
         qr = qrcode.QRCode(border=1, box_size=10)
         qr.add_data(qr_text)
@@ -538,52 +527,8 @@ class GamepadBridgeServer:
 
 
 # -------------------------------------------------------------------
-# DASHBOARD HTML
+# Dashboard HTML loader
 # -------------------------------------------------------------------
-
-# -------------------------------------------------------------------
-# DASHBOARD HTML – loaded from dashboard.html on disk, fallback inline
-# -------------------------------------------------------------------
-
-_INLINE_HTML = r'''<!DOCTYPE html>
-<html lang="en"><head><meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Gamepad Bridge</title>
-<style>
-*{margin:0;padding:0;box-sizing:border-box}
-body{background:#3d2028;color:#e8c8d0;font-family:'Segoe UI',sans-serif;padding:10px}
-h1{font-size:1.4rem;color:#ff85b4;text-align:center;margin-bottom:10px;font-family:'Press Start 2P',monospace}
-.g2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.gc{background:#4d2832;border-radius:10px;padding:8px;min-height:340px;display:flex;flex-direction:column;border:1px solid #ff85b433}
-.gc .nc{font-size:1rem;color:#c09098;margin:auto}
-.gp{display:flex;flex-direction:column;flex:1}
-.gp-h{font-size:.65rem;color:#ff85b4;text-align:center;margin-bottom:4px}
-.gp-row{display:flex;justify-content:space-between;align-items:center;gap:4px}
-.gp-st{width:95px;height:95px;flex-shrink:0}
-.gp-st canvas{width:95px;height:95px}
-.gp-mb>div,.gp-cbtn{padding:4px 10px;border-radius:4px;font-size:.6rem;background:#3d2028;color:#b08890;font-weight:600;text-align:center}
-.gp-mb>div.on,.gp-cbtn.on{background:#ff85b4;color:#2a1018}
-.gp-tg{flex:1;height:8px;background:#3d2028;border-radius:4px;overflow:hidden}
-.gp-tg>div{height:100%;background:linear-gradient(90deg,#ff85b4,#e86a98)}
-.gp-dp{display:grid;grid-template-columns:repeat(3,26px);gap:2px;justify-content:center}
-.gp-dp>div{width:26px;height:26px;border-radius:4px;background:#3d2028;display:flex;align-items:center;justify-content:center;font-size:.5rem;color:#b08890}
-.gp-dp>div.on{background:#ff85b4;color:#2a1018}
-.gp-ab{display:grid;grid-template-columns:32px 32px 32px;grid-gap:2px;justify-content:center}
-.gp-ab>div{width:32px;height:32px;border-radius:50%;background:#3d2028;display:flex;align-items:center;justify-content:center;font-size:.6rem;font-weight:700;color:#b08890}
-.gp-ab>div.on{color:#fff}
-.gp-ab .a{background:#1a5a2a}.gp-ab .a.on{background:#3aff5a}
-.gp-ab .b{background:#5a1a1a}.gp-ab .b.on{background:#ff3a3a}
-.gp-ab .x{background:#1a1a5a}.gp-ab .x.on{background:#3a3aff}
-.gp-ab .y{background:#5a5a1a}.gp-ab .y.on{background:#ffff3a}
-.gp-c{display:flex;flex-direction:column;align-items:center;gap:6px}
-</style></head>
-<body><h1>GamepadBridge</h1>
-<div class="g2" id="gpGrid"></div>
-<script>
-const gpGrid=document.getElementById('gpGrid');
-for(let i=0;i<4;i++){const c=document.createElement('div');c.className='gc';c.id='gc'+i;
-c.innerHTML='nc'+i+' gp'+i;gpGrid.appendChild(c)}
-</script></body></html>'''
 
 _dash_mtime = 0
 _dash_cache = ''
@@ -599,18 +544,29 @@ def _dashboard_html():
             _dash_mtime = st.st_mtime
             print(f'[server] Reloaded dashboard.html from disk')
         return _dash_cache
-    except (FileNotFoundError, OSError):
-        return _INLINE_HTML
+    except (FileNotFoundError, OSError) as e:
+        print(f'[server] ERROR: dashboard.html not found at {path}: {e}')
+        return '<html><body><h1>Error: dashboard.html not found</h1></body></html>'
+
+def _detect_local_ip() -> str:
+    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    s.settimeout(0.5)
+    try:
+        s.connect(('10.0.0.1', 9))
+        ip = s.getsockname()[0] if s.getsockname()[0] != '0.0.0.0' else '127.0.0.1'
+    except Exception:
+        ip = '127.0.0.1'
+    finally:
+        s.close()
+    return ip
 
 # -------------------------------------------------------------------
 # MAIN
 # -------------------------------------------------------------------
 
 async def main():
-    import socket as _socket
-    import time as _time
     # try 8080, fall back to random free port
-    with _socket.socket(_socket.AF_INET, _socket.SOCK_STREAM) as stmp:
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as stmp:
         try:
             stmp.bind(('0.0.0.0', 8080))
             http_port = 8080
@@ -621,14 +577,14 @@ async def main():
     # ensure port 60001 is free before binding (blocking, no asyncio)
     for _ in range(30):
         try:
-            with _socket.socket(_socket.AF_INET, _socket.SOCK_STREAM) as s:
-                s.setsockopt(_socket.SOL_SOCKET, _socket.SO_REUSEADDR, 1)
+            with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+                s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
                 s.bind(('0.0.0.0', 60001))
             break
         except OSError:
             if _ == 0:
                 print('[server] Port 60001 busy, waiting for it to free up...')
-            _time.sleep(1)
+            time.sleep(1)
     else:
         print('[server] ERROR: could not bind port 60001 after 30s')
         return
@@ -637,9 +593,10 @@ async def main():
     reuse_port_opt = (SYSTEM == 'Linux')
     tcp_server = await asyncio.start_server(srv.handle_gamepad_client, '0.0.0.0', 60001, reuse_port=reuse_port_opt)
     http_server = await asyncio.start_server(srv.handle_http, '0.0.0.0', http_port, reuse_port=reuse_port_opt)
+    local_ip = _detect_local_ip()
     print(f'[server] TCP gamepad listener on :60001')
     print(f'[server] HTTP dashboard on :{http_port}')
-    print(f'[server] Open http://192.168.1.65:{http_port}/ in a browser')
+    print(f'[server] Open http://{local_ip}:{http_port}/ in a browser')
     try:
         with open('/tmp/gamepad-bridge-port', 'w') as f:
             f.write(str(http_port))

@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=Gamepad Bridge
+Comment=Virtual gamepad server — connect your Android phone as an Xbox controller
+Exec=bash -c 'cd "$(dirname "$0")" && exec bash server/start.sh' %k
+Icon=utilities-terminal
+Terminal=true
+Type=Application
+Categories=Network;Game;
+StartupNotify=true

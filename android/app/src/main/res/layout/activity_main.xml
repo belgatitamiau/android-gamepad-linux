@@ -44,7 +44,7 @@
                     android:textColor="#ffffff"
                     android:textColorHint="#aaffffff"
                     android:id="@+id/etHost"
-                    android:background="#88222222"
+                    android:background="#88444444"
                     android:padding="12dp"
                     android:layout_width="match_parent"
                     android:layout_height="48dp"
@@ -54,7 +54,7 @@
                     android:textColor="#ffffff"
                     android:textColorHint="#aaffffff"
                     android:id="@+id/etPort"
-                    android:background="#88222222"
+                    android:background="#88444444"
                     android:padding="12dp"
                     android:layout_width="match_parent"
                     android:layout_height="48dp"
@@ -271,6 +271,7 @@
         app:layout_constraintWidth_percent="0.8"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintHorizontal_bias="0"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
