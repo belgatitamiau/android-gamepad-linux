@@ -73,6 +73,7 @@ class MainActivity : AppCompatActivity(), InputManager.InputDeviceListener {
     private var logVisible = false
     private var optionsVisible = false
     private var screenOff = false
+    private var connectionError: String? = null
     private val sbLog = StringBuilder()
     private val GAMEPAD_SOURCES = InputDevice.SOURCE_GAMEPAD or InputDevice.SOURCE_JOYSTICK
     private var currentTheme = 0
@@ -98,7 +99,13 @@ class MainActivity : AppCompatActivity(), InputManager.InputDeviceListener {
             service = (binder as GamepadBridgeService.LocalBinder).getService()
             bound = true
             log("Service bound")
-            service?.onConnectionStateChanged = { runOnUiThread { updateUI() } }
+            service?.onConnectionStateChanged = { runOnUiThread {
+                val srv = service
+                if (srv?.connected == false && srv?.connectionError != null) {
+                    connectionError = srv.connectionError
+                }
+                updateUI()
+            } }
             service?.onSoundTrigger = { playerNum -> runOnUiThread { soundManager.playConnectedSequence(playerNum) } }
             pendingConnect?.let { (h, p) ->
                 log("Pending connect to $h:$p")
@@ -413,6 +420,7 @@ class MainActivity : AppCompatActivity(), InputManager.InputDeviceListener {
 
     private fun startConnecting() {
         connecting = true
+        connectionError = null
         log("Connecting...")
         updateUI()
         connectTimeoutHandler.removeCallbacksAndMessages(null)
@@ -425,6 +433,7 @@ class MainActivity : AppCompatActivity(), InputManager.InputDeviceListener {
                     targetPort.isEmpty() -> "no port entered"
                     else -> "could not reach $targetHost:$targetPort"
                 }
+                connectionError = reason
                 log("ERROR: $reason")
                 stopConnecting()
                 if (bound) {
@@ -491,15 +500,17 @@ class MainActivity : AppCompatActivity(), InputManager.InputDeviceListener {
         btnConnect.isEnabled = !connected && !connecting
         btnScanQR.isEnabled = !connected && !connecting
         btnConnect.text = if (connecting) "..." else "Connect"
-        connectPanel.visibility = if (connected || connecting) View.GONE else View.VISIBLE
+        connectPanel.visibility = if (connected || connecting || connectionError != null) View.GONE else View.VISIBLE
         tvOptions.visibility = if (connected) View.VISIBLE else View.GONE
         tvLog.visibility = if (connected && logVisible) View.VISIBLE else View.GONE
 
         if (connected) {
+            connectionError = null
             val playerNum = service?.playerNumber ?: 1
             tvPlayerNumber.text = "PLAYER $playerNum"
             tvPlayerNumber.visibility = View.VISIBLE
             tvPlayerNumber.bringToFront()
+            tvPlayerNumber.textSize = 72f
             val hasGamepad = service?.gamepadManager?.hasSlots() == true
             if (hasGamepad) {
                 tvGamepadStatus.visibility = View.GONE
@@ -515,8 +526,20 @@ class MainActivity : AppCompatActivity(), InputManager.InputDeviceListener {
                     start()
                 }
             }
+        } else if (connectionError != null) {
+            tvPlayerNumber.text = "Failed: $connectionError"
+            tvPlayerNumber.textSize = 36f
+            tvPlayerNumber.visibility = View.VISIBLE
+            tvPlayerNumber.bringToFront()
+            tvGamepadStatus.visibility = View.GONE
+            blinkAnimator?.cancel()
+            connectTimeoutHandler.postDelayed({
+                connectionError = null
+                updateUI()
+            }, 3000)
         } else if (connecting) {
             tvPlayerNumber.text = "CONNECTING..."
+            tvPlayerNumber.textSize = 36f
             tvPlayerNumber.visibility = View.VISIBLE
             tvPlayerNumber.bringToFront()
             tvGamepadStatus.visibility = View.GONE
