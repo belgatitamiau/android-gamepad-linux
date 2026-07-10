@@ -16,6 +16,10 @@ import signal
 
 SYSTEM = platform.system()
 
+# Force evdev imports (evdev is only available on Linux)
+if SYSTEM == "Linux":
+    from evdev import UInput, ecodes as e, AbsInfo, InputDevice, list_devices as evdev_list_devices
+
 def check_vigembus_installed() -> bool:
     if SYSTEM != "Windows":
         return True
@@ -59,6 +63,7 @@ def install_vigembus_driver():
 def auto_install_dependencies():
     required = ["qrcode"]
     if SYSTEM == "Linux":
+        required.append("evdev")
         required.append("python-uinput")
     elif SYSTEM == "Windows":
         required.append("vgamepad")
@@ -130,8 +135,28 @@ if SYSTEM == "Linux":
         uinput.ABS_HAT0X + (-1, 1, 0, 0),
         uinput.ABS_HAT0Y + (-1, 1, 0, 0),
     ]
+    # evdev capabilities including FF_RUMBLE for force feedback
+    XBOX_CAPS = {
+        e.EV_KEY: [
+            e.BTN_A, e.BTN_B, e.BTN_X, e.BTN_Y,
+            e.BTN_TL, e.BTN_TR, e.BTN_SELECT, e.BTN_START,
+            e.BTN_MODE, e.BTN_THUMBL, e.BTN_THUMBR,
+        ],
+        e.EV_ABS: [
+            (e.ABS_X, AbsInfo(value=0, min=-32768, max=32767, fuzz=0, flat=0, resolution=0)),
+            (e.ABS_Y, AbsInfo(value=0, min=-32768, max=32767, fuzz=0, flat=0, resolution=0)),
+            (e.ABS_RX, AbsInfo(value=0, min=-32768, max=32767, fuzz=0, flat=0, resolution=0)),
+            (e.ABS_RY, AbsInfo(value=0, min=-32768, max=32767, fuzz=0, flat=0, resolution=0)),
+            (e.ABS_Z,  AbsInfo(value=0, min=0, max=255, fuzz=0, flat=0, resolution=0)),
+            (e.ABS_RZ, AbsInfo(value=0, min=0, max=255, fuzz=0, flat=0, resolution=0)),
+            (e.ABS_HAT0X, AbsInfo(value=0, min=-1, max=1, fuzz=0, flat=0, resolution=0)),
+            (e.ABS_HAT0Y, AbsInfo(value=0, min=-1, max=1, fuzz=0, flat=0, resolution=0)),
+        ],
+        e.EV_FF: [e.FF_RUMBLE],
+    }
 else:
     XBOX_EVENTS = []
+    XBOX_CAPS = {}
 
 
 class GamepadState:
@@ -200,21 +225,29 @@ class GamepadState:
 # -------------------------------------------------------------------
 
 class VirtualGamepad:
-    def __init__(self, gamepad_id: int):
+    def __init__(self, gamepad_id: int, on_rumble=None):
         self.gamepad_id = gamepad_id
         self.device = None
         self._lock = threading.Lock()
+        self._ff_dev = None        # evdev InputDevice for EV_FF_STATUS
+        self._ff_thread = None     # FF monitor thread
+        self._on_rumble = on_rumble  # callback: (gamepad_id, playing: bool)
         self._create()
+        if SYSTEM == "Linux" and self._ff_dev:
+            self._start_ff_monitor()
 
     def _create(self):
         try:
             if SYSTEM == "Linux":
-                self.device = uinput.Device(
-                    XBOX_EVENTS,
+                # Use evdev.UInput for FF_RUMBLE support
+                self.device = UInput(
+                    XBOX_CAPS,
                     name=f'GamepadBridge Gamepad {self.gamepad_id}',
                     vendor=0x045e, product=0x028e, version=0x110,
                 )
-                print(f'[uinput] Created virtual gamepad #{self.gamepad_id}')
+                # The InputDevice for the event node — used for EV_FF_STATUS reads
+                self._ff_dev = self.device.device
+                print(f'[uinput] Created virtual gamepad #{self.gamepad_id} with FF_RUMBLE')
             elif SYSTEM == "Windows":
                 self.device = vgamepad.VX360Gamepad()
                 print(f'[vgamepad] Created virtual gamepad #{self.gamepad_id}')
@@ -222,6 +255,26 @@ class VirtualGamepad:
             tag = "uinput" if SYSTEM == "Linux" else "vgamepad"
             print(f'[{tag}] Failed to create gamepad #{self.gamepad_id}: {e}')
             self.device = None
+            self._ff_dev = None
+
+    def _start_ff_monitor(self):
+        """Background thread: listen for EV_FF_STATUS on the event node."""
+        def _monitor():
+            try:
+                dev = self._ff_dev
+                if dev is None:
+                    return
+                for event in dev.read_loop():
+                    if event.type == e.EV_FF_STATUS:
+                        # code 0 = FF_STATUS_STOPPED, 1 = FF_STATUS_PLAYING
+                        playing = (event.code == 1)
+                        if self._on_rumble:
+                            self._on_rumble(self.gamepad_id, playing)
+            except Exception as ex:
+                # device closed or removed — expected on shutdown
+                pass
+        self._ff_thread = threading.Thread(target=_monitor, daemon=True, name=f'ff-{self.gamepad_id}')
+        self._ff_thread.start()
 
     def update(self, state: GamepadState):
         if self.device is None:
@@ -230,30 +283,30 @@ class VirtualGamepad:
             try:
                 if SYSTEM == "Linux":
                     d = self.device
-                    d.emit(uinput.BTN_A, 1 if state.buttons & BIT_MAP['A'] else 0)
-                    d.emit(uinput.BTN_B, 1 if state.buttons & BIT_MAP['B'] else 0)
-                    d.emit(uinput.BTN_X, 1 if state.buttons & BIT_MAP['X'] else 0)
-                    d.emit(uinput.BTN_Y, 1 if state.buttons & BIT_MAP['Y'] else 0)
-                    d.emit(uinput.BTN_TL, 1 if state.buttons & BIT_MAP['LB'] else 0)
-                    d.emit(uinput.BTN_TR, 1 if state.buttons & BIT_MAP['RB'] else 0)
-                    d.emit(uinput.BTN_SELECT, 1 if state.buttons & BIT_MAP['SELECT'] else 0)
-                    d.emit(uinput.BTN_START, 1 if state.buttons & BIT_MAP['START'] else 0)
-                    d.emit(uinput.BTN_MODE, 1 if state.buttons & BIT_MAP['HOME'] else 0)
-                    d.emit(uinput.BTN_THUMBL, 1 if state.buttons & BIT_MAP['L3'] else 0)
-                    d.emit(uinput.BTN_THUMBR, 1 if state.buttons & BIT_MAP['R3'] else 0)
-                    d.emit(uinput.ABS_X, state.lx)
-                    d.emit(uinput.ABS_Y, state.ly)
-                    d.emit(uinput.ABS_RX, state.rx)
-                    d.emit(uinput.ABS_RY, state.ry)
-                    d.emit(uinput.ABS_Z, state.lt)
-                    d.emit(uinput.ABS_RZ, state.rt)
+                    d.write(e.EV_KEY, e.BTN_A, 1 if state.buttons & BIT_MAP['A'] else 0)
+                    d.write(e.EV_KEY, e.BTN_B, 1 if state.buttons & BIT_MAP['B'] else 0)
+                    d.write(e.EV_KEY, e.BTN_X, 1 if state.buttons & BIT_MAP['X'] else 0)
+                    d.write(e.EV_KEY, e.BTN_Y, 1 if state.buttons & BIT_MAP['Y'] else 0)
+                    d.write(e.EV_KEY, e.BTN_TL, 1 if state.buttons & BIT_MAP['LB'] else 0)
+                    d.write(e.EV_KEY, e.BTN_TR, 1 if state.buttons & BIT_MAP['RB'] else 0)
+                    d.write(e.EV_KEY, e.BTN_SELECT, 1 if state.buttons & BIT_MAP['SELECT'] else 0)
+                    d.write(e.EV_KEY, e.BTN_START, 1 if state.buttons & BIT_MAP['START'] else 0)
+                    d.write(e.EV_KEY, e.BTN_MODE, 1 if state.buttons & BIT_MAP['HOME'] else 0)
+                    d.write(e.EV_KEY, e.BTN_THUMBL, 1 if state.buttons & BIT_MAP['L3'] else 0)
+                    d.write(e.EV_KEY, e.BTN_THUMBR, 1 if state.buttons & BIT_MAP['R3'] else 0)
+                    d.write(e.EV_ABS, e.ABS_X, state.lx)
+                    d.write(e.EV_ABS, e.ABS_Y, state.ly)
+                    d.write(e.EV_ABS, e.ABS_RX, state.rx)
+                    d.write(e.EV_ABS, e.ABS_RY, state.ry)
+                    d.write(e.EV_ABS, e.ABS_Z, state.lt)
+                    d.write(e.EV_ABS, e.ABS_RZ, state.rt)
                     hx, hy = 0, 0
                     if state.buttons & BIT_MAP['DPAD_LEFT']: hx = -1
                     elif state.buttons & BIT_MAP['DPAD_RIGHT']: hx = 1
                     if state.buttons & BIT_MAP['DPAD_UP']: hy = -1
                     elif state.buttons & BIT_MAP['DPAD_DOWN']: hy = 1
-                    d.emit(uinput.ABS_HAT0X, hx)
-                    d.emit(uinput.ABS_HAT0Y, hy)
+                    d.write(e.EV_ABS, e.ABS_HAT0X, hx)
+                    d.write(e.EV_ABS, e.ABS_HAT0Y, hy)
                     d.syn()
                 elif SYSTEM == "Windows":
                     d = self.device
@@ -303,11 +356,13 @@ class GamepadBridgeServer:
 
     def __init__(self):
         self.states = [GamepadState() for _ in range(self.MAX_GAMEPADS)]
-        self.virtual = [VirtualGamepad(i) for i in range(self.MAX_GAMEPADS)]
+        self.virtual = [VirtualGamepad(i, on_rumble=self._on_rumble) for i in range(self.MAX_GAMEPADS)]
         self.ws_clients: set[asyncio.StreamWriter] = set()
         self._ws_lock = threading.Lock()
         self._tcp_slots: dict[str, int] = {}  # addr -> server slot
         self._tcp_lock = threading.Lock()
+        self._slot_writers: dict[int, tuple[asyncio.StreamWriter, asyncio.AbstractEventLoop]] = {}
+        self._rumble_state = [False] * self.MAX_GAMEPADS
 
     def _allocate_tcp_slot(self, addr: str) -> int | None:
         with self._tcp_lock:
@@ -325,6 +380,32 @@ class GamepadBridgeServer:
             if slot is not None:
                 self.states[slot] = GamepadState()
                 self.states[slot].gamepad_id = slot
+
+    # -- Force feedback / rumble ------------------------------------
+
+    def _on_rumble(self, gamepad_id: int, playing: bool):
+        """Called from FF monitor thread — forward vibration to Android"""
+        if gamepad_id >= self.MAX_GAMEPADS:
+            return
+        old = self._rumble_state[gamepad_id]
+        if old == playing:
+            return  # no change
+        self._rumble_state[gamepad_id] = playing
+        writer_info = self._slot_writers.get(gamepad_id)
+        if writer_info is None:
+            return
+        writer, loop = writer_info
+        asyncio.run_coroutine_threadsafe(
+            self._send_vibrate_cmd(writer, playing), loop
+        )
+
+    async def _send_vibrate_cmd(self, writer, playing: bool):
+        """Send V\x01 (start) or V\x00 (stop) to Android client"""
+        try:
+            writer.write(b'V' + (b'\x01' if playing else b'\x00'))
+            await writer.drain()
+        except Exception:
+            pass
 
     # -- uinput thread worker ---------------------------------------
 
@@ -348,6 +429,7 @@ class GamepadBridgeServer:
         writer.write(bytes([player_num]))
         await writer.drain()
         loop = asyncio.get_running_loop()
+        self._slot_writers[slot] = (writer, loop)
         try:
             while True:
                 data = await asyncio.wait_for(reader.readexactly(20), timeout=600)
@@ -359,6 +441,8 @@ class GamepadBridgeServer:
             pass
         finally:
             print(f'[tcp] Gamepad client disconnected: {addr_key} (slot {slot})')
+            self._slot_writers.pop(slot, None)
+            self._rumble_state[slot] = False
             self._free_tcp_slot(addr_key)
             try:
                 writer.close()

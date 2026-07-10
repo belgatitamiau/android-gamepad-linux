@@ -12,7 +12,8 @@ class NetworkClient(
     private val host: String,
     private val port: Int,
     private val onConnected: (Int) -> Unit,
-    private val onDisconnected: (Exception?) -> Unit
+    private val onDisconnected: (Exception?) -> Unit,
+    private val onVibrate: ((Boolean) -> Unit)? = null
 ) {
     private var socket: Socket? = null
     private var outputStream: OutputStream? = null
@@ -20,6 +21,7 @@ class NetworkClient(
     private var connectThread: Thread? = null
     private var sendThread: Thread? = null
     private var watchThread: Thread? = null
+    private var receiveThread: Thread? = null
     private var lastSendOk = 0L
     @Volatile
     private var running = false
@@ -44,6 +46,7 @@ class NetworkClient(
                 onConnected(playerNum)
                 sendLoop()
                 watchConnection()
+                receiveLoop()
             } catch (e: Exception) {
                 Log.e(TAG, "Connection failed: ${e.message}")
                 running = false
@@ -52,6 +55,35 @@ class NetworkClient(
         }, "net-connect")
         thread.start()
         connectThread = thread
+    }
+
+    private fun receiveLoop() {
+        val stream = inputStream ?: return
+        receiveThread = Thread({
+            try {
+                while (running) {
+                    val cmd = stream.read()
+                    if (cmd == -1) break
+                    when (cmd.toChar()) {
+                        'V' -> {
+                            val value = stream.read()
+                            if (value != -1) {
+                                Log.d(TAG, "Vibration command: ${if (value != 0) "ON" else "OFF"}")
+                                onVibrate?.invoke(value != 0)
+                            }
+                        }
+                        else -> {
+                            Log.d(TAG, "Unknown command from server: ${cmd.toChar()} (0x%02x)".format(cmd))
+                        }
+                    }
+                }
+            } catch (e: Exception) {
+                if (running) {
+                    Log.e(TAG, "Receive error: ${e.message}")
+                }
+            }
+        }, "net-receive")
+        receiveThread?.start()
     }
 
     private fun sendLoop() {

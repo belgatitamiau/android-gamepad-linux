@@ -54,6 +54,7 @@ class MainActivity : AppCompatActivity(), InputManager.InputDeviceListener {
     private lateinit var connectPanel: View
     private lateinit var optionsPanel: View
     private lateinit var swScreenOff: Switch
+    private lateinit var swVibrate: Switch
 
     private lateinit var themeBlack: View
     private lateinit var themePink: View
@@ -104,6 +105,7 @@ class MainActivity : AppCompatActivity(), InputManager.InputDeviceListener {
             service = (binder as GamepadBridgeService.LocalBinder).getService()
             bound = true
             log("Service bound")
+            service?.vibrationEnabled = swVibrate.isChecked
             service?.onConnectionStateChanged = { runOnUiThread {
                 val srv = service
                 if (srv?.connected == true) {
@@ -197,6 +199,7 @@ class MainActivity : AppCompatActivity(), InputManager.InputDeviceListener {
         connectPanel = findViewById(R.id.connectPanel)
         optionsPanel = findViewById(R.id.optionsPanel)
         swScreenOff = findViewById(R.id.swScreenOff)
+        swVibrate = findViewById(R.id.swVibrate)
         themeBlack = findViewById(R.id.themeBlack)
         themePink = findViewById(R.id.themePink)
         themeBlue = findViewById(R.id.themeBlue)
@@ -244,6 +247,9 @@ class MainActivity : AppCompatActivity(), InputManager.InputDeviceListener {
             etPort.setText(prefs.getInt("port", 60001).toString())
         }
         currentTheme = prefs.getInt("theme", 0).coerceIn(0, 4)
+        val vibrateOn = prefs.getBoolean("vibrate", true)
+        swVibrate.isChecked = vibrateOn
+        service?.vibrationEnabled = vibrateOn
         logVisible = false
         tvLog.visibility = View.GONE
         pixelTypeface = ResourcesCompat.getFont(this, R.font.press_start_2p)
@@ -269,6 +275,10 @@ class MainActivity : AppCompatActivity(), InputManager.InputDeviceListener {
         swScreenOff.setOnCheckedChangeListener { _, checked ->
             screenOff = checked
             applyScreenOff()
+        }
+        swVibrate.setOnCheckedChangeListener { _, checked ->
+            prefs.edit().putBoolean("vibrate", checked).apply()
+            service?.vibrationEnabled = checked
         }
 
         log("App started")

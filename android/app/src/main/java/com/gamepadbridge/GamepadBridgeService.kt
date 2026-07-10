@@ -4,10 +4,14 @@ import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.Service
+import android.content.Context
 import android.content.Intent
 import android.os.Binder
 import android.os.Build
 import android.os.IBinder
+import android.os.VibrationEffect
+import android.os.Vibrator
+import android.os.VibratorManager
 import android.util.Log
 import java.util.concurrent.ConcurrentLinkedQueue
 
@@ -35,6 +39,9 @@ class GamepadBridgeService : Service() {
     @Volatile
     var connectionError: String? = null
         private set
+
+    @Volatile
+    var vibrationEnabled: Boolean = true
 
     inner class LocalBinder : Binder() {
         fun getService(): GamepadBridgeService = this@GamepadBridgeService
@@ -77,6 +84,11 @@ class GamepadBridgeService : Service() {
                 connectionError = simplifyError(ex)
                 onConnectionStateChanged?.invoke()
                 Log.e(TAG, "Network disconnected: $connectionError")
+            },
+            onVibrate = { playing ->
+                if (vibrationEnabled) {
+                    doVibrate(playing)
+                }
             }
         )
         networkClient?.start()
@@ -150,6 +162,28 @@ class GamepadBridgeService : Service() {
                 }
             }
             .build()
+    }
+
+    private fun doVibrate(playing: Boolean) {
+        if (!playing) return  // only handle start (stop is implicit — effect length)
+        val vibrator = if (Build.VERSION.SDK_INT >= 31) {
+            val vm = getSystemService(Context.VIBRATOR_MANAGER_SERVICE) as? VibratorManager
+            vm?.defaultVibrator
+        } else {
+            @Suppress("DEPRECATION")
+            getSystemService(Context.VIBRATOR_SERVICE) as? Vibrator
+        } ?: return
+        try {
+            if (Build.VERSION.SDK_INT >= 26) {
+                val effect = VibrationEffect.createOneShot(200, VibrationEffect.DEFAULT_AMPLITUDE)
+                vibrator.vibrate(effect)
+            } else {
+                @Suppress("DEPRECATION")
+                vibrator.vibrate(200)
+            }
+        } catch (_: Exception) {
+            // vibrator not available or permission denied
+        }
     }
 
     private fun simplifyError(ex: Exception?): String {
