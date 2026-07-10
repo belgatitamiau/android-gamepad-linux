@@ -13,6 +13,7 @@ import sys
 import platform
 import subprocess
 import signal
+import webbrowser
 
 SYSTEM = platform.system()
 
@@ -573,6 +574,14 @@ def _detect_local_ip() -> str:
 # MAIN
 # -------------------------------------------------------------------
 
+async def _auto_open_browser(url: str):
+    await asyncio.sleep(0.5)
+    try:
+        webbrowser.open(url)
+        print(f'[server] Opened browser to {url}')
+    except Exception as e:
+        print(f'[server] Could not open browser: {e}')
+
 async def main():
     # try 8080, fall back to random free port
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as stmp:
@@ -606,6 +615,7 @@ async def main():
     print(f'[server] TCP gamepad listener on :60001')
     print(f'[server] HTTP dashboard on :{http_port}')
     print(f'[server] Open http://{local_ip}:{http_port}/ in a browser')
+    asyncio.create_task(_auto_open_browser(f'http://{local_ip}:{http_port}/'))
     try:
         with open('/tmp/gamepad-bridge-port', 'w') as f:
             f.write(str(http_port))
