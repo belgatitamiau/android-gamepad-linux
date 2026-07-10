@@ -574,6 +574,19 @@ def _detect_local_ip() -> str:
 # MAIN
 # -------------------------------------------------------------------
 
+def _print_connection_qr(ip: str, port: int):
+    addr = f'{ip}:{port}'
+    print()
+    print('=' * 50)
+    print('  Connect the Android app to:')
+    print(f'  {addr}')
+    print('=' * 50)
+    qr = qrcode.QRCode(border=1, box_size=2)
+    qr.add_data(addr)
+    qr.make(fit=True)
+    qr.print_ascii(invert=True)
+    print()
+
 async def _auto_open_browser(url: str):
     await asyncio.sleep(0.5)
     try:
@@ -612,9 +625,11 @@ async def main():
     tcp_server = await asyncio.start_server(srv.handle_gamepad_client, '0.0.0.0', 60001, reuse_port=reuse_port_opt)
     http_server = await asyncio.start_server(srv.handle_http, '0.0.0.0', http_port, reuse_port=reuse_port_opt)
     local_ip = _detect_local_ip()
-    print(f'[server] TCP gamepad listener on :60001')
+    tcp_port = 60001
+    print(f'[server] TCP gamepad listener on :{tcp_port}')
     print(f'[server] HTTP dashboard on :{http_port}')
     print(f'[server] Open http://{local_ip}:{http_port}/ in a browser')
+    _print_connection_qr(local_ip, tcp_port)
     asyncio.create_task(_auto_open_browser(f'http://{local_ip}:{http_port}/'))
     try:
         with open('/tmp/gamepad-bridge-port', 'w') as f:
