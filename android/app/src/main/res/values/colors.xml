@@ -27,11 +27,11 @@
     <color name="sb_text">#FFF0E8D0</color>
     <color name="sb_text2">#FFB09860</color>
 
-    <!-- Kerokerokeroppi (Green) -->
-    <color name="kk_bg">#FF0A1A0A</color>
-    <color name="kk_bg2">#FF0A2A0A</color>
-    <color name="kk_accent">#FF69FF69</color>
-    <color name="kk_accent2">#FF32CD32</color>
-    <color name="kk_text">#FFD0F0D0</color>
-    <color name="kk_text2">#FF60B060</color>
+    <!-- Lime Green -->
+    <color name="kk_bg">#FF0A140A</color>
+    <color name="kk_bg2">#FF0F200A</color>
+    <color name="kk_accent">#FFAAFF00</color>
+    <color name="kk_accent2">#FF66CC00</color>
+    <color name="kk_text">#FFE8F0C0</color>
+    <color name="kk_text2">#FF88A040</color>
 </resources>

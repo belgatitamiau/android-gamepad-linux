@@ -159,10 +159,11 @@ class GamepadBridgeService : Service() {
             lower.contains("network is unreachable") -> "No connection (WiFi off?)"
             lower.contains("no route to host") -> "PC not on this network"
             lower.contains("connection refused") -> "Server not running on PC"
-            lower.contains("failed to connect to") -> "PC not responding (timeout)"
+            lower.contains("failed to connect to") || lower.contains("timed out") -> "Can't reach PC — check firewall"
             lower.contains("permission denied") -> "Permission denied"
             lower.contains("reset") || lower.contains("broken pipe") -> "Connection lost"
             lower.contains("eof") || lower.contains("end of file") -> "Server disconnected"
+            lower.contains("host not responding") -> "Host not responding — check firewall"
             else -> msg
         }
     }

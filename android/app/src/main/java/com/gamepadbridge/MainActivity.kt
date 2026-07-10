@@ -96,7 +96,7 @@ class MainActivity : AppCompatActivity(), InputManager.InputDeviceListener {
         ThemeColors(0xFF1A0A12.toInt(), 0xFF2A0A1A.toInt(), 0xFFFF69B4.toInt(), 0xFFFF1493.toInt(), 0xFFF0D0D8.toInt(), 0xFFB06080.toInt(), "My Melody"),
         ThemeColors(0xFF0A1220.toInt(), 0xFF0A1A2A.toInt(), 0xFF69C4FF.toInt(), 0xFF1493FF.toInt(), 0xFFD0E0F0.toInt(), 0xFF6080B0.toInt(), "Cinnamoroll"),
         ThemeColors(0xFF1A140A.toInt(), 0xFF2A1A0A.toInt(), 0xFFFFD700.toInt(), 0xFFDAA520.toInt(), 0xFFF0E8D0.toInt(), 0xFFB09860.toInt(), "Sugarbunnies"),
-        ThemeColors(0xFF0A1A0A.toInt(), 0xFF0A2A0A.toInt(), 0xFF69FF69.toInt(), 0xFF32CD32.toInt(), 0xFFD0F0D0.toInt(), 0xFF60B060.toInt(), "Kerokerokeroppi"),
+        ThemeColors(0xFF0A140A.toInt(), 0xFF0F200A.toInt(), 0xFFAAFF00.toInt(), 0xFF66CC00.toInt(), 0xFFE8F0C0.toInt(), 0xFF88A040.toInt(), "Lime Green"),
     )
 
     private val connection = object : ServiceConnection {
@@ -288,8 +288,6 @@ class MainActivity : AppCompatActivity(), InputManager.InputDeviceListener {
             prefs.edit().putBoolean("auto_connect_done", true).apply()
             etHost.setText(savedHost)
             etPort.setText(savedPort.toString())
-            connecting = true
-            updateUI()
             log("Auto-connecting to $savedHost:$savedPort...")
             startService(Intent(this, GamepadBridgeService::class.java))
             pendingConnect = Pair(savedHost, savedPort)
@@ -299,6 +297,7 @@ class MainActivity : AppCompatActivity(), InputManager.InputDeviceListener {
                 service?.connect(savedHost, savedPort)
                 pendingConnect = null
             }
+            startConnecting()
         } else if (!bound) {
             bindService(Intent(this, GamepadBridgeService::class.java), connection, BIND_AUTO_CREATE)
         }
@@ -480,7 +479,7 @@ class MainActivity : AppCompatActivity(), InputManager.InputDeviceListener {
             val reason = existing ?: when {
                 targetHost.isEmpty() -> "no IP entered"
                 targetPort.isEmpty() -> "no port entered"
-                else -> "could not reach $targetHost:$targetPort"
+                else -> "Can't reach PC — check firewall"
             }
             connectionError = reason
             log("ERROR: $reason")
@@ -645,6 +644,12 @@ class MainActivity : AppCompatActivity(), InputManager.InputDeviceListener {
     }
 
     override fun dispatchKeyEvent(event: KeyEvent): Boolean {
+        val kc = event.keyCode
+        // Volume and media keys must pass through untouched
+        if (kc == KeyEvent.KEYCODE_VOLUME_UP || kc == KeyEvent.KEYCODE_VOLUME_DOWN ||
+            kc == KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE) {
+            return super.dispatchKeyEvent(event)
+        }
         if (event.source and GAMEPAD_SOURCES != 0) {
             handleGamepadKey(event)
             return true
