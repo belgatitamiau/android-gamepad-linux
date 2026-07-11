@@ -317,7 +317,9 @@ class GamepadBridgeServer:
         self.ws_clients: set[asyncio.StreamWriter] = set()
         self._ws_lock = threading.Lock()
         self._tcp_slots: dict[str, int] = {}  # addr -> server slot
+        self._tcp_writers: dict[int, asyncio.StreamWriter] = {}  # slot -> writer
         self._tcp_lock = threading.Lock()
+        self._loop: asyncio.AbstractEventLoop | None = None
 
     def _allocate_tcp_slot(self, addr: str) -> int | None:
         with self._tcp_lock:
@@ -335,6 +337,36 @@ class GamepadBridgeServer:
             if slot is not None:
                 self.states[slot] = GamepadState()
                 self.states[slot].gamepad_id = slot
+                self._tcp_writers.pop(slot, None)
+
+    # -- rumble (force feedback) ------------------------------------
+
+    def _register_rumble_callbacks(self):
+        if SYSTEM != "Windows":
+            return
+        for slot, vgp in enumerate(self.virtual):
+            if vgp.device:
+                def _cb(client, target, large_motor, small_motor, led_number, user_data, _s=slot):
+                    self._on_rumble(_s, large_motor, small_motor)
+                vgp.device.register_notification(_cb)
+                print(f'[vgamepad] Registered rumble callback for gamepad #{slot}')
+
+    def _on_rumble(self, slot: int, large_motor: int, small_motor: int):
+        if self._loop is None or not self._loop.is_running():
+            return
+        async def send():
+            await self._send_rumble(slot, large_motor, small_motor)
+        asyncio.run_coroutine_threadsafe(send(), self._loop)
+
+    async def _send_rumble(self, slot: int, large: int, small: int):
+        writer = self._tcp_writers.get(slot)
+        if writer is None:
+            return
+        try:
+            writer.write(bytes([0x01, slot, large, small]))
+            await writer.drain()
+        except Exception:
+            pass
 
     # -- uinput thread worker ---------------------------------------
 
@@ -355,6 +387,7 @@ class GamepadBridgeServer:
             return
         print(f'[tcp] Assigned slot {slot} to {addr_key}')
         player_num = slot + 1
+        self._tcp_writers[slot] = writer
         writer.write(bytes([player_num]))
         await writer.drain()
         loop = asyncio.get_running_loop()
@@ -621,6 +654,8 @@ async def main():
         return
 
     srv = GamepadBridgeServer()
+    srv._loop = asyncio.get_running_loop()
+    srv._register_rumble_callbacks()
     reuse_port_opt = (SYSTEM == 'Linux')
     tcp_server = await asyncio.start_server(srv.handle_gamepad_client, '0.0.0.0', 60001, reuse_port=reuse_port_opt)
     http_server = await asyncio.start_server(srv.handle_http, '0.0.0.0', http_port, reuse_port=reuse_port_opt)

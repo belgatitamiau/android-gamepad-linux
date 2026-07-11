@@ -11,13 +11,15 @@ class NetworkClient(
     private val host: String,
     private val port: Int,
     private val onConnected: (Int) -> Unit,
-    private val onDisconnected: (Exception?) -> Unit
+    private val onDisconnected: (Exception?) -> Unit,
+    private val onRumble: ((large: Int, small: Int) -> Unit)? = null
 ) {
     private var socket: Socket? = null
     private var outputStream: OutputStream? = null
     private var inputStream: InputStream? = null
     private var connectThread: Thread? = null
     private var sendThread: Thread? = null
+    private var readThread: Thread? = null
     @Volatile
     private var running = false
     private val sendQueue = ConcurrentLinkedQueue<ByteArray>()
@@ -38,6 +40,7 @@ class NetworkClient(
                 Log.i(TAG, "Connected to $host:$port as player $playerNum")
                 onConnected(playerNum)
                 sendLoop()
+                readLoop()
             } catch (e: Exception) {
                 Log.e(TAG, "Connection failed: ${e.message}")
                 running = false
@@ -46,6 +49,27 @@ class NetworkClient(
         }, "net-connect")
         thread.start()
         connectThread = thread
+    }
+
+    private fun readLoop() {
+        val thread = Thread({
+            try {
+                val buf = ByteArray(4)
+                while (running) {
+                    val bytesRead = inputStream?.read(buf) ?: -1
+                    if (bytesRead < 0) break
+                    if (bytesRead == 4 && buf[0].toInt() == 0x01) {
+                        val large = buf[2].toInt() and 0xFF
+                        val small = buf[3].toInt() and 0xFF
+                        onRumble?.invoke(large, small)
+                    }
+                }
+            } catch (e: Exception) {
+                if (running) Log.e(TAG, "Read error: ${e.message}")
+            }
+        }, "net-read")
+        thread.start()
+        readThread = thread
     }
 
     private fun sendLoop() {
@@ -84,6 +108,10 @@ class NetworkClient(
     }
 
     private fun cleanup() {
+        readThread?.interrupt()
+        readThread = null
+        sendThread?.interrupt()
+        sendThread = null
         try { outputStream?.close() } catch (_: Exception) {}
         try { socket?.close() } catch (_: Exception) {}
         outputStream = null
