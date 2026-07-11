@@ -8,8 +8,6 @@ import android.content.Intent
 import android.os.Binder
 import android.os.Build
 import android.os.IBinder
-import android.os.VibrationEffect
-import android.os.Vibrator
 import android.util.Log
 import java.util.concurrent.ConcurrentLinkedQueue
 
@@ -79,9 +77,6 @@ class GamepadBridgeService : Service() {
                 connectionError = simplifyError(ex)
                 onConnectionStateChanged?.invoke()
                 Log.e(TAG, "Network disconnected: $connectionError")
-            },
-            onRumble = { large, small ->
-                handleRumble(large, small)
             }
         )
         networkClient?.start()
@@ -114,21 +109,6 @@ class GamepadBridgeService : Service() {
         }, "state-sender")
         thread.start()
         senderThread = thread
-    }
-
-    private fun handleRumble(large: Int, small: Int) {
-        val vibrator = getSystemService(Vibrator::class.java) ?: return
-        if (large == 0 && small == 0) {
-            vibrator.cancel()
-            return
-        }
-        val intensity = ((large + small) / 2).coerceIn(0, 255)
-        val duration = (intensity * 2).coerceIn(50, 500)
-        if (Build.VERSION.SDK_INT >= 26) {
-            vibrator.vibrate(VibrationEffect.createOneShot(duration.toLong(), intensity))
-        } else {
-            vibrator.vibrate(duration.toLong())
-        }
     }
 
     fun disconnect() {
