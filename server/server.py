@@ -346,10 +346,13 @@ class GamepadBridgeServer:
             return
         for slot, vgp in enumerate(self.virtual):
             if vgp.device:
-                def _cb(client, target, large_motor, small_motor, led_number, user_data, _s=slot):
-                    self._on_rumble(_s, large_motor, small_motor)
-                vgp.device.register_notification(_cb)
+                vgp.device.register_notification(self._make_rumble_cb(slot))
                 print(f'[vgamepad] Registered rumble callback for gamepad #{slot}')
+
+    def _make_rumble_cb(self, slot: int):
+        def cb(client, target, large_motor, small_motor, led_number, user_data):
+            self._on_rumble(slot, large_motor, small_motor)
+        return cb
 
     def _on_rumble(self, slot: int, large_motor: int, small_motor: int):
         if self._loop is None or not self._loop.is_running():
@@ -614,10 +617,13 @@ def _print_connection_qr(ip: str, port: int):
     print('  Connect the Android app to:')
     print(f'  {addr}')
     print('=' * 50)
-    qr = qrcode.QRCode(border=1, box_size=2)
+    qr = qrcode.QRCode(border=1, box_size=1)
     qr.add_data(addr)
     qr.make(fit=True)
-    qr.print_ascii(invert=True)
+    matrix = qr.modules
+    for row in matrix:
+        line = ''.join('##' if cell else '  ' for cell in row)
+        print(line)
     print()
 
 async def _auto_open_browser(url: str):
